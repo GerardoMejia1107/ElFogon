@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screen.search
+package com.nullPointerSociety.elfogon.ui.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -7,10 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import com.nullPointerSociety.elfogon.model.Recipe
+import com.nullPointerSociety.elfogon.data.model.Recipe
 import com.nullPointerSociety.elfogon.ui.components.BottomNavigationBar
 import com.nullPointerSociety.elfogon.ui.components.RecipeCard
-import androidx.compose.foundation.lazy.items
 import com.nullPointerSociety.elfogon.ui.components.SearchBar
 
 

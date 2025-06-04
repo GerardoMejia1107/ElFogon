@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nullPointerSociety.elfogon.ui.screen.search.FilterScreen
-import com.nullPointerSociety.elfogon.ui.screen.search.SearchScreen
+import com.nullPointerSociety.elfogon.ui.screen.FilterScreen
+import com.nullPointerSociety.elfogon.ui.screen.SearchScreen
 
 object Routes {
     const val Search = "search"
