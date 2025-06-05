@@ -27,12 +27,7 @@ fun SearchBar(
             .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        IconButton(onClick = onBackClick) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Regresar"
-            )
-        }
+
 
         OutlinedTextField(
             value = searchText,

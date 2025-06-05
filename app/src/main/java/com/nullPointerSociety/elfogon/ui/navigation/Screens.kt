@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 object HomeScreenNav
 
 @Serializable
-object KeptRecipesScreenNav
+object SavedRecipesScreenNav
 
 @Serializable
 object UserProfileScreenNav
