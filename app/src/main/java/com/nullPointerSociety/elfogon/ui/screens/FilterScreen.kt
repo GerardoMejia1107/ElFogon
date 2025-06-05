@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screen.search
+package com.nullPointerSociety.elfogon.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

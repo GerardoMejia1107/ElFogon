@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.model
+package com.nullPointerSociety.elfogon.data.model
 
 data class Recipe(
     val name: String,

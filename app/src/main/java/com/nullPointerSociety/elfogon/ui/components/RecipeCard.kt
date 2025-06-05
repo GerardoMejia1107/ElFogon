@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 
-import com.nullPointerSociety.elfogon.model.Recipe
+import com.nullPointerSociety.elfogon.data.model.Recipe
 
 @Composable
 fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
