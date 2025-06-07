@@ -41,7 +41,7 @@ fun HomeScreen(onNavigateToFilters: () -> Unit) {
     )
 
     Scaffold(
-        containerColor = AppBackground,
+        containerColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize(),
         topBar = {
             CustomTopBar(title = "DEL FOGON")
@@ -67,8 +67,8 @@ fun HomeScreen(onNavigateToFilters: () -> Unit) {
                     text = "Descubre recetas deliciosas y fáciles de preparar",
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .background(AppBackground)
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background)
                 )
             }
 

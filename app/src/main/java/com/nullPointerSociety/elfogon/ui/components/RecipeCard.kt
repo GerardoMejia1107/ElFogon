@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
@@ -19,10 +20,12 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 
 import com.nullPointerSociety.elfogon.data.model.Recipe
+import com.nullPointerSociety.elfogon.ui.theme.CardBackground
 
 @Composable
 fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
     Card(
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
         modifier = Modifier
             .padding(8.dp)
             .width(160.dp)
@@ -58,7 +61,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
         ) {
             Text(
                 text = recipe.name,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 maxLines = 2
             )

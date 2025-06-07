@@ -30,7 +30,7 @@ fun CustomTopBar(
     onAction: (() -> Unit)? = null
 ) {
     CenterAlignedTopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(AppBackground),
+        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
         title = {
             Row(
                 verticalAlignment = Alignment.CenterVertically

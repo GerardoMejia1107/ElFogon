@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -33,11 +34,11 @@ fun BottomNavigationBar(
 ) {
     NavigationBar(
         modifier = Modifier.height(120.dp),
-        containerColor = PastelGreenLight
+        containerColor = MaterialTheme.colorScheme.secondary,
     ) {
         bottomNavItems.forEach { item ->
             NavigationBarItem(
-                colors = NavigationBarItemDefaults.colors(indicatorColor = AppBackground),
+                colors = NavigationBarItemDefaults.colors(indicatorColor = MaterialTheme.colorScheme.background),
                 selected = selectedItem == item.route,
                 onClick = { onItemSelected(item.route) },
                 icon = { Icon(imageVector = item.icon, contentDescription = item.label) },
