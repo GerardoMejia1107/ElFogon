@@ -1,6 +1,5 @@
 package com.nullPointerSociety.elfogon.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -16,7 +15,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Green4D
+    primary = PrimaryAccent
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

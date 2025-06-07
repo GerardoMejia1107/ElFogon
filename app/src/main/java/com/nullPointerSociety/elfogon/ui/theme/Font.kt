@@ -1,10 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.theme
 
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.nullPointerSociety.elfogon.R
 
@@ -22,5 +19,21 @@ val EB_Garamond = FontFamily(
         R.font.eb_garamond_extrabold,
         weight = FontWeight.Bold,
     )
+)
+
+val Lato = FontFamily(
+    Font(
+        R.font.lato,
+        weight = FontWeight.Normal,
+    ),
+    Font(
+        R.font.lato,
+        weight = FontWeight.Medium,
+    ),
+    Font(
+        R.font.lato_bold,
+        weight = FontWeight.Bold,
+    )
+
 
 )
