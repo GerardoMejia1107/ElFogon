@@ -23,7 +23,27 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp,
         color = PrimaryAccent
+    ),
+
+    titleMedium = TextStyle(
+        fontFamily = EB_Garamond,
+        fontWeight = FontWeight.Bold,
+        fontSize = 25.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp,
+        color = PrimaryAccent
+    ),
+
+    titleSmall = TextStyle(
+        fontFamily = EB_Garamond,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp,
+        color = PrimaryAccent
     )
+
+
 
 
     /* Other default text styles to override

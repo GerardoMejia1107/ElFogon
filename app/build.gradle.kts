@@ -45,6 +45,10 @@ android {
     }
 }
 
+configurations.all {
+    exclude(group = "com.intellij", module = "annotations")
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -59,7 +63,7 @@ dependencies {
 
     implementation(libs.androidx.foundation)
     implementation(libs.coil.compose)
-    implementation (libs.coil.network.okhttp)
+    implementation(libs.coil.network.okhttp)
 
     implementation(libs.room.ktx)
     implementation(libs.room.compiler)

@@ -1,8 +1,9 @@
 package com.nullPointerSociety.elfogon.data.model
 
 data class Recipe(
-    val name: String,
-    val category: String,
-    val imageUrl: String,
-    val time: Int
+    val id: Int,
+    val title: String?,
+    val image: String?,
+    val readyInMinutes: Int?,
+    val servings: Int?,
 )
