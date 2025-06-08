@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -10,8 +12,16 @@ plugins {
 android {
     namespace = "com.nullPointerSociety.elfogon"
     compileSdk = 35
+    android.buildFeatures.buildConfig = true
+
+
+    val localProperties = Properties()
+    localProperties.load(rootProject.file("local.properties").inputStream())
+    val spoonacularApiKey = localProperties["SPOONACULAR_API_KEY"] as String
 
     defaultConfig {
+        buildConfigField("String", "SPOONACULAR_API_KEY", "\"$spoonacularApiKey\"")
+
         applicationId = "com.nullPointerSociety.elfogon"
         minSdk = 22
         targetSdk = 35
@@ -46,6 +56,7 @@ android {
 }
 
 configurations.all {
+
     exclude(group = "com.intellij", module = "annotations")
 }
 
@@ -71,7 +82,9 @@ dependencies {
 
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.retrofit)
+
     implementation(libs.converter.gson)
+
     implementation(libs.logging.interceptor)
 
     testImplementation(libs.junit)

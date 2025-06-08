@@ -15,7 +15,7 @@ object UserProfileScreenNav
 object MadeRecipesScreenNav
 
 @Serializable
-object RecipeDetailsScreenNav
+data class RecipeDetailsScreenNav(val id: Int)
 
 @Serializable
 object SearchByFilterScreenNav

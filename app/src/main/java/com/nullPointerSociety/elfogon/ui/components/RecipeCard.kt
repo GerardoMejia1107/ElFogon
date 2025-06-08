@@ -1,12 +1,10 @@
 package com.nullPointerSociety.elfogon.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,8 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -33,14 +29,18 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Scale
-import com.nullPointerSociety.elfogon.data.model.Recipe
+import com.nullPointerSociety.elfogon.data.model.RecipeApi
+
 @Composable
-fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
+fun RecipeCard(
+    recipeApiSpoon: RecipeApi,
+    onClick: (Int) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(280.dp)
-            .clickable(onClick = onClick),
+            .clickable(onClick = { onClick(recipeApiSpoon.id) }),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
@@ -54,12 +54,12 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
                 Image(
                     painter = rememberAsyncImagePainter(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(recipe.image)
+                            .data(recipeApiSpoon.image)
                             .crossfade(true)
                             .scale(Scale.FILL)
                             .build()
                     ),
-                    contentDescription = recipe.title,
+                    contentDescription = recipeApiSpoon.title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxSize()
@@ -85,19 +85,19 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = recipe.title.orEmpty(),
+                    text = recipeApiSpoon.title.orEmpty(),
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "Porciones: ${recipe.servings ?: "-"}",
+                    text = "Porciones: ${recipeApiSpoon.servings ?: "-"}",
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "⏱ ${recipe.readyInMinutes ?: "-"} min",
+                    text = "⏱ ${recipeApiSpoon.readyInMinutes ?: "-"} min",
                     style = MaterialTheme.typography.bodySmall
                 )
             }
