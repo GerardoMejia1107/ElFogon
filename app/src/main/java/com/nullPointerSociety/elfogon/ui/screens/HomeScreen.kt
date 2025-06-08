@@ -22,42 +22,41 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nullPointerSociety.elfogon.data.model.Recipe
 import com.nullPointerSociety.elfogon.ui.components.RecipeCard
 import com.nullPointerSociety.elfogon.ui.components.SearchBar
 import com.nullPointerSociety.elfogon.ui.layout.CustomTopBar
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
-val dummyRecipes = listOf(
-    Recipe(
+/*val dummyRecipeSpoonculars = listOf(
+    RecipeSpooncular(
         id = 664932,
         title = "Walnut Pesto",
         image = "https://img.spoonacular.com/recipes/664932-556x370.jpg",
         readyInMinutes = 45,
         servings = 12
     ),
-    Recipe(
+    RecipeSpooncular(
         id = 649403,
         title = "Lebanese Kibbeh",
         image = "https://img.spoonacular.com/recipes/649403-556x370.jpg",
         readyInMinutes = 45,
         servings = 6
     ),
-    Recipe(
+    RecipeSpooncular(
         id = 637297,
         title = "Cauliflower Chickpea Stew",
         image = "https://img.spoonacular.com/recipes/637297-556x370.",
         readyInMinutes = 45,
         servings = 4
     ),
-    Recipe(
+    RecipeSpooncular(
         id = 636732,
         title = "Cajun Lobster Pasta",
         image = "https://img.spoonacular.com/recipes/636732-556x370.jpg",
         readyInMinutes = 45,
         servings = 1
     ),
-    Recipe(
+    RecipeSpooncular(
         id = 647395,
         title = "Hot Artichoke Crab Dip",
         image = "https://img.spoonacular.com/recipes/647395-556x370.jpg",
@@ -65,11 +64,12 @@ val dummyRecipes = listOf(
         servings = 4
     )
 )
-
+*/
 @Composable
 fun HomeScreen(
     onNavigateToFilters: () -> Unit,
-    viewModel: SpooncularViewModel = viewModel()
+    viewModel: SpooncularViewModel = viewModel(),
+    onRecipeClick: (Int) -> Unit = {}
 ) {
     val sampleRecipes = viewModel.recipes.collectAsState()
 
@@ -109,16 +109,18 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             //sampleRecipes.value.isEmpty()
-            if (dummyRecipes.isEmpty()) {
+            if (sampleRecipes.value.isNullOrEmpty()) {
+
                 CircularProgressIndicator()
+
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     contentPadding = PaddingValues(bottom = 140.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement   = Arrangement.spacedBy(16.dp)
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(dummyRecipes) { RecipeCard(it, {}) }
+                    items(sampleRecipes.value) { RecipeCard(it, onRecipeClick)  }
                 }
 
             }

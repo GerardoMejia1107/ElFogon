@@ -14,17 +14,24 @@ class SpooncularViewModel : ViewModel() {
     val recipes: StateFlow<List<Recipe>> = _recipes
 
     init {
-        //fetchPosts()
+        fetchPosts()
+    }
+
+    fun getRecipeById(id: Int): Recipe? {
+        return _recipes.value.find { it.id == id }
+
     }
 
     private fun fetchPosts() {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.getRecipes("91dd1164f60d482d83d7d0de5c76c0ab")
+                val response = RetrofitInstance.api.getRecipes(
+                    token = "91dd1164f60d482d83d7d0de5c76c0ab",
+                    number = 5
+                )
                 _recipes.value = response.recipes
             } catch (e: Exception) {
-
-                Log.e( "SpooncularViewModel", "Error fetching recipes", e)
+                Log.e("SpooncularViewModel", "Error fetching recipes", e)
             }
         }
     }

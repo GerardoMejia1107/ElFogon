@@ -6,4 +6,5 @@ data class Recipe(
     val image: String?,
     val readyInMinutes: Int?,
     val servings: Int?,
+    val summary: String?
 )

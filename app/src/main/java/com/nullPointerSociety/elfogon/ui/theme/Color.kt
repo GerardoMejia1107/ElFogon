@@ -9,7 +9,7 @@ val CardBackground = Color(0xFFFFFFFF)
 val SurfaceSecondary = Color(0xFFEADDD6)
 val DisabledText = Color(0xFFB0B0B0)
 val PrimaryText = Color(0xFF2E2E2E)
-val PastelGreenLight = Color(0xFFC0D0C7)
+val PastelGreenLight = Color(0xFFCFDFD6)
 
 
 
