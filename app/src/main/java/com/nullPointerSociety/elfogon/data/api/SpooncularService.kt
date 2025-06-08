@@ -1,7 +1,6 @@
 package com.nullPointerSociety.elfogon.data.api
 
-import com.nullPointerSociety.elfogon.data.model.Recipe
-import com.nullPointerSociety.elfogon.data.wrapper.SpooncularRecipeWrapper
+import com.nullPointerSociety.elfogon.data.model.RecipeApi
 import com.nullPointerSociety.elfogon.data.wrapper.SpooncularResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -14,5 +13,5 @@ interface SpooncularService {
         @Header("x-api-key") token: String,
         @Query("number") number: Int = 100
 
-    ): SpooncularResponse<Recipe>
+    ): SpooncularResponse<RecipeApi>
 }

@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.data.wrapper
 
 import com.google.gson.annotations.SerializedName
+import com.nullPointerSociety.elfogon.data.model.ExtendedIngredient
 
 data class SpooncularResponse<T>(
     @SerializedName("page")
@@ -8,6 +9,7 @@ data class SpooncularResponse<T>(
     @SerializedName("recipes")
     val recipes: List<T>,
     @SerializedName("totalResults")
-    val totalResults: Int
-
+    val totalResults: Int,
+    @SerializedName("extendedIngredients")
+    val extendedIngredients: List<ExtendedIngredient>
 )
