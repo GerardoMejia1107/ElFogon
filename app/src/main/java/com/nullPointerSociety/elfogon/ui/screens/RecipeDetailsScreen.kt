@@ -1,23 +1,29 @@
 package com.nullPointerSociety.elfogon.ui.screens
 
-import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nullPointerSociety.elfogon.data.mapper.htmlToAnnotatedString
+import coil.compose.rememberAsyncImagePainter
+import com.nullPointerSociety.elfogon.ui.components.ExpandableText
 import com.nullPointerSociety.elfogon.ui.layout.CustomTopBar
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
@@ -35,24 +41,39 @@ fun RecipeDetailsScreen(id: Int, viewModel: SpooncularViewModel = viewModel()) {
             )
         }
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
-            Surface(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text(
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(horizontal = 20.dp)
+        ) {
 
-                    modifier = Modifier.background(MaterialTheme.colorScheme.background),
-                    text = htmlToAnnotatedString(detailRecipe?.summary.toString())
+            /*text = htmlToAnnotatedString(detailRecipe?.summary.toString())*/
+
+            ExpandableText(text = detailRecipe?.summary.toString(), 3)
+
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(text = "Ready in ${10} minutes", style = MaterialTheme.typography.bodyMedium)
+            Spacer(modifier = Modifier.height(10.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        detailRecipe?.image
+                    ),
+                    contentDescription = detailRecipe?.title,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(10.dp))
+
                 )
+
+
             }
         }
     }
-}
-
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview(showBackground = true)
-@Composable
-fun RecipeDetailsScreenPreview() {
-    RecipeDetailsScreen(1, viewModel = SpooncularViewModel())
 }
