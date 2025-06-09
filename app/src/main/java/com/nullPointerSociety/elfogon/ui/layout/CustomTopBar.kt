@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,9 +25,10 @@ import com.nullPointerSociety.elfogon.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopBar(
-    title: String,
+    customTitle: String,
     onAction: (() -> Unit)? = null,
-    showLogo: Boolean = true
+    showLogo: Boolean = true,
+    selectedItem: MutableState<String>
 ) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
@@ -43,21 +45,29 @@ fun CustomTopBar(
                     Spacer(modifier = Modifier.width(8.dp))
                 }
                 Text(
-                    text = title,
+                    text = when (selectedItem.value) {
+                        "home" -> "Del Fogon"
+                        "saved_ones" -> "Saved Recipes"
+                        "made_ones" -> "Cooked Recipes"
+                        "profile" -> "Profile"
+                        "details_recipe" -> customTitle
+                        else -> "Del Fogon"
+                    },
                     style = MaterialTheme.typography.titleLarge,
-
-                    )
+                )
             }
         },
         navigationIcon = {
-            onAction?.let {
-                IconButton(onClick = { onAction() }) {
+            if (selectedItem.value == "details_recipe") {
+                IconButton(onClick = { onAction?.invoke() }) {
                     Icon(imageVector = Icons.Filled.ArrowBackIosNew, contentDescription = "Go back")
 
                 }
             }
         }
-    )
 
+
+    )
 }
+
 

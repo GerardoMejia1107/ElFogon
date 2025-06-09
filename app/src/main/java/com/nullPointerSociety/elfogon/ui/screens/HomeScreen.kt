@@ -1,5 +1,6 @@
 package com.nullPointerSociety.elfogon.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +15,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,10 +22,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nullPointerSociety.elfogon.data.model.RecipeApi
 import com.nullPointerSociety.elfogon.ui.components.RecipeCard
 import com.nullPointerSociety.elfogon.ui.components.SearchBar
-import com.nullPointerSociety.elfogon.ui.layout.CustomTopBar
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
 /*val recipeApis = listOf(
@@ -75,63 +73,55 @@ import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 fun HomeScreen(
     onNavigateToFilters: () -> Unit,
     viewModel: SpooncularViewModel = viewModel(),
-    onRecipeClick: (Int) -> Unit = {}
+    onRecipeClick: (Int) -> Unit = {},
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
     val sampleRecipes = viewModel.recipes.collectAsState()
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+    ) {
+        SearchBar(
+            onFilterClick = onNavigateToFilters,
+            onBackClick = { /* sin acción por ahora */ }
+        )
 
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            CustomTopBar(title = "DEL FOGON")
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
+        Spacer(modifier = Modifier.height(16.dp))
+        Surface(
+            modifier = Modifier.fillMaxWidth()
+
         ) {
-            SearchBar(
-                onFilterClick = onNavigateToFilters,
-                onBackClick = { /* sin acción por ahora */ }
+            Text(
+                text = "Descubre recetas deliciosas y fáciles de preparar",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
             )
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
-            Surface(
-                modifier = Modifier.fillMaxWidth()
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        //sampleRecipes.value.isEmpty()
+        if (sampleRecipes.value.isEmpty()) {
+
+            CircularProgressIndicator()
+
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(bottom = 140.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(
-                    text = "Descubre recetas deliciosas y fáciles de preparar",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.background)
-                )
+                items(sampleRecipes.value) { RecipeCard(it, onRecipeClick) }
             }
-
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            //sampleRecipes.value.isEmpty()
-            if (sampleRecipes.value.isEmpty()) {
-
-                CircularProgressIndicator()
-
-            } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(bottom = 140.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(sampleRecipes.value) { RecipeCard(it, onRecipeClick)  }
-                }
-
-            }
-
 
         }
+
+
     }
 }
+

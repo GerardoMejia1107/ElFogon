@@ -3,6 +3,8 @@ package com.nullPointerSociety.elfogon.ui.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -17,7 +19,12 @@ import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun AppNavGraph(navController: NavHostController) {
+fun AppNavGraph(
+    navController: NavHostController,
+    selectedItem: MutableState<String>,
+    modifier: Modifier = Modifier,
+    titleScreen: MutableState<String>
+) {
     val viewModel: SpooncularViewModel = viewModel()
     val onClickRecipe = { recipeId: Int ->
         navController.navigate(RecipeDetailsScreenNav(recipeId))
@@ -26,7 +33,7 @@ fun AppNavGraph(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = HomeScreenNav) {
         composable<HomeScreenNav> {
-            HomeScreen({}, viewModel = viewModel, onRecipeClick = onClickRecipe)
+            HomeScreen({}, viewModel = viewModel, onRecipeClick = onClickRecipe, modifier)
         }
         composable<SavedRecipesScreenNav> {
             SavedRecipesScreen()
@@ -42,7 +49,12 @@ fun AppNavGraph(navController: NavHostController) {
             RecipeDetailsScreen(
                 recipeId,
                 viewModel,
-                onBack = { navController.navigate(HomeScreenNav) })
+                onBack = { navController.navigate(HomeScreenNav) },
+                modifier = modifier,
+                selectedItem,
+                titleScreen
+
+            )
         }
     }
 

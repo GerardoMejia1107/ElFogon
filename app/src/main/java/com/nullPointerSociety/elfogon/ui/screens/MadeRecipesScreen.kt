@@ -10,16 +10,11 @@ import com.nullPointerSociety.elfogon.ui.layout.CustomTopBar
 
 @Composable
 fun MadeRecipesScreen() {
-    Scaffold(
-        topBar = {
-            CustomTopBar("Mis Recetas Preparadas")
-        }
-    ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+
+        Column() {
             Text(
                 "Aquí se mostrarán las recetas que has preparado.",
                 )
         }
 
     }
-}

@@ -10,16 +10,11 @@ import com.nullPointerSociety.elfogon.ui.layout.CustomTopBar
 
 @Composable
 fun UserProfileScreen() {
-    Scaffold(
-        topBar = {
-            CustomTopBar("Mi Perfil")
-        }
-    ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+
+        Column() {
             Text(
                 "Aquí se mostrata tu perfil de usuario.",
             )
         }
 
     }
-}
