@@ -12,7 +12,7 @@ import com.nullPointerSociety.elfogon.ui.layout.CustomTopBar
 fun UserProfileScreen() {
     Scaffold(
         topBar = {
-            CustomTopBar("Mi Perfil") {}
+            CustomTopBar("Mi Perfil")
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {

@@ -1,5 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -13,12 +15,14 @@ import com.nullPointerSociety.elfogon.ui.screens.UserProfileScreen
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun AppNavGraph(navController: NavHostController) {
     val viewModel: SpooncularViewModel = viewModel()
     val onClickRecipe = { recipeId: Int ->
         navController.navigate(RecipeDetailsScreenNav(recipeId))
     }
+
 
     NavHost(navController = navController, startDestination = HomeScreenNav) {
         composable<HomeScreenNav> {
@@ -35,7 +39,10 @@ fun AppNavGraph(navController: NavHostController) {
         }
         composable<RecipeDetailsScreenNav> { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getInt("id") ?: 0
-            RecipeDetailsScreen(recipeId, viewModel)
+            RecipeDetailsScreen(
+                recipeId,
+                viewModel,
+                onBack = { navController.navigate(HomeScreenNav) })
         }
     }
 
