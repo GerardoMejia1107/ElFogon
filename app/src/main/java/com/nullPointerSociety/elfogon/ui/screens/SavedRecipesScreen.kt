@@ -12,7 +12,7 @@ import com.nullPointerSociety.elfogon.ui.layout.CustomTopBar
 fun SavedRecipesScreen() {
     Scaffold(
         topBar = {
-            CustomTopBar("Mis Recetas Guardadas") {}
+            CustomTopBar("Mis Recetas Guardadas")
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {

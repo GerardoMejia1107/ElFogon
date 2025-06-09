@@ -1,5 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.layout
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +14,7 @@ import com.nullPointerSociety.elfogon.ui.navigation.MadeRecipesScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.SavedRecipesScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.UserProfileScreenNav
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun CustomScaffold(
 ) {
