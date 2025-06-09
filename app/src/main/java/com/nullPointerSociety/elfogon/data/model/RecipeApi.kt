@@ -7,5 +7,6 @@ data class RecipeApi(
     val readyInMinutes: Int?,
     val servings: Int?,
     val summary: String?,
-    val extendedIngredients: List<ExtendedIngredient>
+    val extendedIngredients: List<ExtendedIngredient>,
+    val analyzedInstructions: List<Instructions>,
 )

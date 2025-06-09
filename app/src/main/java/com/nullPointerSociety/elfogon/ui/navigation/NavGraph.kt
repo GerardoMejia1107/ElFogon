@@ -2,6 +2,8 @@ package com.nullPointerSociety.elfogon.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
@@ -23,12 +25,14 @@ fun AppNavGraph(
     navController: NavHostController,
     selectedItem: MutableState<String>,
     modifier: Modifier = Modifier,
-    titleScreen: MutableState<String>
+    titleScreen: MutableState<String>,
+    scrollState: LazyListState
 ) {
     val viewModel: SpooncularViewModel = viewModel()
     val onClickRecipe = { recipeId: Int ->
         navController.navigate(RecipeDetailsScreenNav(recipeId))
     }
+
 
 
     NavHost(navController = navController, startDestination = HomeScreenNav) {
@@ -52,7 +56,8 @@ fun AppNavGraph(
                 onBack = { navController.navigate(HomeScreenNav) },
                 modifier = modifier,
                 selectedItem,
-                titleScreen
+                titleScreen,
+                scrollState
 
             )
         }

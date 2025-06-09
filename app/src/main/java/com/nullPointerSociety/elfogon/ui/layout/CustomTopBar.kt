@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,6 +20,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.nullPointerSociety.elfogon.R
 
@@ -36,7 +38,7 @@ fun CustomTopBar(
             Row(
                 verticalAlignment = Alignment.Bottom,
             ) {
-                if (showLogo) {
+                if (showLogo && selectedItem.value != "details_recipe") {
                     Image(
                         painter = painterResource(R.drawable.elfogon_logo),
                         contentDescription = "Del Fogon Logo",
@@ -54,6 +56,8 @@ fun CustomTopBar(
                         else -> "Del Fogon"
                     },
                     style = MaterialTheme.typography.titleLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         },
@@ -61,7 +65,16 @@ fun CustomTopBar(
             if (selectedItem.value == "details_recipe") {
                 IconButton(onClick = { onAction?.invoke() }) {
                     Icon(imageVector = Icons.Filled.ArrowBackIosNew, contentDescription = "Go back")
-
+                }
+            }
+        },
+        actions = {
+            if (selectedItem.value == "details_recipe") {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Outlined.BookmarkAdd,
+                        contentDescription = "Add to favorites or saved",
+                    )
                 }
             }
         }
