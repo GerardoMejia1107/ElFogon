@@ -14,11 +14,15 @@ fun Ingredients(ingredients: List<ExtendedIngredient>) {
     Column(modifier = Modifier.padding(horizontal = 20.dp)) {
         Text("Ingredients You Need!", style = MaterialTheme.typography.titleLarge)
         ingredients.forEach {
-            Text(
-                text = it.original.orEmpty(),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 7.dp)
-            )
+            Column {
+                Text(
+                    text = it.nameClean.orEmpty(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 7.dp)
+                )
+
+            }
+
         }
     }
 }
