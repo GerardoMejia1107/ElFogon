@@ -1,5 +1,6 @@
 package com.nullPointerSociety.elfogon.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,18 +21,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
+import com.nullPointerSociety.elfogon.viewmodel.AuthState
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 
 
@@ -40,6 +46,26 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     val email = remember { mutableStateOf("") }
     val pass = remember { mutableStateOf("") }
     var showPassword = remember { mutableStateOf(false) }
+
+    val auth = authViewModel.authState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(auth.value) {
+        when (auth.value) {
+            is AuthState.Authenticated -> {
+                Toast.makeText(context, "Bienvenido", Toast.LENGTH_SHORT).show()
+                navController.navigate(HomeScreenNav)
+            }
+
+            is AuthState.Error -> Toast.makeText(
+                context,
+                (auth.value as AuthState.Error).message,
+                Toast.LENGTH_LONG
+            ).show()
+
+            else -> Unit
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -85,7 +111,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
 
         Button(
             onClick = {
-                // authViewModel.login(email.value, pass.value)
+                authViewModel.login(email.value, pass.value)
             },
             modifier = Modifier
                 .width(200.dp)

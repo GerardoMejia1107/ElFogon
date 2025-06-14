@@ -55,7 +55,8 @@ fun AppNavGraph(
                 viewModel = viewModel,
                 onRecipeClick = onClickRecipe,
                 modifier,
-                authViewModel
+                authViewModel,
+                navController = navController
             )
         }
         composable<SavedRecipesScreenNav> {
