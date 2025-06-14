@@ -24,10 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
 import com.nullPointerSociety.elfogon.ui.components.RecipeCard
 import com.nullPointerSociety.elfogon.ui.components.SearchBar
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
-import com.nullPointerSociety.elfogon.viewmodel.AuthState
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
