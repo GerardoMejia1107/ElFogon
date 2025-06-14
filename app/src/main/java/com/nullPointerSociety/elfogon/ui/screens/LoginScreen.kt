@@ -1,20 +1,24 @@
-package com.nullPointerSociety.elfogon.screens
+package com.nullPointerSociety.elfogon.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,16 +26,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
+import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     val email = remember { mutableStateOf("") }
     val pass = remember { mutableStateOf("") }
+    var showPassword = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -52,14 +60,8 @@ fun LoginScreen() {
             value = email.value,
             onValueChange = { email.value = it },
             label = { Text("Correo") },
-            colors = TextFieldDefaults.colors(
-                Color.White
-            ),
-            modifier = Modifier
-                .width(320.dp)
-                .height(50.dp)
-                .padding(vertical = 5.dp),
-        )
+
+            )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -67,19 +69,24 @@ fun LoginScreen() {
             value = pass.value,
             onValueChange = { pass.value = it },
             label = { Text("Contraseña") },
-            colors = TextFieldDefaults.colors(
-                Color.White
-            ),
-            modifier = Modifier
-                .width(320.dp)
-                .height(50.dp),
-            visualTransformation = PasswordVisualTransformation()
+            trailingIcon = {
+                IconButton(onClick = { showPassword.value = !showPassword.value }) {
+                    Icon(
+                        imageVector = Icons.Filled.RemoveRedEye,
+                        contentDescription = "Mostrar contraseña",
+                        tint = if (showPassword.value) Color(0xFF4A6E4D) else Color.Gray
+                    )
+                }
+            },
+            visualTransformation = if (!showPassword.value) PasswordVisualTransformation() else VisualTransformation.None,
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = {  },
+            onClick = {
+                // authViewModel.login(email.value, pass.value)
+            },
             modifier = Modifier
                 .width(200.dp)
                 .height(50.dp),
@@ -90,24 +97,27 @@ fun LoginScreen() {
             Text(text = "Iniciar Sesión", color = Color.White, fontSize = 16.sp)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        Button(
-            onClick = {  },
-            modifier = Modifier
-                .width(200.dp)
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF4A6E4D)
-            )
+        // 🔥 Mensaje en vez de botón
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 8.dp)
         ) {
-            Text(text = "Registrarse", color = Color.White, fontSize = 16.sp)
+            Text(text = "¿No tienes una cuenta? ")
+
+            Text(
+                text = "Regístrate",
+                color = Color(0xFF4A6E4D),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .clickable {
+                        navController.navigate(SignUpScreenNav)
+                    }
+            )
         }
     }
 }
 
-@Preview
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen()
-}

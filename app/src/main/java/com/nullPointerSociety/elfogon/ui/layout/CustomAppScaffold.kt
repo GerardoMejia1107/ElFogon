@@ -30,6 +30,7 @@ import com.nullPointerSociety.elfogon.ui.navigation.MadeRecipesScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.SavedRecipesScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.UserProfileScreenNav
 
+
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun CustomScaffold(
@@ -88,7 +89,11 @@ fun CustomScaffold(
                     Row(
                         modifier = Modifier.padding(10.dp),
                     ) {
-                        Text(text = "Cook this!", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
+                        Text(
+                            text = "Cook this!",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Bold
+                        )
                         Icon(
                             imageVector = Icons.Default.SoupKitchen,
                             contentDescription = "Cook this",
@@ -109,3 +114,4 @@ fun CustomScaffold(
         )
     }
 }
+

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nullPointerSociety.elfogon.ui.components.RecipeCard
 import com.nullPointerSociety.elfogon.ui.components.SearchBar
+import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
 /*val recipeApis = listOf(
@@ -74,7 +75,8 @@ fun HomeScreen(
     onNavigateToFilters: () -> Unit,
     viewModel: SpooncularViewModel = viewModel(),
     onRecipeClick: (Int) -> Unit = {},
-    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel
 ) {
     val sampleRecipes = viewModel.recipes.collectAsState()
     Column(

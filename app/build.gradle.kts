@@ -89,14 +89,14 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.google.firebase.firestore)
-    implementation(libs.google.firebase.auth)
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.firebase.ui.auth)
+    implementation(libs.androidx.appcompat)
 
 
     testImplementation(libs.junit)

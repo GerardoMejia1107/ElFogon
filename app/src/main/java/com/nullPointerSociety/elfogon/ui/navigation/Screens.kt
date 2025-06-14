@@ -19,3 +19,9 @@ data class RecipeDetailsScreenNav(val id: Int)
 
 @Serializable
 object SearchByFilterScreenNav
+
+@Serializable
+object LogInScreenNav
+
+@Serializable
+object  SignUpScreenNav
