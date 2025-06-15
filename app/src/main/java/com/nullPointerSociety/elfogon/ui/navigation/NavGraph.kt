@@ -17,6 +17,7 @@ import com.nullPointerSociety.elfogon.ui.screens.MadeRecipesScreen
 import com.nullPointerSociety.elfogon.ui.screens.RecipeDetailsScreen
 import com.nullPointerSociety.elfogon.ui.screens.RegisterScreen
 import com.nullPointerSociety.elfogon.ui.screens.SavedRecipesScreen
+import com.nullPointerSociety.elfogon.ui.screens.SplashScreen
 import com.nullPointerSociety.elfogon.ui.screens.UserProfileScreen
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
@@ -35,6 +36,7 @@ fun AppNavGraph(
     val viewModel: SpooncularViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel()
 
+
     val onClickRecipe = { recipeId: Int ->
         navController.navigate(RecipeDetailsScreenNav(recipeId))
     }
@@ -42,7 +44,17 @@ fun AppNavGraph(
 
 
 
-    NavHost(navController = navController, startDestination = LogInScreenNav) {
+
+    NavHost(navController = navController, startDestination = SplashScreenNav) {
+        composable<SplashScreenNav> {
+            SplashScreen(
+                specifyRoute = selectedItem,
+                onNavigateToLogin = { navController.navigate(LogInScreenNav) },
+                onNavigateToHome = { navController.navigate(HomeScreenNav) },
+                authViewModel = authViewModel,
+                navController = navController
+            )
+        }
         composable<LogInScreenNav> {
             LoginScreen(navController, authViewModel, selectedItem)
         }

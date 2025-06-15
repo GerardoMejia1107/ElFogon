@@ -24,4 +24,7 @@ object SearchByFilterScreenNav
 object LogInScreenNav
 
 @Serializable
-object  SignUpScreenNav
+object SignUpScreenNav
+
+@Serializable
+object SplashScreenNav
