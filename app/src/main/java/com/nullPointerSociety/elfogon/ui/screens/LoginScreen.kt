@@ -1,6 +1,8 @@
 package com.nullPointerSociety.elfogon.ui.screens
 
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,7 +12,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.Button
@@ -25,19 +29,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
+import com.nullPointerSociety.elfogon.utils.GoogleSignUtils
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 
 
@@ -49,6 +57,28 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
 
     val auth = authViewModel.authState.collectAsState()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) {
+        GoogleSignUtils.doGoogleSignIn(
+            context = context,
+            scope = scope,
+            launcher = null,
+            onCredentialReady = {
+                GoogleSignUtils.doGoogleSignIn(
+                    context = context,
+                    scope = scope,
+                    launcher = null,
+                    onCredentialReady = { credential ->
+                        authViewModel.signInWithGoogleCredential(credential)
+                    }
+                )
+            }
+
+        )
+    }
+
 
     LaunchedEffect(auth.value) {
         when (auth.value) {
@@ -125,6 +155,35 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        Button(
+            shape = RoundedCornerShape(50.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF4A6E4D)
+            ),
+            onClick = {
+                GoogleSignUtils.doGoogleSignIn(
+                    context = context,
+                    scope = scope,
+                    launcher = launcher,
+                    onCredentialReady = { credential ->
+                        authViewModel.signInWithGoogleCredential(credential)
+                    }
+                )
+            },
+
+            ) {
+            Icon(
+                painter = painterResource(id = R.drawable.google),
+                contentDescription = "Google Icon",
+                modifier = Modifier
+                    .size(25.dp),
+            )
+
+        }
+
+
+
+        Spacer(modifier = Modifier.height(24.dp))
         // 🔥 Mensaje en vez de botón
         Row(
             horizontalArrangement = Arrangement.Center,

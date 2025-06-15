@@ -97,6 +97,12 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.firebase.ui.auth)
     implementation(libs.androidx.appcompat)
+    implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.credentials.play.services.auth)
+    implementation(libs.credentials)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+
 
 
     testImplementation(libs.junit)

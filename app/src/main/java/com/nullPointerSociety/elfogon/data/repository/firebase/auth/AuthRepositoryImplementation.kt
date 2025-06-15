@@ -1,14 +1,19 @@
 package com.nullPointerSociety.elfogon.data.repository.firebase.auth
 
+
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.tasks.await
 
-class AuthRepositoryImplementation : AuthRepository {
+class AuthRepositoryImplementation(
+) : AuthRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
 
     override val authState: StateFlow<AuthState> = _authState
+
 
     override suspend fun checkAuthStatus() {
         if (auth.currentUser == null) {
@@ -25,14 +30,12 @@ class AuthRepositoryImplementation : AuthRepository {
         }
 
         _authState.value = AuthState.Loading
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    _authState.value = AuthState.Authenticated
-                } else {
-                    _authState.value = AuthState.Error(task.exception?.message ?: "Login failed")
-                }
-            }
+        try {
+            auth.signInWithEmailAndPassword(email, password).await()
+            _authState.value = AuthState.Authenticated
+        } catch (e: Exception) {
+            _authState.value = AuthState.Error(e.message ?: "Login failed")
+        }
     }
 
     override suspend fun signUp(email: String, password: String) {
@@ -41,20 +44,30 @@ class AuthRepositoryImplementation : AuthRepository {
             return
         }
         _authState.value = AuthState.Loading
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    _authState.value = AuthState.Authenticated
-                } else {
-                    _authState.value =
-                        AuthState.Error(task.exception?.message ?: "Something failed failed")
-                }
-            }
+        try {
+            auth.createUserWithEmailAndPassword(email, password).await()
+            _authState.value = AuthState.Authenticated
+        } catch (e: Exception) {
+            _authState.value = AuthState.Error(e.message ?: "Sign up failed")
+        }
     }
 
     override suspend fun logout() {
         auth.signOut()
         _authState.value = AuthState.Unauthenticated
+    }
+
+    override suspend fun signInWithGoogleCredential(credential: AuthCredential) {
+        try {
+            val user = auth.signInWithCredential(credential).await().user
+            if (user != null && user.isAnonymous.not()) {
+                _authState.value = AuthState.Authenticated
+            } else {
+                _authState.value = AuthState.Error("No se pudo autenticar con Google.")
+            }
+        } catch (e: Exception) {
+            _authState.value = AuthState.Error(e.message ?: "Error al iniciar sesión con Google.")
+        }
     }
 
 

@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.data.repository.firebase.auth
 
 
+import com.google.firebase.auth.AuthCredential
 import kotlinx.coroutines.flow.StateFlow
 
 interface AuthRepository {
@@ -10,5 +11,7 @@ interface AuthRepository {
     suspend fun login(email: String, password: String)
     suspend fun signUp(email: String, password: String)
     suspend fun logout()
+    suspend fun signInWithGoogleCredential(credential: AuthCredential)
+
 
 }
