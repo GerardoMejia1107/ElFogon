@@ -44,10 +44,10 @@ fun AppNavGraph(
 
     NavHost(navController = navController, startDestination = LogInScreenNav) {
         composable<LogInScreenNav> {
-            LoginScreen(navController, authViewModel)
+            LoginScreen(navController, authViewModel, selectedItem)
         }
         composable<SignUpScreenNav> {
-            RegisterScreen(navController, authViewModel)
+            RegisterScreen(navController, authViewModel, selectedItem)
         }
         composable<HomeScreenNav> {
             HomeScreen(
@@ -70,6 +70,7 @@ fun AppNavGraph(
                 modifier = modifier,
                 authViewModel = authViewModel,
                 navController = navController
+
             )
         }
         composable<RecipeDetailsScreenNav> { backStackEntry ->

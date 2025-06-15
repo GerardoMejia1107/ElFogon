@@ -62,21 +62,25 @@ fun CustomScaffold(
 
     Scaffold(
         topBar = {
-            CustomTopBar(
-                customTitle = if (showTitleTopBar.value) titleScreen.value else "",
-                onAction = {
-                    navController.navigate(HomeScreenNav)
-                    selectedItem.value = ""
-                },
-                showLogo = true,
-                selectedItem
-            )
+            if (selectedItem.value !in listOf("login", "register")) {
+                CustomTopBar(
+                    customTitle = if (showTitleTopBar.value) titleScreen.value else "",
+                    onAction = {
+                        navController.navigate(HomeScreenNav)
+                        selectedItem.value = ""
+                    },
+                    showLogo = true,
+                    selectedItem
+                )
+            }
         },
         bottomBar = {
-            BottomNavigationBar(
-                selectedItem = selectedItem.value,
-                onItemSelected = { onItemSelected(it) }
-            )
+            if (selectedItem.value !in listOf("login", "register")) {
+                BottomNavigationBar(
+                    selectedItem = selectedItem.value,
+                    onItemSelected = { onItemSelected(it) }
+                )
+            }
         },
         floatingActionButton = {
             if (selectedItem.value == "details_recipe") {
