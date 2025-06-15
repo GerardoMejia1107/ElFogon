@@ -7,6 +7,9 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+
+
 }
 
 android {
@@ -23,7 +26,7 @@ android {
         buildConfigField("String", "SPOONACULAR_API_KEY", "\"$spoonacularApiKey\"")
 
         applicationId = "com.nullPointerSociety.elfogon"
-        minSdk = 22
+        minSdk = 23
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -84,8 +87,23 @@ dependencies {
     implementation(libs.retrofit)
 
     implementation(libs.converter.gson)
-
     implementation(libs.logging.interceptor)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+    implementation(libs.firebase.ui.auth)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.credentials.play.services.auth)
+    implementation(libs.credentials)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

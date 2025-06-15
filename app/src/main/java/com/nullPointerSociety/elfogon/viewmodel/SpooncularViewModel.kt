@@ -5,13 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.nullPointerSociety.elfogon.BuildConfig
 import com.nullPointerSociety.elfogon.data.model.RecipeApi
 import com.nullPointerSociety.elfogon.data.repository.spooncular.SpooncularRepositoryImplementation
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SpooncularViewModel(
     private val repository: SpooncularRepositoryImplementation = SpooncularRepositoryImplementation()
 ) : ViewModel() {
-    val recipes: StateFlow<List<RecipeApi>> = repository.recipes
+    val recipes = repository.recipes
 
     init {
         fetchPosts()
