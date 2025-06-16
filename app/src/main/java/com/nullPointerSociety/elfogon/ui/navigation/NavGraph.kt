@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -34,6 +35,8 @@ fun AppNavGraph(
 ) {
     val viewModel: SpooncularViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel()
+    val authState = authViewModel.authState.collectAsState()
+
 
     val onClickRecipe = { recipeId: Int ->
         navController.navigate(RecipeDetailsScreenNav(recipeId))
@@ -42,7 +45,9 @@ fun AppNavGraph(
 
 
 
+
     NavHost(navController = navController, startDestination = LogInScreenNav) {
+
         composable<LogInScreenNav> {
             LoginScreen(navController, authViewModel, selectedItem)
         }

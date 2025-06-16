@@ -92,6 +92,7 @@ fun LoginScreen(
     LaunchedEffect(auth.value) {
         when (auth.value) {
             is AuthState.Authenticated -> {
+                specifyRoute.value = "home"
                 Toast.makeText(context, "Bienvenido", Toast.LENGTH_SHORT).show()
                 navController.navigate(HomeScreenNav)
             }
