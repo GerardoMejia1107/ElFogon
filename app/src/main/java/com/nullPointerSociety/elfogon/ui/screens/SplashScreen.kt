@@ -21,7 +21,7 @@ fun SplashScreen(
     authViewModel: AuthViewModel,
     navController: NavController
 ) {
-    specifyRoute.value = "splash"
+
 
     // Check authentication state
     val authState = authViewModel.authState.collectAsState()

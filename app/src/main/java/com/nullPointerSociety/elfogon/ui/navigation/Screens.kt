@@ -26,5 +26,4 @@ object LogInScreenNav
 @Serializable
 object SignUpScreenNav
 
-@Serializable
-object SplashScreenNav
+
