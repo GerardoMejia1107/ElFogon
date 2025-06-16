@@ -15,10 +15,10 @@ import androidx.navigation.compose.composable
 import com.nullPointerSociety.elfogon.ui.screens.HomeScreen
 import com.nullPointerSociety.elfogon.ui.screens.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.MadeRecipesScreen
+import com.nullPointerSociety.elfogon.ui.screens.ProfileScreen
 import com.nullPointerSociety.elfogon.ui.screens.RecipeDetailsScreen
 import com.nullPointerSociety.elfogon.ui.screens.RegisterScreen
 import com.nullPointerSociety.elfogon.ui.screens.SavedRecipesScreen
-import com.nullPointerSociety.elfogon.ui.screens.UserProfileScreen
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
@@ -70,12 +70,12 @@ fun AppNavGraph(
         composable<MadeRecipesScreenNav> {
             MadeRecipesScreen()
         }
-        composable<UserProfileScreenNav> {
-            UserProfileScreen(
+        composable<ProfileScreenNav> {
+            ProfileScreen(
                 modifier = modifier,
                 authViewModel = authViewModel,
-                navController = navController
-
+                navController = navController,
+                scrollState = scrollState
             )
         }
         composable<RecipeDetailsScreenNav> { backStackEntry ->

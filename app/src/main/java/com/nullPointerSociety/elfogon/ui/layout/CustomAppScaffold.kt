@@ -27,8 +27,8 @@ import androidx.navigation.compose.rememberNavController
 import com.nullPointerSociety.elfogon.ui.navigation.AppNavGraph
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.MadeRecipesScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.ProfileScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.SavedRecipesScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.UserProfileScreenNav
 
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -55,7 +55,7 @@ fun CustomScaffold(
             "home" -> navController.navigate(HomeScreenNav)
             "saved_ones" -> navController.navigate(SavedRecipesScreenNav)
             "made_ones" -> navController.navigate(MadeRecipesScreenNav)
-            "profile" -> navController.navigate(UserProfileScreenNav)
+            "profile" -> navController.navigate(ProfileScreenNav)
             else -> ""
         }
     }

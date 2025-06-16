@@ -9,7 +9,7 @@ object HomeScreenNav
 object SavedRecipesScreenNav
 
 @Serializable
-object UserProfileScreenNav
+object ProfileScreenNav
 
 @Serializable
 object MadeRecipesScreenNav
