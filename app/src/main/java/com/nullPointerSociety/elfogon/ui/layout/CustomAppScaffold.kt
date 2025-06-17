@@ -70,7 +70,7 @@ fun CustomScaffold(
                     customTitle = if (showTitleTopBar.value) titleScreen.value else "",
                     onAction = {
                         navController.navigate(HomeScreenNav)
-                        selectedItem.value = ""
+                        selectedItem.value = "home"
                     },
                     showLogo = true,
                     selectedItem

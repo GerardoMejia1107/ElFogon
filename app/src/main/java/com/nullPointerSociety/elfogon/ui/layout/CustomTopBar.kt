@@ -24,12 +24,14 @@ fun CustomTopBar(
     showLogo: Boolean = true,
     selectedItem: MutableState<String>
 ) {
+    val topBarHeight = if (selectedItem.value != "details_recipe") {
+        200.dp
+    } else {
+        115.dp
+    }
     CenterAlignedTopAppBar(
-        modifier = if (selectedItem.value != "details_recipe") {
-            Modifier.heightIn(150.dp, 200.dp)
-        } else {
-            Modifier.heightIn(min = 115.dp, max = 115.dp)
-        },
+
+        modifier = Modifier.heightIn(min = 115.dp, max = topBarHeight),
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
         title = {
             val titleText = when (selectedItem.value) {
