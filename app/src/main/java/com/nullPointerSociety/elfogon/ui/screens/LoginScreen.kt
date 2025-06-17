@@ -152,9 +152,7 @@ fun LoginScreen(
             shape = CircleShape,
             modifier = Modifier.size(56.dp),
             contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF4A6E4D)
-            ),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
             onClick = {
                 GoogleSignUtils.doGoogleSignIn(
                     context = context,

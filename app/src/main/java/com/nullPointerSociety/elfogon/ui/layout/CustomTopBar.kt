@@ -1,7 +1,6 @@
 package com.nullPointerSociety.elfogon.ui.layout
 
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.BookmarkAdd
@@ -26,7 +25,11 @@ fun CustomTopBar(
     selectedItem: MutableState<String>
 ) {
     CenterAlignedTopAppBar(
-        modifier = Modifier.heightIn(150.dp, 200.dp),
+        modifier = if (selectedItem.value != "details_recipe") {
+            Modifier.heightIn(150.dp, 200.dp)
+        } else {
+            Modifier.heightIn(min = 115.dp, max = 115.dp)
+        },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
         title = {
             val titleText = when (selectedItem.value) {
@@ -39,7 +42,7 @@ fun CustomTopBar(
             }
             Heading(
                 customTitle = titleText,
-                showLogo = showLogo && selectedItem.value != "details_recipe"
+                showLogo = showLogo && selectedItem.value != "details_recipe",
             )
         },
         navigationIcon = {

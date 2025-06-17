@@ -90,8 +90,9 @@ fun HomeScreen(
                 CircularProgressIndicator()
             }
 
-        } else {
+        } else
             LazyVerticalGrid(
+                userScrollEnabled = true,
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(bottom = 140.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -100,9 +101,9 @@ fun HomeScreen(
                 items(sampleRecipes.value) { RecipeCard(it, onRecipeClick) }
             }
 
-        }
-
-
     }
+
+
 }
+
 
