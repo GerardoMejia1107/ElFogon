@@ -17,7 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 @Composable
 fun SearchBar(
     onFilterClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onQueryChange: (String) -> Unit // ✅ NUEVO
 ) {
     var searchText by remember { mutableStateOf("") }
 
@@ -27,11 +28,12 @@ fun SearchBar(
             .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-
-
         OutlinedTextField(
             value = searchText,
-            onValueChange = { searchText = it },
+            onValueChange = {
+                searchText = it
+                onQueryChange(it) // ✅ notifica al ViewModel
+            },
             modifier = Modifier.weight(1f),
             leadingIcon = {
                 Icon(

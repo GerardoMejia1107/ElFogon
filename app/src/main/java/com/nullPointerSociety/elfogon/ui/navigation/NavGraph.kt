@@ -56,7 +56,7 @@ fun AppNavGraph(
         }
         composable<HomeScreenNav> {
             HomeScreen(
-                {},
+                onNavigateToFilters = { navController.navigate("filters") }, // ✅ corrección
                 viewModel = viewModel,
                 onRecipeClick = onClickRecipe,
                 modifier,
@@ -91,6 +91,11 @@ fun AppNavGraph(
 
             )
         }
+
+        composable("filters") {
+            com.nullPointerSociety.elfogon.ui.screens.FilterScreen(viewModel = viewModel())
+        }
+
     }
 
 }
