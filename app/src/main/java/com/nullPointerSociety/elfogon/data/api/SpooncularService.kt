@@ -6,12 +6,12 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
 
-
 interface SpooncularService {
     @GET("recipes/random")
     suspend fun getRecipes(
         @Header("x-api-key") token: String,
-        @Query("number") number: Int = 100
-
+        @Query("number") number: Int = 100,
+        @Query("tags") tags: String? = null // ✅ NUEVO: filtro por categoría
     ): SpooncularResponse<RecipeApi>
 }
+

@@ -9,7 +9,6 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
 
-
 }
 
 android {
