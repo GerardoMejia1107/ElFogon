@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -12,6 +13,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
 import com.nullPointerSociety.elfogon.ui.screens.HomeScreen
 import com.nullPointerSociety.elfogon.ui.screens.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.MadeRecipesScreen
@@ -36,6 +38,13 @@ fun AppNavGraph(
     val viewModel: SpooncularViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel()
     val authState = authViewModel.authState.collectAsState()
+
+    LaunchedEffect(authState.value) {
+        when (authState.value) {
+            is AuthState.Unauthenticated -> navController.navigate(LogInScreenNav)
+            else -> Unit
+        }
+    }
 
 
     val onClickRecipe = { recipeId: Int ->

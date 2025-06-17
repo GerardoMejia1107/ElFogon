@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.components.profile.BasicInfo
 import com.nullPointerSociety.elfogon.ui.components.profile.ProfileStatCard
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
@@ -168,17 +169,11 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             // Botón cerrar sesión
-            Button(
-                onClick = { },
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF4A6E4D)
-                )
-            ) {
-                Text(text = "Cerrar Sesión", fontSize = 20.sp)
-            }
+            CustomButton(
+                text = "Sing Out",
+                onClick = { authViewModel.logout() },
+            )
+
         }
     }
 }

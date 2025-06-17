@@ -3,7 +3,6 @@ package com.nullPointerSociety.elfogon.ui.screens
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RemoveRedEye
@@ -41,12 +39,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
+import com.nullPointerSociety.elfogon.ui.components.CustomButton
+import com.nullPointerSociety.elfogon.ui.components.Heading
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
 import com.nullPointerSociety.elfogon.utils.GoogleSignUtils
@@ -113,21 +111,7 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Row(verticalAlignment = Alignment.Bottom, modifier = Modifier.padding(bottom = 30.dp)) {
-            Image(
-                painter = painterResource(R.drawable.elfogon_logo),
-                contentDescription = "Del Fogon Logo",
-                modifier = Modifier.size(90.dp)
-            )
-            Text(
-                text = "Del Fogón",
-                fontSize = 45.sp,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-
-                )
-        }
-
+        Heading("Del Fogon")
         TextField(
             colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
             value = email.value,
@@ -161,21 +145,7 @@ fun LoginScreen(
         )
 
         Spacer(modifier = Modifier.height(32.dp))
-
-        Button(
-            onClick = {
-                authViewModel.login(email.value, pass.value)
-            },
-            modifier = Modifier
-                .width(200.dp)
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF4A6E4D)
-            )
-        ) {
-            Text(text = "Iniciar Sesión", color = Color.White, fontSize = 16.sp)
-        }
-
+        CustomButton("Iniciar Sesión", onClick = { authViewModel.login(email.value, pass.value) })
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(

@@ -69,7 +69,8 @@ fun HomeScreen(
         ) {
             Text(
                 text = "Descubre recetas deliciosas y fáciles de preparar",
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.displaySmall,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background)
