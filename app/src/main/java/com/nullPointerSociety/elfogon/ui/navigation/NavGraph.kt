@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -12,16 +13,26 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
 import com.nullPointerSociety.elfogon.ui.screens.HomeScreen
 import com.nullPointerSociety.elfogon.ui.screens.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.MadeRecipesScreen
+import com.nullPointerSociety.elfogon.ui.screens.ProfileScreen
 import com.nullPointerSociety.elfogon.ui.screens.RecipeDetailsScreen
 import com.nullPointerSociety.elfogon.ui.screens.RegisterScreen
 import com.nullPointerSociety.elfogon.ui.screens.SavedRecipesScreen
-import com.nullPointerSociety.elfogon.ui.screens.UserProfileScreen
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
+object Routes {
+    const val LOGIN = "login"
+    const val SIGN_UP = "register"
+    const val HOME = "home"
+    const val SAVED_RECIPES = "saved_ones"
+    const val MADE_RECIPES = "made_ones"
+    const val PROFILE = "profile"
+    const val DETAILS_RECIPE = "details_recipe"
+}
 
 @SuppressLint("ContextCastToActivity")
 @RequiresApi(Build.VERSION_CODES.N)
@@ -36,6 +47,13 @@ fun AppNavGraph(
     val viewModel: SpooncularViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel()
     val authState = authViewModel.authState.collectAsState()
+
+    LaunchedEffect(authState.value) {
+        when (authState.value) {
+            is AuthState.Unauthenticated -> navController.navigate(LogInScreenNav)
+            else -> Unit
+        }
+    }
 
 
     val onClickRecipe = { recipeId: Int ->
@@ -70,12 +88,12 @@ fun AppNavGraph(
         composable<MadeRecipesScreenNav> {
             MadeRecipesScreen()
         }
-        composable<UserProfileScreenNav> {
-            UserProfileScreen(
+        composable<ProfileScreenNav> {
+            ProfileScreen(
                 modifier = modifier,
                 authViewModel = authViewModel,
-                navController = navController
-
+                navController = navController,
+                scrollState = scrollState
             )
         }
         composable<RecipeDetailsScreenNav> { backStackEntry ->

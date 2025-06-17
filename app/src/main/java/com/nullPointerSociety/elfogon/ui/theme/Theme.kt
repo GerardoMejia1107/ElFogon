@@ -60,3 +60,30 @@ fun ElFogonTheme(
         content = content
     )
 }
+
+
+object AppColors {
+
+    // Botones
+    val primaryButtonBg: Color
+        @Composable get() = MaterialTheme.colorScheme.primary
+
+    val primaryButtonText: Color
+        @Composable get() = MaterialTheme.colorScheme.secondary
+
+    // Fondos
+    val cardBackground: Color
+        @Composable get() = MaterialTheme.colorScheme.surface
+
+    val appBackground: Color
+        @Composable get() = MaterialTheme.colorScheme.background
+
+    // Textos
+    val titleText: Color
+        @Composable get() = MaterialTheme.colorScheme.primary
+
+    val bodyText: Color
+        @Composable get() = MaterialTheme.colorScheme.onBackground
+
+
+}

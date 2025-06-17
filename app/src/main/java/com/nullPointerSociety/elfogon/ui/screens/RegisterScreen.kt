@@ -2,21 +2,15 @@ package com.nullPointerSociety.elfogon.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,7 +24,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -40,8 +33,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
+import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.Routes
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
+import okhttp3.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +46,7 @@ fun RegisterScreen(
     authViewModel: AuthViewModel,
     specifyRoute: MutableState<String>,
 ) {
-    specifyRoute.value = "register"
+    specifyRoute.value = Routes.SIGN_UP
     val name = remember { mutableStateOf("") }
     val lastname = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
@@ -61,7 +57,11 @@ fun RegisterScreen(
 
     LaunchedEffect(auth.value) {
         when (auth.value) {
-            is AuthState.Authenticated -> navController.navigate(HomeScreenNav)
+            is AuthState.Authenticated -> {
+                navController.navigate(HomeScreenNav)
+                specifyRoute.value = Routes.HOME
+            }
+
             is AuthState.Error -> Toast.makeText(
                 context,
                 (auth.value as AuthState.Error).message,
@@ -79,15 +79,13 @@ fun RegisterScreen(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .background(color = Color(0xFFFFFBF7)),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(verticalAlignment = Alignment.Bottom, modifier = Modifier.padding(bottom = 30.dp)) {
                 Image(
-                    painter = painterResource(R.drawable.elfogon_logo),
+                    painter = painterResource(R.drawable.del_fogon),
                     contentDescription = "Del Fogon Logo",
                     modifier = Modifier.size(90.dp)
                 )
@@ -140,21 +138,14 @@ fun RegisterScreen(
                 )
 
             Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = {
-                    authViewModel.signUp(email = email.value, password = pass.value)
-
-                },
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF4A6E4D)
+            CustomButton("Sing Up", onClick = {
+                authViewModel.signUp(
+                    email = email.value,
+                    password = pass.value,
+                    name = name.value,
+                    lastName = lastname.value
                 )
-            ) {
-                Text(text = "Registrarse")
-            }
+            })
         }
     }
 }

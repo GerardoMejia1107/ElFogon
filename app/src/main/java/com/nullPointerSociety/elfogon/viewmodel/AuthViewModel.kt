@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 class AuthViewModel(private val authRepository: AuthRepository = AuthRepositoryImplementation()) :
     ViewModel() {
     val authState = authRepository.authState
+    val userData = authRepository.userData
 
 
     init {
@@ -24,9 +25,15 @@ class AuthViewModel(private val authRepository: AuthRepository = AuthRepositoryI
         }
     }
 
-    fun signUp(email: String, password: String) {
+    fun signUp(
+        email: String,
+        password: String,
+        name: String,
+        profilePictureUrl: String? = null,
+        lastName: String
+    ) {
         viewModelScope.launch {
-            authRepository.signUp(email, password)
+            authRepository.signUp(email, password, name, profilePictureUrl, lastName)
         }
     }
 
@@ -41,7 +48,6 @@ class AuthViewModel(private val authRepository: AuthRepository = AuthRepositoryI
             authRepository.signInWithGoogleCredential(credential)
         }
     }
-
 
 }
 
