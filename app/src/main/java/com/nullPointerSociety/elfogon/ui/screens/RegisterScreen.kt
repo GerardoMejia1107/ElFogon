@@ -55,7 +55,11 @@ fun RegisterScreen(
 
     LaunchedEffect(auth.value) {
         when (auth.value) {
-            is AuthState.Authenticated -> navController.navigate(HomeScreenNav)
+            is AuthState.Authenticated -> {
+                navController.navigate(HomeScreenNav)
+                specifyRoute.value = "home"
+            }
+
             is AuthState.Error -> Toast.makeText(
                 context,
                 (auth.value as AuthState.Error).message,
@@ -135,7 +139,9 @@ fun RegisterScreen(
             CustomButton("Sing Up", onClick = {
                 authViewModel.signUp(
                     email = email.value,
-                    password = pass.value
+                    password = pass.value,
+                    name = name.value,
+                    lastName = lastname.value
                 )
             })
         }

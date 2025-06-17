@@ -3,6 +3,10 @@ package com.nullPointerSociety.elfogon.data.repository.firebase.auth
 
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.nullPointerSociety.elfogon.data.model.UserData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.tasks.await
@@ -10,9 +14,13 @@ import kotlinx.coroutines.tasks.await
 class AuthRepositoryImplementation(
 ) : AuthRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
+    private val db: FirebaseFirestore = Firebase.firestore
 
+    private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
     override val authState: StateFlow<AuthState> = _authState
+
+    private val _userData = MutableStateFlow<UserData?>(null)
+    override val userData: StateFlow<UserData?> = _userData
 
 
     override suspend fun checkAuthStatus() {
@@ -33,12 +41,24 @@ class AuthRepositoryImplementation(
         try {
             auth.signInWithEmailAndPassword(email, password).await()
             _authState.value = AuthState.Authenticated
+
+            _userData.value = UserData(
+                email = auth.currentUser?.email.toString(),
+                name = auth.currentUser?.displayName.toString(),
+                profilePictureUrl = auth.currentUser?.photoUrl.toString(),
+            )
         } catch (e: Exception) {
             _authState.value = AuthState.Error(e.message ?: "Login failed")
         }
     }
 
-    override suspend fun signUp(email: String, password: String) {
+    override suspend fun signUp(
+        email: String,
+        password: String,
+        name: String,
+        profilePictureUrl: String?,
+        lastName: String
+    ) {
         if (email.isEmpty() || password.isEmpty()) {
             _authState.value = AuthState.Error("Email and password cannot be empty")
             return
@@ -47,6 +67,21 @@ class AuthRepositoryImplementation(
         try {
             auth.createUserWithEmailAndPassword(email, password).await()
             _authState.value = AuthState.Authenticated
+
+            val docUser = hashMapOf(
+                "email" to auth.currentUser?.email,
+                "name" to name,
+                "profilePictureUrl" to profilePictureUrl,
+            )
+            _userData.value = UserData(
+                email = auth.currentUser?.email.toString(),
+                name = name,
+                profilePictureUrl = profilePictureUrl,
+            )
+            db.collection("users").document(auth.currentUser?.uid ?: "")
+                .set(docUser).await()
+
+
         } catch (e: Exception) {
             _authState.value = AuthState.Error(e.message ?: "Sign up failed")
         }
@@ -62,6 +97,14 @@ class AuthRepositoryImplementation(
             val user = auth.signInWithCredential(credential).await().user
             if (user != null && user.isAnonymous.not()) {
                 _authState.value = AuthState.Authenticated
+
+                _userData.value = UserData(
+                    email = auth.currentUser?.email.toString(),
+                    name = auth.currentUser?.displayName.toString(),
+                    profilePictureUrl = auth.currentUser?.photoUrl?.toString()
+                        ?.replace("s96-c", "s400-c"),
+
+                    )
             } else {
                 _authState.value = AuthState.Error("No se pudo autenticar con Google.")
             }

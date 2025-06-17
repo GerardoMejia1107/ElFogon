@@ -30,6 +30,7 @@ import com.nullPointerSociety.elfogon.ui.navigation.AppNavGraph
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.MadeRecipesScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.ProfileScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.Routes
 import com.nullPointerSociety.elfogon.ui.navigation.SavedRecipesScreenNav
 
 
@@ -54,10 +55,10 @@ fun CustomScaffold(
     fun onItemSelected(currentItem: String) {
         selectedItem.value = currentItem
         when (currentItem) {
-            "home" -> navController.navigate(HomeScreenNav)
-            "saved_ones" -> navController.navigate(SavedRecipesScreenNav)
-            "made_ones" -> navController.navigate(MadeRecipesScreenNav)
-            "profile" -> navController.navigate(ProfileScreenNav)
+            Routes.HOME -> navController.navigate(HomeScreenNav)
+            Routes.SAVED_RECIPES -> navController.navigate(SavedRecipesScreenNav)
+            Routes.MADE_RECIPES -> navController.navigate(MadeRecipesScreenNav)
+            Routes.PROFILE -> navController.navigate(ProfileScreenNav)
             else -> ""
         }
     }
@@ -65,12 +66,12 @@ fun CustomScaffold(
     Scaffold(
         contentWindowInsets = WindowInsets.systemBars,
         topBar = {
-            if (selectedItem.value !in listOf("login", "register")) {
+            if (selectedItem.value !in listOf(Routes.LOGIN, Routes.SIGN_UP)) {
                 CustomTopBar(
                     customTitle = if (showTitleTopBar.value) titleScreen.value else "",
                     onAction = {
                         navController.navigate(HomeScreenNav)
-                        selectedItem.value = "home"
+                        selectedItem.value = Routes.HOME
                     },
                     showLogo = true,
                     selectedItem
@@ -78,7 +79,7 @@ fun CustomScaffold(
             }
         },
         bottomBar = {
-            if (selectedItem.value !in listOf("login", "register")) {
+            if (selectedItem.value !in listOf(Routes.LOGIN, Routes.SIGN_UP)) {
                 BottomNavigationBar(
                     selectedItem = selectedItem.value,
                     onItemSelected = { onItemSelected(it) }
@@ -86,7 +87,7 @@ fun CustomScaffold(
             }
         },
         floatingActionButton = {
-            if (selectedItem.value == "details_recipe") {
+            if (selectedItem.value == Routes.DETAILS_RECIPE) {
                 FloatingActionButton(
                     shape = RoundedCornerShape(30.dp),
                     onClick = {},

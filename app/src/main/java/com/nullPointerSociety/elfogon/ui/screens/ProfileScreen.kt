@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,16 +57,22 @@ fun ProfileScreen(
     val confirmPass = remember { mutableStateOf("") }
     val newEmail = remember { mutableStateOf("") }
 
+    val userData = authViewModel.userData.collectAsState()
+
+
     LazyColumn(
         state = scrollState,
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = 20.dp),
         contentPadding = PaddingValues(bottom = 125.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
 
+
     ) {
         item {
-            BasicInfo()
+            BasicInfo(userData)
         }
         item {
             Spacer(modifier = Modifier.height(24.dp))

@@ -24,6 +24,15 @@ import com.nullPointerSociety.elfogon.ui.screens.SavedRecipesScreen
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
+object Routes {
+    const val LOGIN = "login"
+    const val SIGN_UP = "register"
+    const val HOME = "home"
+    const val SAVED_RECIPES = "saved_ones"
+    const val MADE_RECIPES = "made_ones"
+    const val PROFILE = "profile"
+    const val DETAILS_RECIPE = "details_recipe"
+}
 
 @SuppressLint("ContextCastToActivity")
 @RequiresApi(Build.VERSION_CODES.N)
