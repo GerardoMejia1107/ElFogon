@@ -30,6 +30,8 @@ class SpooncularViewModel(
     fun fetchRecipes() {
         viewModelScope.launch {
             repository.fetchRecipes(token = BuildConfig.SPOONACULAR_API_KEY, number = 10)
+            // ✅ Actualiza también los searchResults con los datos iniciales
+            _searchResults.value = repository.recipes.value
         }
     }
 
@@ -50,3 +52,5 @@ class SpooncularViewModel(
         }
     }
 }
+
+
