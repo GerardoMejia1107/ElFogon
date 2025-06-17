@@ -3,7 +3,7 @@ package com.nullPointerSociety.elfogon.ui.theme
 import androidx.compose.ui.graphics.Color
 
 
-val PrimaryAccent = Color(0xFF4C5B4D)
+val PrimaryAccent = Color(0xFF4a6e4d)
 val AppBackground = Color(0xFFFAF9F6)
 val CardBackground = Color(0xFFFFFFFF)
 val SurfaceSecondary = Color(0xFFEADDD6)

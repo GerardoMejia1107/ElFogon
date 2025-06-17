@@ -13,7 +13,7 @@ class SpooncularViewModel(
     val recipes = repository.recipes
 
     init {
-        //fetchPosts()
+        fetchPosts()
     }
 
     fun getRecipeById(id: Int): RecipeApi? {

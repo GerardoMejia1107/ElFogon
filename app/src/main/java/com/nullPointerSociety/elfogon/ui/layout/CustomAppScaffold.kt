@@ -3,8 +3,10 @@ package com.nullPointerSociety.elfogon.ui.layout
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -27,8 +29,9 @@ import androidx.navigation.compose.rememberNavController
 import com.nullPointerSociety.elfogon.ui.navigation.AppNavGraph
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.MadeRecipesScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.ProfileScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.Routes
 import com.nullPointerSociety.elfogon.ui.navigation.SavedRecipesScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.UserProfileScreenNav
 
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -52,22 +55,23 @@ fun CustomScaffold(
     fun onItemSelected(currentItem: String) {
         selectedItem.value = currentItem
         when (currentItem) {
-            "home" -> navController.navigate(HomeScreenNav)
-            "saved_ones" -> navController.navigate(SavedRecipesScreenNav)
-            "made_ones" -> navController.navigate(MadeRecipesScreenNav)
-            "profile" -> navController.navigate(UserProfileScreenNav)
+            Routes.HOME -> navController.navigate(HomeScreenNav)
+            Routes.SAVED_RECIPES -> navController.navigate(SavedRecipesScreenNav)
+            Routes.MADE_RECIPES -> navController.navigate(MadeRecipesScreenNav)
+            Routes.PROFILE -> navController.navigate(ProfileScreenNav)
             else -> ""
         }
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets.systemBars,
         topBar = {
-            if (selectedItem.value !in listOf("login", "register")) {
+            if (selectedItem.value !in listOf(Routes.LOGIN, Routes.SIGN_UP)) {
                 CustomTopBar(
                     customTitle = if (showTitleTopBar.value) titleScreen.value else "",
                     onAction = {
                         navController.navigate(HomeScreenNav)
-                        selectedItem.value = ""
+                        selectedItem.value = Routes.HOME
                     },
                     showLogo = true,
                     selectedItem
@@ -75,7 +79,7 @@ fun CustomScaffold(
             }
         },
         bottomBar = {
-            if (selectedItem.value !in listOf("login", "register")) {
+            if (selectedItem.value !in listOf(Routes.LOGIN, Routes.SIGN_UP)) {
                 BottomNavigationBar(
                     selectedItem = selectedItem.value,
                     onItemSelected = { onItemSelected(it) }
@@ -83,7 +87,7 @@ fun CustomScaffold(
             }
         },
         floatingActionButton = {
-            if (selectedItem.value == "details_recipe") {
+            if (selectedItem.value == Routes.DETAILS_RECIPE) {
                 FloatingActionButton(
                     shape = RoundedCornerShape(30.dp),
                     onClick = {},

@@ -69,7 +69,8 @@ fun HomeScreen(
         ) {
             Text(
                 text = "Descubre recetas deliciosas y fáciles de preparar",
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.displaySmall,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background)
@@ -89,8 +90,9 @@ fun HomeScreen(
                 CircularProgressIndicator()
             }
 
-        } else {
+        } else
             LazyVerticalGrid(
+                userScrollEnabled = true,
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(bottom = 140.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -99,9 +101,9 @@ fun HomeScreen(
                 items(sampleRecipes.value) { RecipeCard(it, onRecipeClick) }
             }
 
-        }
-
-
     }
+
+
 }
+
 
