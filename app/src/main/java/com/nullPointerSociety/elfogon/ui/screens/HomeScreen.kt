@@ -42,7 +42,7 @@ fun HomeScreen(
     authViewModel: AuthViewModel,
     navController: NavController
 ) {
-    val sampleRecipes = viewModel.recipes.collectAsState()
+    val sampleRecipes = viewModel.searchResults.collectAsState()
     val auth = authViewModel.authState.collectAsState()
 
     LaunchedEffect(auth.value) {
@@ -59,7 +59,10 @@ fun HomeScreen(
     ) {
         SearchBar(
             onFilterClick = onNavigateToFilters,
-            onBackClick = { /* sin acción por ahora */ }
+            onBackClick = { /* sin acción */ },
+            onQueryChange = { query ->
+                viewModel.filterRecipesByQuery(query)
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))

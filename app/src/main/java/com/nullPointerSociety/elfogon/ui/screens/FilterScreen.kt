@@ -1,28 +1,25 @@
 package com.nullPointerSociety.elfogon.ui.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Divider
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.nullPointerSociety.elfogon.data.model.RecipeApi
+import com.nullPointerSociety.elfogon.ui.components.RecipeCard
+import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun FilterSection(title: String, options: List<String>) {
+fun FilterSection(
+    title: String,
+    options: List<String>,
+    onCategorySelected: (String) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
 
     Column(
@@ -45,7 +42,7 @@ fun FilterSection(title: String, options: List<String>) {
             ) {
                 options.forEach { option ->
                     AssistChip(
-                        onClick = { /* lógica opcional */ },
+                        onClick = { onCategorySelected(option) },
                         label = { Text(option) }
                     )
                 }
@@ -57,20 +54,36 @@ fun FilterSection(title: String, options: List<String>) {
 }
 
 @Composable
-fun FilterScreen() {
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-    ) {
+fun FilterScreen(viewModel: SpooncularViewModel = viewModel()) {
+    val recipes by viewModel.recipes.collectAsState()
+
+    Column(modifier = Modifier.padding(16.dp)) {
         Text(
             "Filtros de Búsqueda",
             style = MaterialTheme.typography.headlineSmall
         )
 
-        FilterSection(title = "Platillos", options = listOf("De Temporada", "Platos Fuertes", "Postres", "Vegetarianos", "Comida Rápida", "Pastas"))
-        FilterSection(title = "Proteína", options = listOf("Pollo", "Res", "Cerdo", "Tofu", "Pescado"))
-        FilterSection(title = "Verduras", options = listOf("Zanahoria", "Brócoli", "Espinaca", "Tomate"))
-        FilterSection(title = "Frutas", options = listOf("Mango", "Plátano", "Fresa"))
-        FilterSection(title = "Tiempo", options = listOf("Rápido", "Moderado", "Lento"))
+        FilterSection(
+            title = "Platillos",
+            options = listOf("vegetarian", "dessert", "pasta", "main course", "side dish", "quick"),
+            onCategorySelected = { viewModel.fetchRecipesByCategory(it) }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text("Resultados", style = MaterialTheme.typography.titleMedium)
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(recipes) { recipe ->
+                RecipeCard(recipeApiSpoon = recipe) {
+                    // Opcional: lógica para ir al detalle
+                    // navController.navigate("recipe_detail/$it")
+                }
+            }
+        }
     }
 }
+
