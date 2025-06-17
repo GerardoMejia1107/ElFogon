@@ -35,7 +35,9 @@ import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.Routes
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
+import okhttp3.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,7 +46,7 @@ fun RegisterScreen(
     authViewModel: AuthViewModel,
     specifyRoute: MutableState<String>,
 ) {
-    specifyRoute.value = "register"
+    specifyRoute.value = Routes.SIGN_UP
     val name = remember { mutableStateOf("") }
     val lastname = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
@@ -57,7 +59,7 @@ fun RegisterScreen(
         when (auth.value) {
             is AuthState.Authenticated -> {
                 navController.navigate(HomeScreenNav)
-                specifyRoute.value = "home"
+                specifyRoute.value = Routes.HOME
             }
 
             is AuthState.Error -> Toast.makeText(

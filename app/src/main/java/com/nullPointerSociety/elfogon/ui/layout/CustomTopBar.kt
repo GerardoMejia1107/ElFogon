@@ -15,6 +15,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nullPointerSociety.elfogon.ui.components.Heading
+import com.nullPointerSociety.elfogon.ui.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +25,7 @@ fun CustomTopBar(
     showLogo: Boolean = true,
     selectedItem: MutableState<String>
 ) {
-    val topBarHeight = if (selectedItem.value != "details_recipe") {
+    val topBarHeight = if (selectedItem.value != Routes.DETAILS_RECIPE) {
         200.dp
     } else {
         115.dp
@@ -35,20 +36,20 @@ fun CustomTopBar(
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
         title = {
             val titleText = when (selectedItem.value) {
-                "home" -> "Del Fogon"
-                "saved_ones" -> "Saved Recipes"
-                "made_ones" -> "Cooked Recipes"
-                "profile" -> "Profile"
-                "details_recipe" -> customTitle
+                Routes.HOME -> "Del Fogon"
+                Routes.SAVED_RECIPES -> "Saved Recipes"
+                Routes.MADE_RECIPES -> "Cooked Recipes"
+                Routes.PROFILE -> "Profile"
+                Routes.DETAILS_RECIPE -> customTitle
                 else -> "Del Fogon"
             }
             Heading(
                 customTitle = titleText,
-                showLogo = showLogo && selectedItem.value != "details_recipe",
+                showLogo = showLogo && selectedItem.value != Routes.DETAILS_RECIPE,
             )
         },
         navigationIcon = {
-            if (selectedItem.value == "details_recipe") {
+            if (selectedItem.value == Routes.DETAILS_RECIPE) {
                 IconButton(onClick = { onAction?.invoke() }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBackIosNew,
@@ -58,7 +59,7 @@ fun CustomTopBar(
             }
         },
         actions = {
-            if (selectedItem.value == "details_recipe") {
+            if (selectedItem.value == Routes.DETAILS_RECIPE) {
                 IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Outlined.BookmarkAdd,

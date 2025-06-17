@@ -15,16 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.nullPointerSociety.elfogon.ui.theme.AppBackground
-import com.nullPointerSociety.elfogon.ui.theme.PastelGreenLight
+import com.nullPointerSociety.elfogon.ui.navigation.Routes
 
 data class BottomNavItem(val label: String, val icon: ImageVector, val route: String)
 
 val bottomNavItems = listOf(
-    BottomNavItem("Home", Icons.Default.Home, "home"),
-    BottomNavItem("Guardados", Icons.Default.Bookmark, "saved_ones"),
-    BottomNavItem("Preparados", Icons.Default.CheckCircle, "made_ones"),
-    BottomNavItem("Perfil", Icons.Default.Person, "profile"),
+    BottomNavItem("Home", Icons.Default.Home, Routes.HOME),
+    BottomNavItem("Guardados", Icons.Default.Bookmark, Routes.SAVED_RECIPES),
+    BottomNavItem("Preparados", Icons.Default.CheckCircle, Routes.MADE_RECIPES),
+    BottomNavItem("Perfil", Icons.Default.Person, Routes.PROFILE),
 )
 
 @Composable
@@ -42,7 +41,7 @@ fun BottomNavigationBar(
                 selected = selectedItem == item.route,
                 onClick = { onItemSelected(item.route) },
                 icon = { Icon(imageVector = item.icon, contentDescription = item.label) },
-                )
+            )
         }
     }
 }
