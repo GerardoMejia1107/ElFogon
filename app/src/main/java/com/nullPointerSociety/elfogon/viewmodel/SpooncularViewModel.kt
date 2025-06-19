@@ -20,7 +20,7 @@ class SpooncularViewModel(
     val searchResults: StateFlow<List<RecipeApi>> = _searchResults
 
     init {
-        fetchRecipes()
+        //fetchRecipes()
     }
 
     fun getRecipeById(id: Int): RecipeApi? {

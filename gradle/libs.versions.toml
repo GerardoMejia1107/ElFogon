@@ -34,6 +34,7 @@ kotlinxCoroutinesPlayServices = "1.10.2"
 credentialsPlayServicesAuthVersion = "1.6.0-alpha02"
 credentialsVersion = "1.6.0-alpha02"
 lifecycleRuntimeCompose = "2.9.1"
+mockk = "1.14.2"
 
 
 [libraries]
@@ -80,6 +81,7 @@ kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "ko
 credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuthVersion" }
 credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentialsVersion" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 
 [plugins]

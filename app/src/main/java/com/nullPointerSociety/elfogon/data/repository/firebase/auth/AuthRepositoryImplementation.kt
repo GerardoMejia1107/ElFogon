@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.data.repository.firebase.auth
 
 
+import android.util.Log
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -42,11 +43,25 @@ class AuthRepositoryImplementation(
             auth.signInWithEmailAndPassword(email, password).await()
             _authState.value = AuthState.Authenticated
 
-            _userData.value = UserData(
-                email = auth.currentUser?.email.toString(),
-                name = auth.currentUser?.displayName.toString(),
-                profilePictureUrl = auth.currentUser?.photoUrl.toString(),
-            )
+            val userLogged = db.collection("users").document(auth.currentUser?.uid.toString())
+            val snapshot = userLogged.get().await()
+
+            if (snapshot.exists()) {
+                val name = snapshot.getString("name") ?: ""
+                val lastName = snapshot.getString("lastName") ?: ""
+                val profilePictureUrl = snapshot.getString("profilePictureUrl") ?: ""
+
+                _userData.value = UserData(
+                    email = auth.currentUser?.email.orEmpty(),
+                    name = name,
+                    lastName = lastName,
+                    profilePictureUrl = profilePictureUrl
+                )
+            } else {
+                Log.w("Firestore", "No document found for user")
+            }
+
+
         } catch (e: Exception) {
             _authState.value = AuthState.Error(e.message ?: "Login failed")
         }
@@ -71,11 +86,13 @@ class AuthRepositoryImplementation(
             val docUser = hashMapOf(
                 "email" to auth.currentUser?.email,
                 "name" to name,
+                "lastName" to lastName,
                 "profilePictureUrl" to profilePictureUrl,
             )
             _userData.value = UserData(
                 email = auth.currentUser?.email.toString(),
                 name = name,
+                lastName = lastName,
                 profilePictureUrl = profilePictureUrl,
             )
             db.collection("users").document(auth.currentUser?.uid ?: "")
@@ -103,13 +120,13 @@ class AuthRepositoryImplementation(
                     name = auth.currentUser?.displayName.toString(),
                     profilePictureUrl = auth.currentUser?.photoUrl?.toString()
                         ?.replace("s96-c", "s400-c"),
-
                     )
             } else {
                 _authState.value = AuthState.Error("No se pudo autenticar con Google.")
             }
         } catch (e: Exception) {
-            _authState.value = AuthState.Error(e.message ?: "Error al iniciar sesión con Google.")
+            _authState.value =
+                AuthState.Error(e.message ?: "Error al iniciar sesión con Google.")
         }
     }
 
