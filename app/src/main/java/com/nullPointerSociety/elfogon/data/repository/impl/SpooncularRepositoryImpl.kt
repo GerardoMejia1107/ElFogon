@@ -1,11 +1,12 @@
-package com.nullPointerSociety.elfogon.data.repository.spooncular
+package com.nullPointerSociety.elfogon.data.repository.impl
 
 import com.nullPointerSociety.elfogon.data.api.RetrofitInstance
 import com.nullPointerSociety.elfogon.data.model.RecipeApi
+import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class SpooncularRepositoryImplementation : SpooncularRepository {
+class SpooncularRepositoryImpl : SpooncularRepository {
     private val _recipes = MutableStateFlow<List<RecipeApi>>(emptyList())
     override val recipes: StateFlow<List<RecipeApi>> = _recipes
 

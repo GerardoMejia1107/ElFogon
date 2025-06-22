@@ -32,12 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.R
-import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
+import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.Routes
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
-import okhttp3.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

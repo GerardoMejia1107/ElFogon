@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.data.repository.firebase.auth
+package com.nullPointerSociety.elfogon.data.repository.impl
 
 
 import android.util.Log
@@ -8,13 +8,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.nullPointerSociety.elfogon.data.model.UserData
+import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImplementation(
+    private val authService: FirebaseAuth
 ) : AuthRepository {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
     private val db: FirebaseFirestore = Firebase.firestore
 
     private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
@@ -25,7 +27,7 @@ class AuthRepositoryImplementation(
 
 
     override suspend fun checkAuthStatus() {
-        if (auth.currentUser == null) {
+        if (authService.currentUser == null) {
             _authState.value = AuthState.Unauthenticated
         } else {
             _authState.value = AuthState.Authenticated
@@ -40,10 +42,10 @@ class AuthRepositoryImplementation(
 
         _authState.value = AuthState.Loading
         try {
-            auth.signInWithEmailAndPassword(email, password).await()
+            authService.signInWithEmailAndPassword(email, password).await()
             _authState.value = AuthState.Authenticated
 
-            val userLogged = db.collection("users").document(auth.currentUser?.uid.toString())
+            val userLogged = db.collection("users").document(authService.currentUser?.uid.toString())
             val snapshot = userLogged.get().await()
 
             if (snapshot.exists()) {
@@ -52,7 +54,7 @@ class AuthRepositoryImplementation(
                 val profilePictureUrl = snapshot.getString("profilePictureUrl") ?: ""
 
                 _userData.value = UserData(
-                    email = auth.currentUser?.email.orEmpty(),
+                    email = authService.currentUser?.email.orEmpty(),
                     name = name,
                     lastName = lastName,
                     profilePictureUrl = profilePictureUrl
@@ -80,22 +82,22 @@ class AuthRepositoryImplementation(
         }
         _authState.value = AuthState.Loading
         try {
-            auth.createUserWithEmailAndPassword(email, password).await()
+            authService.createUserWithEmailAndPassword(email, password).await()
             _authState.value = AuthState.Authenticated
 
             val docUser = hashMapOf(
-                "email" to auth.currentUser?.email,
+                "email" to authService.currentUser?.email,
                 "name" to name,
                 "lastName" to lastName,
                 "profilePictureUrl" to profilePictureUrl,
             )
             _userData.value = UserData(
-                email = auth.currentUser?.email.toString(),
+                email = authService.currentUser?.email.toString(),
                 name = name,
                 lastName = lastName,
                 profilePictureUrl = profilePictureUrl,
             )
-            db.collection("users").document(auth.currentUser?.uid ?: "")
+            db.collection("users").document(authService.currentUser?.uid ?: "")
                 .set(docUser).await()
 
 
@@ -105,22 +107,22 @@ class AuthRepositoryImplementation(
     }
 
     override suspend fun logout() {
-        auth.signOut()
+        authService.signOut()
         _authState.value = AuthState.Unauthenticated
     }
 
     override suspend fun signInWithGoogleCredential(credential: AuthCredential) {
         try {
-            val user = auth.signInWithCredential(credential).await().user
+            val user = authService.signInWithCredential(credential).await().user
             if (user != null && user.isAnonymous.not()) {
                 _authState.value = AuthState.Authenticated
 
                 _userData.value = UserData(
-                    email = auth.currentUser?.email.toString(),
-                    name = auth.currentUser?.displayName.toString(),
-                    profilePictureUrl = auth.currentUser?.photoUrl?.toString()
+                    email = authService.currentUser?.email.toString(),
+                    name = authService.currentUser?.displayName.toString(),
+                    profilePictureUrl = authService.currentUser?.photoUrl?.toString()
                         ?.replace("s96-c", "s400-c"),
-                    )
+                )
             } else {
                 _authState.value = AuthState.Error("No se pudo autenticar con Google.")
             }

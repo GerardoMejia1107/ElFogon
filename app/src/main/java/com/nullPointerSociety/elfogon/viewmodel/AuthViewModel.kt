@@ -3,8 +3,8 @@ package com.nullPointerSociety.elfogon.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
-import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthRepository
-import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthRepositoryImplementation
+import com.nullPointerSociety.elfogon.data.repository.AuthRepository
+import com.nullPointerSociety.elfogon.data.repository.impl.AuthRepositoryImplementation
 import kotlinx.coroutines.launch
 
 class AuthViewModel(private val authRepository: AuthRepository = AuthRepositoryImplementation()) :

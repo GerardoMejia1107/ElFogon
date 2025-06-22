@@ -6,10 +6,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthRepository
-import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthRepositoryImplementation
-import com.nullPointerSociety.elfogon.data.repository.spooncular.SpooncularRepository
-import com.nullPointerSociety.elfogon.data.repository.spooncular.SpooncularRepositoryImplementation
+import com.nullPointerSociety.elfogon.data.repository.AuthRepository
+import com.nullPointerSociety.elfogon.data.repository.impl.AuthRepositoryImplementation
+import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
+import com.nullPointerSociety.elfogon.data.repository.impl.SpooncularRepositoryImpl
 
 class AppProvider(context: Context) {
     private val firebaseAuthInstance: FirebaseAuth = FirebaseAuth.getInstance()
@@ -18,7 +18,7 @@ class AppProvider(context: Context) {
 
 
     private val authRepository: AuthRepository = AuthRepositoryImplementation()
-    private val spooncularRepository: SpooncularRepository = SpooncularRepositoryImplementation()
+    private val spooncularRepository: SpooncularRepository = SpooncularRepositoryImpl()
 
 
     fun provideAuthRepository(): AuthRepository {

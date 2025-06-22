@@ -13,7 +13,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
+import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.screens.HomeScreen
 import com.nullPointerSociety.elfogon.ui.screens.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.MadeRecipesScreen

@@ -42,7 +42,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.R
-import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
+import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.components.Heading
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
