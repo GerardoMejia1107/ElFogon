@@ -1,13 +1,17 @@
 package com.nullPointerSociety.elfogon.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.google.firebase.auth.AuthCredential
+import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
-import com.nullPointerSociety.elfogon.data.repository.impl.AuthRepositoryImplementation
 import kotlinx.coroutines.launch
 
-class AuthViewModel(private val authRepository: AuthRepository = AuthRepositoryImplementation()) :
+class AuthViewModel(private val authRepository: AuthRepository) :
     ViewModel() {
     val authState = authRepository.authState
     val userData = authRepository.userData
@@ -46,6 +50,18 @@ class AuthViewModel(private val authRepository: AuthRepository = AuthRepositoryI
     fun signInWithGoogleCredential(credential: AuthCredential) {
         viewModelScope.launch {
             authRepository.signInWithGoogleCredential(credential)
+        }
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application =
+                    (this[APPLICATION_KEY] as DelFogonApplication)
+                AuthViewModel(
+                    application.appProvider.provideAuthRepository()
+                )
+            }
         }
     }
 

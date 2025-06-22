@@ -7,4 +7,5 @@ interface SpooncularRepository {
     val recipes: StateFlow<List<RecipeApi>>
     fun getRecipeById(id: Int): RecipeApi?
     suspend fun fetchRecipes(token: String, number: Int = 100)
+    suspend fun fetchRecipesByTag(token: String, tag: String)
 }
