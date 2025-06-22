@@ -14,13 +14,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
-import com.nullPointerSociety.elfogon.ui.screens.HomeScreen
-import com.nullPointerSociety.elfogon.ui.screens.LoginScreen
-import com.nullPointerSociety.elfogon.ui.screens.MadeRecipesScreen
-import com.nullPointerSociety.elfogon.ui.screens.ProfileScreen
-import com.nullPointerSociety.elfogon.ui.screens.RecipeDetailsScreen
-import com.nullPointerSociety.elfogon.ui.screens.RegisterScreen
-import com.nullPointerSociety.elfogon.ui.screens.SavedRecipesScreen
+import com.nullPointerSociety.elfogon.ui.screens.home.HomeScreen
+import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginScreen
+import com.nullPointerSociety.elfogon.ui.screens.recipes.made.MadeRecipesScreen
+import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileScreen
+import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsScreen
+import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterScreen
+import com.nullPointerSociety.elfogon.ui.screens.recipes.saved.SavedRecipesScreen
+import com.nullPointerSociety.elfogon.ui.screens.filter.FilterScreen
 import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
@@ -112,7 +113,7 @@ fun AppNavGraph(
         }
 
         composable("filters") {
-            com.nullPointerSociety.elfogon.ui.screens.FilterScreen(viewModel = viewModel())
+            FilterScreen(viewModel = viewModel())
         }
 
     }

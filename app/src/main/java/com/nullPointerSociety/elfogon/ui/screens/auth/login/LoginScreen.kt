@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens
+package com.nullPointerSociety.elfogon.ui.screens.auth.login
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult

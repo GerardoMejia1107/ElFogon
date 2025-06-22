@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens
+package com.nullPointerSociety.elfogon.ui.screens.profile
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
