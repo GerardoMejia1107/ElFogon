@@ -27,7 +27,7 @@ class SpooncularRepositoryImpl : SpooncularRepository {
     }
 
     // NUEVO: Fetch por categoría (etiqueta/tag)
-    suspend fun fetchRecipesByTag(token: String, tag: String, number: Int = 10) {
+    override suspend fun fetchRecipesByTag(token: String, tag: String, number: Int) {
         try {
             val response = RetrofitInstance.api.getRecipes(
                 token = token,

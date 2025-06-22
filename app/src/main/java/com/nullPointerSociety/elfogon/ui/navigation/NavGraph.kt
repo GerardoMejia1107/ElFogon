@@ -44,8 +44,9 @@ fun AppNavGraph(
     titleScreen: MutableState<String>,
     scrollState: LazyListState
 ) {
-    val viewModel: SpooncularViewModel = viewModel()
-    val authViewModel: AuthViewModel = viewModel()
+    val spooncularViewModel: SpooncularViewModel = viewModel(factory = SpooncularViewModel.Factory)
+    val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory)
+
     val authState = authViewModel.authState.collectAsState()
 
     LaunchedEffect(authState.value) {
@@ -75,7 +76,7 @@ fun AppNavGraph(
         composable<HomeScreenNav> {
             HomeScreen(
                 onNavigateToFilters = { navController.navigate("filters") }, // ✅ corrección
-                viewModel = viewModel,
+                viewModel = spooncularViewModel,
                 onRecipeClick = onClickRecipe,
                 modifier,
                 authViewModel,
@@ -100,7 +101,7 @@ fun AppNavGraph(
             val recipeId = backStackEntry.arguments?.getInt("id") ?: 0
             RecipeDetailsScreen(
                 recipeId,
-                viewModel,
+                spooncularViewModel,
                 onBack = { navController.navigate(HomeScreenNav) },
                 modifier = modifier,
                 selectedItem,
