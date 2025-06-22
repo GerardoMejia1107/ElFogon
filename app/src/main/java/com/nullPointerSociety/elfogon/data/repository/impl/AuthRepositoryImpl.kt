@@ -1,19 +1,18 @@
 package com.nullPointerSociety.elfogon.data.repository.impl
 
 
-import android.util.Log
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.nullPointerSociety.elfogon.data.model.UserData
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
+import com.nullPointerSociety.elfogon.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImplementation(
     private val authService: FirebaseAuth,
-    private val firestoreService: FirebaseFirestore
+    private val userRepository: UserRepository
 ) : AuthRepository {
 
     private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
@@ -42,26 +41,8 @@ class AuthRepositoryImplementation(
             authService.signInWithEmailAndPassword(email, password).await()
             _authState.value = AuthState.Authenticated
 
-            val userLogged = firestoreService.collection("users")
-                .document(authService.currentUser?.uid.toString())
-            val snapshot = userLogged.get().await()
-
-            if (snapshot.exists()) {
-                val name = snapshot.getString("name") ?: ""
-                val lastName = snapshot.getString("lastName") ?: ""
-                val profilePictureUrl = snapshot.getString("profilePictureUrl") ?: ""
-
-                _userData.value = UserData(
-                    email = authService.currentUser?.email.orEmpty(),
-                    name = name,
-                    lastName = lastName,
-                    profilePictureUrl = profilePictureUrl
-                )
-            } else {
-                Log.w("Firestore", "No document found for user")
-            }
-
-
+            val userData = userRepository.getUserData(authService.currentUser?.uid ?: "")
+            _userData.value = userData
         } catch (e: Exception) {
             _authState.value = AuthState.Error(e.message ?: "Login failed")
         }
@@ -83,21 +64,14 @@ class AuthRepositoryImplementation(
             authService.createUserWithEmailAndPassword(email, password).await()
             _authState.value = AuthState.Authenticated
 
-            val docUser = hashMapOf(
-                "email" to authService.currentUser?.email,
-                "name" to name,
-                "lastName" to lastName,
-                "profilePictureUrl" to profilePictureUrl,
-            )
-            _userData.value = UserData(
+            val userData = UserData(
                 email = authService.currentUser?.email.toString(),
                 name = name,
                 lastName = lastName,
-                profilePictureUrl = profilePictureUrl,
+                profilePictureUrl = profilePictureUrl ?: ""
             )
-            firestoreService.collection("users").document(authService.currentUser?.uid ?: "")
-                .set(docUser).await()
-
+            userRepository.saveUserData(authService.currentUser?.uid ?: "", userData)
+            _userData.value = userData
 
         } catch (e: Exception) {
             _authState.value = AuthState.Error(e.message ?: "Sign up failed")
@@ -112,21 +86,28 @@ class AuthRepositoryImplementation(
     override suspend fun signInWithGoogleCredential(credential: AuthCredential) {
         try {
             val user = authService.signInWithCredential(credential).await().user
-            if (user != null && user.isAnonymous.not()) {
+            if (user != null && !user.isAnonymous) {
                 _authState.value = AuthState.Authenticated
 
-                _userData.value = UserData(
-                    email = authService.currentUser?.email.toString(),
-                    name = authService.currentUser?.displayName.toString(),
-                    profilePictureUrl = authService.currentUser?.photoUrl?.toString()
-                        ?.replace("s96-c", "s400-c"),
-                )
+                val uid = user.uid
+                val existingUser = userRepository.getUserData(uid)
+
+                if (existingUser != null) {
+                    _userData.value = existingUser
+                } else {
+                    val newUser = UserData(
+                        email = user.email.orEmpty(),
+                        name = user.displayName.orEmpty(),
+                        profilePictureUrl = user.photoUrl?.toString()?.replace("s96-c", "s400-c")
+                    )
+                    userRepository.saveUserData(uid, newUser)
+                    _userData.value = newUser
+                }
             } else {
                 _authState.value = AuthState.Error("No se pudo autenticar con Google.")
             }
         } catch (e: Exception) {
-            _authState.value =
-                AuthState.Error(e.message ?: "Error al iniciar sesión con Google.")
+            _authState.value = AuthState.Error(e.message ?: "Error al iniciar sesión con Google.")
         }
     }
 

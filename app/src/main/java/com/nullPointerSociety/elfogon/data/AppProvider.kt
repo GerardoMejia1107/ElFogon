@@ -19,14 +19,20 @@ class AppProvider(context: DelFogonApplication) {
     private val firebaseStorageInstance: FirebaseStorage = FirebaseStorage.getInstance()
 
 
-    private val authRepository: AuthRepository =
-        AuthRepositoryImplementation(firebaseAuthInstance, firebaseFirestoreInstance)
     private val userRepository: UserRepository = UserRepositoryImpl(firebaseFirestoreInstance)
+    private val authRepository: AuthRepository =
+        AuthRepositoryImplementation(firebaseAuthInstance, userRepository)
+
+
     private val spooncularRepository: SpooncularRepository = SpooncularRepositoryImpl()
 
 
     fun provideAuthRepository(): AuthRepository {
         return authRepository
+    }
+
+    fun provideUserRepository(): UserRepository {
+        return userRepository
     }
 
     fun provideSpooncularRepository(): SpooncularRepository {
