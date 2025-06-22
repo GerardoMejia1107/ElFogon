@@ -5,8 +5,6 @@ import android.util.Log
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.nullPointerSociety.elfogon.data.model.UserData
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,10 +12,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImplementation(
-    private val authService: FirebaseAuth
+    private val authService: FirebaseAuth,
+    private val firestoreService: FirebaseFirestore
 ) : AuthRepository {
-
-    private val db: FirebaseFirestore = Firebase.firestore
 
     private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
     override val authState: StateFlow<AuthState> = _authState
@@ -45,7 +42,8 @@ class AuthRepositoryImplementation(
             authService.signInWithEmailAndPassword(email, password).await()
             _authState.value = AuthState.Authenticated
 
-            val userLogged = db.collection("users").document(authService.currentUser?.uid.toString())
+            val userLogged = firestoreService.collection("users")
+                .document(authService.currentUser?.uid.toString())
             val snapshot = userLogged.get().await()
 
             if (snapshot.exists()) {
@@ -97,7 +95,7 @@ class AuthRepositoryImplementation(
                 lastName = lastName,
                 profilePictureUrl = profilePictureUrl,
             )
-            db.collection("users").document(authService.currentUser?.uid ?: "")
+            firestoreService.collection("users").document(authService.currentUser?.uid ?: "")
                 .set(docUser).await()
 
 
