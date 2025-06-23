@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens
+package com.nullPointerSociety.elfogon.ui.screens.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -23,27 +23,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
+import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.RecipeCard
 import com.nullPointerSociety.elfogon.ui.components.SearchBar
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
-import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
-import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
 
 @Composable
 fun HomeScreen(
     onNavigateToFilters: () -> Unit,
-    viewModel: SpooncularViewModel = viewModel(),
+    homeViewModel: HomeViewModel,
     onRecipeClick: (Int) -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
-    authViewModel: AuthViewModel,
     navController: NavController
 ) {
-    val sampleRecipes = viewModel.searchResults.collectAsState()
-    val auth = authViewModel.authState.collectAsState()
+    val sampleRecipes = homeViewModel.searchResults.collectAsState()
+    val auth = homeViewModel.authState.collectAsState()
 
     LaunchedEffect(auth.value) {
         when (auth.value) {
@@ -61,7 +57,7 @@ fun HomeScreen(
             onFilterClick = onNavigateToFilters,
             onBackClick = { /* sin acción */ },
             onQueryChange = { query ->
-                viewModel.filterRecipesByQuery(query)
+                homeViewModel.filterRecipesByQuery(query)
             }
         )
 

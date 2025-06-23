@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens
+package com.nullPointerSociety.elfogon.ui.screens.profile
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -41,12 +41,11 @@ import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.components.profile.BasicInfo
 import com.nullPointerSociety.elfogon.ui.components.profile.ProfileStatCard
-import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 
 @Composable
 fun ProfileScreen(
+    viewModel: ProfileViewModel,
     modifier: Modifier = Modifier,
-    authViewModel: AuthViewModel,
     navController: NavController,
     scrollState: LazyListState
 ) {
@@ -57,7 +56,7 @@ fun ProfileScreen(
     val confirmPass = remember { mutableStateOf("") }
     val newEmail = remember { mutableStateOf("") }
 
-    val userData = authViewModel.userData.collectAsState()
+    val userData = viewModel.userData.collectAsState()
 
 
     LazyColumn(
@@ -178,7 +177,7 @@ fun ProfileScreen(
             // Botón cerrar sesión
             CustomButton(
                 text = "Sing Out",
-                onClick = { authViewModel.logout() },
+                onClick = { viewModel.logout() },
             )
 
         }

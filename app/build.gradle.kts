@@ -55,12 +55,19 @@ android {
     buildFeatures {
         compose = true
     }
+
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{LICENSE.md,LICENSE-notice.md}"
+        }
+    }
 }
 
 configurations.all {
 
     exclude(group = "com.intellij", module = "annotations")
 }
+
 
 dependencies {
     implementation(libs.androidx.core.ktx)
@@ -88,8 +95,6 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
-    implementation("io.coil-kt:coil-compose:2.0.0")
-
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
@@ -102,6 +107,8 @@ dependencies {
     implementation(libs.credentials.play.services.auth)
     implementation(libs.credentials)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.mockk)
+    implementation(libs.junit)
 
 
 

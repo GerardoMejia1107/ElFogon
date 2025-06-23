@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens
+package com.nullPointerSociety.elfogon.ui.screens.filter
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nullPointerSociety.elfogon.data.model.RecipeApi
 import com.nullPointerSociety.elfogon.ui.components.RecipeCard
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 

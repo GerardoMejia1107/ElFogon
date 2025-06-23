@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.viewmodel
+package com.nullPointerSociety.elfogon.ui.screens.auth.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -11,23 +11,11 @@ import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import kotlinx.coroutines.launch
 
-class AuthViewModel(private val authRepository: AuthRepository) :
-    ViewModel() {
+class RegisterViewModel(
+    private val authRepository: AuthRepository
+) : ViewModel() {
     val authState = authRepository.authState
     val userData = authRepository.userData
-
-
-    init {
-        viewModelScope.launch {
-            authRepository.checkAuthStatus()
-        }
-    }
-
-    fun login(email: String, password: String) {
-        viewModelScope.launch {
-            authRepository.login(email, password)
-        }
-    }
 
     fun signUp(
         email: String,
@@ -41,29 +29,15 @@ class AuthViewModel(private val authRepository: AuthRepository) :
         }
     }
 
-    fun logout() {
-        viewModelScope.launch {
-            authRepository.logout()
-        }
-    }
-
-    fun signInWithGoogleCredential(credential: AuthCredential) {
-        viewModelScope.launch {
-            authRepository.signInWithGoogleCredential(credential)
-        }
-    }
-
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =
                     (this[APPLICATION_KEY] as DelFogonApplication)
-                AuthViewModel(
+                RegisterViewModel(
                     application.appProvider.provideAuthRepository()
                 )
             }
         }
     }
-
 }
-

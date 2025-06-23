@@ -20,10 +20,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.model.UserData
 
 @Composable
 fun BasicInfo(userData: State<UserData?>) {
+    val userName = userData.value?.name + if (userData.value?.lastName.isNullOrEmpty()) {
+        ""
+    } else {
+        " " + userData.value?.lastName
+    }
 
     Box(
         modifier = Modifier
@@ -32,7 +38,11 @@ fun BasicInfo(userData: State<UserData?>) {
         contentAlignment = Alignment.Center
     ) {
         AsyncImage(
-            model = userData.value?.profilePictureUrl.toString(),
+            model = if (userData.value?.profilePictureUrl.isNullOrEmpty()) {
+                R.drawable.user_default_pic
+            } else {
+                userData.value?.profilePictureUrl
+            },
             contentDescription = "Foto de perfil circular con fondo beige claro y figura verde oscuro",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -45,7 +55,7 @@ fun BasicInfo(userData: State<UserData?>) {
     Spacer(modifier = Modifier.height(16.dp))
 
     Text(
-        text = userData.value?.name.toString(),
+        text = userName,
         style = MaterialTheme.typography.headlineMedium,
         textAlign = TextAlign.Center,
         lineHeight = 45.sp,

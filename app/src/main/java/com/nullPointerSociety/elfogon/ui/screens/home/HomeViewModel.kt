@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.viewmodel
+package com.nullPointerSociety.elfogon.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,40 +9,42 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.nullPointerSociety.elfogon.BuildConfig
 import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.model.RecipeApi
+import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class SpooncularViewModel(
-    private val repository: SpooncularRepository
+class HomeViewModel(
+    private val authRepository: AuthRepository,
+    private val spooncularRepository: SpooncularRepository
 ) : ViewModel() {
+    val authState = authRepository.authState
+    val recipes = spooncularRepository.recipes
 
-    val recipes = repository.recipes
-
-    // ✅ Nuevo: Estado para resultados de búsqueda en vivo
     private val _searchResults = MutableStateFlow<List<RecipeApi>>(emptyList())
     val searchResults: StateFlow<List<RecipeApi>> = _searchResults
 
+
     init {
-        fetchRecipes()
+        //fetchRecipes()
     }
 
     fun getRecipeById(id: Int): RecipeApi? {
-        return repository.getRecipeById(id)
+        return spooncularRepository.getRecipeById(id)
     }
 
     fun fetchRecipes() {
         viewModelScope.launch {
-            repository.fetchRecipes(token = BuildConfig.SPOONACULAR_API_KEY, number = 10)
+            spooncularRepository.fetchRecipes(token = BuildConfig.SPOONACULAR_API_KEY, number = 10)
             // ✅ Actualiza también los searchResults con los datos iniciales
-            _searchResults.value = repository.recipes.value
+            _searchResults.value = spooncularRepository.recipes.value
         }
     }
 
     fun fetchRecipesByCategory(category: String) {
         viewModelScope.launch {
-            repository.fetchRecipesByTag(
+            spooncularRepository.fetchRecipesByTag(
                 token = BuildConfig.SPOONACULAR_API_KEY,
                 tag = category
             )
@@ -63,12 +65,12 @@ class SpooncularViewModel(
                 val application =
                     (this[APPLICATION_KEY] as DelFogonApplication)
 
-                SpooncularViewModel(
+                HomeViewModel(
+                    application.appProvider.provideAuthRepository(),
                     application.appProvider.provideSpooncularRepository()
                 )
             }
         }
     }
+
 }
-
-

@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens
+package com.nullPointerSociety.elfogon.ui.screens.auth.login
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -42,20 +42,19 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.R
-import com.nullPointerSociety.elfogon.data.repository.firebase.auth.AuthState
+import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.components.Heading
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.Routes
 import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
 import com.nullPointerSociety.elfogon.utils.GoogleSignUtils
-import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    authViewModel: AuthViewModel,
+    loginViewModel: LoginViewModel,
     specifyRoute: MutableState<String>,
 ) {
     specifyRoute.value = Routes.LOGIN
@@ -63,7 +62,7 @@ fun LoginScreen(
     val pass = remember { mutableStateOf("") }
     var showPassword = remember { mutableStateOf(false) }
 
-    val auth = authViewModel.authState.collectAsState()
+    val auth = loginViewModel.authState.collectAsState()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val launcher = rememberLauncherForActivityResult(
@@ -79,7 +78,7 @@ fun LoginScreen(
                     scope = scope,
                     launcher = null,
                     onCredentialReady = { credential ->
-                        authViewModel.signInWithGoogleCredential(credential)
+                        loginViewModel.signInWithGoogleCredential(credential)
                     }
                 )
             }
@@ -92,7 +91,7 @@ fun LoginScreen(
         when (auth.value) {
             is AuthState.Authenticated -> {
                 specifyRoute.value = Routes.HOME
-                Toast.makeText(context, "Bienvenido", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Welcome!", Toast.LENGTH_SHORT).show()
                 navController.navigate(HomeScreenNav)
             }
 
@@ -117,7 +116,7 @@ fun LoginScreen(
             colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
             value = email.value,
             onValueChange = { email.value = it },
-            label = { Text("Correo") },
+            label = { Text("Email") },
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.background
             )
@@ -131,12 +130,12 @@ fun LoginScreen(
             colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
             value = pass.value,
             onValueChange = { pass.value = it },
-            label = { Text("Contraseña") },
+            label = { Text("Password") },
             trailingIcon = {
                 IconButton(onClick = { showPassword.value = !showPassword.value }) {
                     Icon(
                         imageVector = Icons.Filled.RemoveRedEye,
-                        contentDescription = "Mostrar contraseña",
+                        contentDescription = "Show password",
                         tint = if (showPassword.value) Color(0xFF4A6E4D) else Color.Gray
                     )
                 }
@@ -146,7 +145,7 @@ fun LoginScreen(
         )
 
         Spacer(modifier = Modifier.height(32.dp))
-        CustomButton("Iniciar Sesión", onClick = { authViewModel.login(email.value, pass.value) })
+        CustomButton("Log In", onClick = { loginViewModel.login(email.value, pass.value) })
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
@@ -160,7 +159,7 @@ fun LoginScreen(
                     scope = scope,
                     launcher = launcher,
                     onCredentialReady = { credential ->
-                        authViewModel.signInWithGoogleCredential(credential)
+                        loginViewModel.signInWithGoogleCredential(credential)
                     }
                 )
             },
@@ -178,16 +177,15 @@ fun LoginScreen(
 
 
         Spacer(modifier = Modifier.height(24.dp))
-        // 🔥 Mensaje en vez de botón
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(top = 8.dp)
         ) {
-            Text(text = "¿No tienes una cuenta? ")
+            Text(text = "Don't have an account? ")
 
             Text(
-                text = "Regístrate",
+                text = "Sign Up Manually",
                 color = Color(0xFF4A6E4D),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
