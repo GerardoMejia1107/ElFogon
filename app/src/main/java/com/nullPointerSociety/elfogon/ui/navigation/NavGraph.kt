@@ -46,6 +46,7 @@ fun AppNavGraph(
     val detailsScreenViewModel: RecipeDetailsViewModel =
         viewModel(factory = RecipeDetailsViewModel.Factory)
 
+
     //Solamente usado en el LaunchedEffect para redirigir al usuario si no está autenticado
     val authState = loginViewModel.authState.collectAsState()
     LaunchedEffect(authState.value) {

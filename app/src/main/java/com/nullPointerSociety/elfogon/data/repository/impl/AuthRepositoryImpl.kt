@@ -27,6 +27,7 @@ class AuthRepositoryImplementation(
             _authState.value = AuthState.Unauthenticated
         } else {
             _authState.value = AuthState.Authenticated
+            _userData.value = userRepository.fetchUserData(authService.currentUser?.uid.toString())
         }
     }
 

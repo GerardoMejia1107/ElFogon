@@ -16,7 +16,6 @@ interface AuthRepository {
         profilePictureUrl: String?,
         lastName: String
     )
-
     suspend fun logout()
     suspend fun signInWithGoogleCredential(credential: AuthCredential)
 

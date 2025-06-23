@@ -46,7 +46,6 @@ fun CustomScaffold(
     var titleScreen = rememberSaveable { mutableStateOf("") }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
     val currentRoute = navBackStackEntry?.destination?.route
 
     var scrollState = rememberLazyListState()
