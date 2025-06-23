@@ -11,11 +11,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nullPointerSociety.elfogon.ui.components.Heading
-import com.nullPointerSociety.elfogon.ui.navigation.Routes
+import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.MadeRecipesScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.ProfileScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.SavedRecipesScreenNav
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,34 +26,36 @@ fun CustomTopBar(
     customTitle: String,
     onAction: (() -> Unit)? = null,
     showLogo: Boolean = true,
-    selectedItem: MutableState<String>
+    selectedRoute: String?
 ) {
-    val topBarHeight = if (selectedItem.value != Routes.DETAILS_RECIPE) {
-        200.dp
-    } else {
-        115.dp
-    }
-    CenterAlignedTopAppBar(
+    val isDetails = selectedRoute?.contains("RecipeDetailsScreenNav") == true
+    val maxHeight = if (isDetails) 115.dp else 200.dp
 
-        modifier = Modifier.heightIn(min = 115.dp, max = topBarHeight),
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
+    CenterAlignedTopAppBar(
+        modifier = Modifier.heightIn(min = 115.dp, max = maxHeight),
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
         title = {
-            val titleText = when (selectedItem.value) {
-                Routes.HOME -> "Del Fogon"
-                Routes.SAVED_RECIPES -> "Saved Recipes"
-                Routes.MADE_RECIPES -> "Cooked Recipes"
-                Routes.PROFILE -> "Profile"
-                Routes.DETAILS_RECIPE -> customTitle
+            val titleText = when {
+                selectedRoute == HomeScreenNav::class.qualifiedName -> "Del Fogon"
+                selectedRoute == SavedRecipesScreenNav::class.qualifiedName -> "Saved Recipes"
+                selectedRoute == MadeRecipesScreenNav::class.qualifiedName -> "Cooked Recipes"
+                selectedRoute == ProfileScreenNav::class.qualifiedName -> "Profile"
+                isDetails -> customTitle
                 else -> "Del Fogon"
             }
+
             Heading(
                 customTitle = titleText,
-                showLogo = showLogo && selectedItem.value != Routes.DETAILS_RECIPE,
+                showLogo = showLogo && !isDetails
             )
         },
         navigationIcon = {
-            if (selectedItem.value == Routes.DETAILS_RECIPE) {
-                IconButton(onClick = { onAction?.invoke() }) {
+            if (isDetails) {
+                IconButton(onClick = {
+                    onAction?.invoke()
+                }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBackIosNew,
                         contentDescription = "Go back"
@@ -59,17 +64,15 @@ fun CustomTopBar(
             }
         },
         actions = {
-            if (selectedItem.value == Routes.DETAILS_RECIPE) {
-                IconButton(onClick = {}) {
+            if (isDetails) {
+                IconButton(onClick = { /* save/favorite */ }) {
                     Icon(
                         imageVector = Icons.Outlined.BookmarkAdd,
-                        contentDescription = "Add to favorites or saved",
+                        contentDescription = "Add to favorites"
                     )
                 }
             }
         }
-
-
     )
 }
 

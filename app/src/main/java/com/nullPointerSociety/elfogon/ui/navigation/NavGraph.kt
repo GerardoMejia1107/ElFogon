@@ -26,30 +26,19 @@ import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsSc
 import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsViewModel
 import com.nullPointerSociety.elfogon.ui.screens.recipes.made.MadeRecipesScreen
 import com.nullPointerSociety.elfogon.ui.screens.recipes.saved.SavedRecipesScreen
-import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
-object Routes {
-    const val LOGIN = "login"
-    const val SIGN_UP = "register"
-    const val HOME = "home"
-    const val SAVED_RECIPES = "saved_ones"
-    const val MADE_RECIPES = "made_ones"
-    const val PROFILE = "profile"
-    const val DETAILS_RECIPE = "details_recipe"
-}
 
 @SuppressLint("ContextCastToActivity")
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
-    selectedItem: MutableState<String>,
     modifier: Modifier = Modifier,
     titleScreen: MutableState<String>,
     scrollState: LazyListState
 ) {
     //ViewModels
-    val spooncularViewModel: SpooncularViewModel = viewModel(factory = SpooncularViewModel.Factory)
+    //val spooncularViewModel: SpooncularViewModel = viewModel(factory = SpooncularViewModel.Factory)
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory)
     val registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory)
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
@@ -75,10 +64,10 @@ fun AppNavGraph(
     NavHost(navController = navController, startDestination = LogInScreenNav) {
 
         composable<LogInScreenNav> {
-            LoginScreen(navController, loginViewModel, selectedItem)
+            LoginScreen(navController, loginViewModel)
         }
         composable<SignUpScreenNav> {
-            RegisterScreen(navController, registerViewModel, selectedItem)
+            RegisterScreen(navController, registerViewModel)
         }
         composable<HomeScreenNav> {
             HomeScreen(
@@ -86,7 +75,7 @@ fun AppNavGraph(
                 homeViewModel = homeViewModel,
                 onRecipeClick = onClickRecipe,
                 modifier,
-                navController = navController
+                navController = navController,
             )
         }
         composable<SavedRecipesScreenNav> {
@@ -109,9 +98,8 @@ fun AppNavGraph(
             RecipeDetailsScreen(
                 recipeId,
                 detailsScreenViewModel,
-                onBack = { navController.navigate(HomeScreenNav) },
+                onBack = { navController.popBackStack() },
                 modifier = modifier,
-                selectedItem,
                 titleScreen,
                 scrollState
 

@@ -46,7 +46,7 @@ import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.components.Heading
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.Routes
+
 import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
 import com.nullPointerSociety.elfogon.utils.GoogleSignUtils
 
@@ -55,9 +55,9 @@ import com.nullPointerSociety.elfogon.utils.GoogleSignUtils
 fun LoginScreen(
     navController: NavController,
     loginViewModel: LoginViewModel,
-    specifyRoute: MutableState<String>,
+
 ) {
-    specifyRoute.value = Routes.LOGIN
+
     val email = remember { mutableStateOf("") }
     val pass = remember { mutableStateOf("") }
     var showPassword = remember { mutableStateOf(false) }
@@ -90,7 +90,6 @@ fun LoginScreen(
     LaunchedEffect(auth.value) {
         when (auth.value) {
             is AuthState.Authenticated -> {
-                specifyRoute.value = Routes.HOME
                 Toast.makeText(context, "Welcome!", Toast.LENGTH_SHORT).show()
                 navController.navigate(HomeScreenNav)
             }
