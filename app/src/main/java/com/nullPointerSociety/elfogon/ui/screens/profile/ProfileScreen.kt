@@ -45,8 +45,8 @@ import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 
 @Composable
 fun ProfileScreen(
-    modifier: Modifier = Modifier,
     authViewModel: AuthViewModel,
+    modifier: Modifier = Modifier,
     navController: NavController,
     scrollState: LazyListState
 ) {

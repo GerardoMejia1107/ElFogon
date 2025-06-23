@@ -36,13 +36,12 @@ import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.Routes
-import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    authViewModel: AuthViewModel,
+    registerViewModel: RegisterViewModel,
     specifyRoute: MutableState<String>,
 ) {
     specifyRoute.value = Routes.SIGN_UP
@@ -51,7 +50,7 @@ fun RegisterScreen(
     val email = remember { mutableStateOf("") }
     val pass = remember { mutableStateOf("") }
 
-    val auth = authViewModel.authState.collectAsState()
+    val auth = registerViewModel.authState.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect(auth.value) {
@@ -138,7 +137,7 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
             CustomButton("Sing Up", onClick = {
-                authViewModel.signUp(
+                registerViewModel.signUp(
                     email = email.value,
                     password = pass.value,
                     name = name.value,

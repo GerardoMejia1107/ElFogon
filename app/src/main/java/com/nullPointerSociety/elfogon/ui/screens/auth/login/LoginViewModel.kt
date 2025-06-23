@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.google.firebase.auth.AuthCredential
 import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import kotlinx.coroutines.launch
@@ -31,6 +32,12 @@ class LoginViewModel(
     fun logout() {
         viewModelScope.launch {
             authRepository.logout()
+        }
+    }
+
+    fun signInWithGoogleCredential(credential: AuthCredential) {
+        viewModelScope.launch {
+            authRepository.signInWithGoogleCredential(credential)
         }
     }
 

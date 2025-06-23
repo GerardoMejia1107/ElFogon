@@ -14,15 +14,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
-import com.nullPointerSociety.elfogon.ui.screens.home.HomeScreen
 import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginScreen
-import com.nullPointerSociety.elfogon.ui.screens.recipes.made.MadeRecipesScreen
-import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileScreen
-import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsScreen
+import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginViewModel
 import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterScreen
-import com.nullPointerSociety.elfogon.ui.screens.recipes.saved.SavedRecipesScreen
-import com.nullPointerSociety.elfogon.ui.screens.filter.FilterScreen
-import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
+import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterViewModel
+import com.nullPointerSociety.elfogon.ui.screens.home.HomeScreen
+import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
 object Routes {
@@ -46,9 +43,13 @@ fun AppNavGraph(
     scrollState: LazyListState
 ) {
     val spooncularViewModel: SpooncularViewModel = viewModel(factory = SpooncularViewModel.Factory)
-    val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory)
 
-    val authState = authViewModel.authState.collectAsState()
+    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory)
+    val registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory)
+    val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+
+    val authState = loginViewModel.authState.collectAsState()
+
 
     LaunchedEffect(authState.value) {
         when (authState.value) {
@@ -63,28 +64,24 @@ fun AppNavGraph(
     }
 
 
-
-
-
     NavHost(navController = navController, startDestination = LogInScreenNav) {
 
         composable<LogInScreenNav> {
-            LoginScreen(navController, authViewModel, selectedItem)
+            LoginScreen(navController, loginViewModel, selectedItem)
         }
         composable<SignUpScreenNav> {
-            RegisterScreen(navController, authViewModel, selectedItem)
+            RegisterScreen(navController, registerViewModel, selectedItem)
         }
         composable<HomeScreenNav> {
             HomeScreen(
-                onNavigateToFilters = { navController.navigate("filters") }, // ✅ corrección
-                viewModel = spooncularViewModel,
+                onNavigateToFilters = { navController.navigate("filters") },
+                homeViewModel = homeViewModel,
                 onRecipeClick = onClickRecipe,
                 modifier,
-                authViewModel,
                 navController = navController
             )
         }
-        composable<SavedRecipesScreenNav> {
+        /*composable<SavedRecipesScreenNav> {
             SavedRecipesScreen()
         }
         composable<MadeRecipesScreenNav> {
@@ -93,7 +90,6 @@ fun AppNavGraph(
         composable<ProfileScreenNav> {
             ProfileScreen(
                 modifier = modifier,
-                authViewModel = authViewModel,
                 navController = navController,
                 scrollState = scrollState
             )
@@ -114,7 +110,7 @@ fun AppNavGraph(
 
         composable("filters") {
             FilterScreen(viewModel = viewModel())
-        }
+        }*/
 
     }
 

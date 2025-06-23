@@ -49,13 +49,12 @@ import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.Routes
 import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
 import com.nullPointerSociety.elfogon.utils.GoogleSignUtils
-import com.nullPointerSociety.elfogon.viewmodel.AuthViewModel
 
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    authViewModel: AuthViewModel,
+    loginViewModel: LoginViewModel,
     specifyRoute: MutableState<String>,
 ) {
     specifyRoute.value = Routes.LOGIN
@@ -63,7 +62,7 @@ fun LoginScreen(
     val pass = remember { mutableStateOf("") }
     var showPassword = remember { mutableStateOf(false) }
 
-    val auth = authViewModel.authState.collectAsState()
+    val auth = loginViewModel.authState.collectAsState()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val launcher = rememberLauncherForActivityResult(
@@ -79,7 +78,7 @@ fun LoginScreen(
                     scope = scope,
                     launcher = null,
                     onCredentialReady = { credential ->
-                        authViewModel.signInWithGoogleCredential(credential)
+                        loginViewModel.signInWithGoogleCredential(credential)
                     }
                 )
             }
@@ -146,7 +145,7 @@ fun LoginScreen(
         )
 
         Spacer(modifier = Modifier.height(32.dp))
-        CustomButton("Iniciar Sesión", onClick = { authViewModel.login(email.value, pass.value) })
+        CustomButton("Iniciar Sesión", onClick = { loginViewModel.login(email.value, pass.value) })
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
@@ -160,7 +159,7 @@ fun LoginScreen(
                     scope = scope,
                     launcher = launcher,
                     onCredentialReady = { credential ->
-                        authViewModel.signInWithGoogleCredential(credential)
+                        loginViewModel.signInWithGoogleCredential(credential)
                     }
                 )
             },
