@@ -23,6 +23,9 @@ import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
 import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileScreen
 import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileViewModel
 import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsScreen
+import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsViewModel
+import com.nullPointerSociety.elfogon.ui.screens.recipes.made.MadeRecipesScreen
+import com.nullPointerSociety.elfogon.ui.screens.recipes.saved.SavedRecipesScreen
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
 object Routes {
@@ -51,6 +54,8 @@ fun AppNavGraph(
     val registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory)
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
     val profileHomeViewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)
+    val detailsScreenViewModel: RecipeDetailsViewModel =
+        viewModel(factory = RecipeDetailsViewModel.Factory)
 
     //Solamente usado en el LaunchedEffect para redirigir al usuario si no está autenticado
     val authState = loginViewModel.authState.collectAsState()
@@ -85,10 +90,10 @@ fun AppNavGraph(
             )
         }
         composable<SavedRecipesScreenNav> {
-            // SavedRecipesScreen()
+            SavedRecipesScreen()
         }
         composable<MadeRecipesScreenNav> {
-            //MadeRecipesScreen()
+            MadeRecipesScreen()
         }
         composable<ProfileScreenNav> {
             ProfileScreen(
@@ -103,7 +108,7 @@ fun AppNavGraph(
             val recipeId = backStackEntry.arguments?.getInt("id") ?: 0
             RecipeDetailsScreen(
                 recipeId,
-                spooncularViewModel,
+                detailsScreenViewModel,
                 onBack = { navController.navigate(HomeScreenNav) },
                 modifier = modifier,
                 selectedItem,
