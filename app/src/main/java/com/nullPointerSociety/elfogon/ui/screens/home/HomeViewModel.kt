@@ -27,7 +27,7 @@ class HomeViewModel(
 
 
     init {
-        fetchRecipes()
+        //fetchRecipes()
     }
 
     fun getRecipeById(id: Int): RecipeApi? {

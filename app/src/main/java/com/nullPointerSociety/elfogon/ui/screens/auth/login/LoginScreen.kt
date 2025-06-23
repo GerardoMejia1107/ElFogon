@@ -91,7 +91,7 @@ fun LoginScreen(
         when (auth.value) {
             is AuthState.Authenticated -> {
                 specifyRoute.value = Routes.HOME
-                Toast.makeText(context, "Bienvenido", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Welcome!", Toast.LENGTH_SHORT).show()
                 navController.navigate(HomeScreenNav)
             }
 
@@ -116,7 +116,7 @@ fun LoginScreen(
             colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
             value = email.value,
             onValueChange = { email.value = it },
-            label = { Text("Correo") },
+            label = { Text("Email") },
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.background
             )
@@ -130,12 +130,12 @@ fun LoginScreen(
             colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
             value = pass.value,
             onValueChange = { pass.value = it },
-            label = { Text("Contraseña") },
+            label = { Text("Password") },
             trailingIcon = {
                 IconButton(onClick = { showPassword.value = !showPassword.value }) {
                     Icon(
                         imageVector = Icons.Filled.RemoveRedEye,
-                        contentDescription = "Mostrar contraseña",
+                        contentDescription = "Show password",
                         tint = if (showPassword.value) Color(0xFF4A6E4D) else Color.Gray
                     )
                 }
@@ -145,7 +145,7 @@ fun LoginScreen(
         )
 
         Spacer(modifier = Modifier.height(32.dp))
-        CustomButton("Iniciar Sesión", onClick = { loginViewModel.login(email.value, pass.value) })
+        CustomButton("Log In", onClick = { loginViewModel.login(email.value, pass.value) })
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
@@ -177,16 +177,15 @@ fun LoginScreen(
 
 
         Spacer(modifier = Modifier.height(24.dp))
-        // 🔥 Mensaje en vez de botón
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(top = 8.dp)
         ) {
-            Text(text = "¿No tienes una cuenta? ")
+            Text(text = "Don't have an account? ")
 
             Text(
-                text = "Regístrate",
+                text = "Sign Up Manually",
                 color = Color(0xFF4A6E4D),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier

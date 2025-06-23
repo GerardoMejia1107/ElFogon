@@ -20,6 +20,9 @@ import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterScreen
 import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterViewModel
 import com.nullPointerSociety.elfogon.ui.screens.home.HomeScreen
 import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
+import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileScreen
+import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileViewModel
+import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsScreen
 import com.nullPointerSociety.elfogon.viewmodel.SpooncularViewModel
 
 object Routes {
@@ -42,15 +45,15 @@ fun AppNavGraph(
     titleScreen: MutableState<String>,
     scrollState: LazyListState
 ) {
+    //ViewModels
     val spooncularViewModel: SpooncularViewModel = viewModel(factory = SpooncularViewModel.Factory)
-
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory)
     val registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory)
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+    val profileHomeViewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)
 
+    //Solamente usado en el LaunchedEffect para redirigir al usuario si no está autenticado
     val authState = loginViewModel.authState.collectAsState()
-
-
     LaunchedEffect(authState.value) {
         when (authState.value) {
             is AuthState.Unauthenticated -> navController.navigate(LogInScreenNav)
@@ -81,19 +84,21 @@ fun AppNavGraph(
                 navController = navController
             )
         }
-        /*composable<SavedRecipesScreenNav> {
-            SavedRecipesScreen()
+        composable<SavedRecipesScreenNav> {
+            // SavedRecipesScreen()
         }
         composable<MadeRecipesScreenNav> {
-            MadeRecipesScreen()
+            //MadeRecipesScreen()
         }
         composable<ProfileScreenNav> {
             ProfileScreen(
+                viewModel = profileHomeViewModel,
                 modifier = modifier,
                 navController = navController,
                 scrollState = scrollState
             )
         }
+
         composable<RecipeDetailsScreenNav> { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getInt("id") ?: 0
             RecipeDetailsScreen(
@@ -108,7 +113,7 @@ fun AppNavGraph(
             )
         }
 
-        composable("filters") {
+        /*composable("filters") {
             FilterScreen(viewModel = viewModel())
         }*/
 

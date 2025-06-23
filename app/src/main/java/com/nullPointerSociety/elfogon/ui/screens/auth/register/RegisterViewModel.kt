@@ -17,12 +17,6 @@ class RegisterViewModel(
     val authState = authRepository.authState
     val userData = authRepository.userData
 
-    fun signInWithGoogleCredential(credential: AuthCredential) {
-        viewModelScope.launch {
-            authRepository.signInWithGoogleCredential(credential)
-        }
-    }
-
     fun signUp(
         email: String,
         password: String,
