@@ -32,16 +32,15 @@ class SpooncularRepositoryImpl : SpooncularRepository {
 
     override suspend fun fetchRecipesByIdList(token: String, ids: List<String>) {
         try {
-            val response: List<RecipeApi> =
-                ids.mapNotNull { id ->
-                    try {
-                        RetrofitInstance.api.getRecipeByIdInfo(token, id.toInt())
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        null
-                    }
-                }
-            _savedRecipes.value = response
+            val allRecipes = mutableListOf<RecipeApi>()
+            val chunks = ids.chunked(100)
+
+            for (chunk in chunks) {
+                val idsParam = chunk.joinToString(",")
+                val response = RetrofitInstance.api.getRecipeByIdInfo(token, idsParam)
+                allRecipes.addAll(response)
+            }
+            _savedRecipes.value = allRecipes
         } catch (e: Exception) {
             e.printStackTrace()
         }
