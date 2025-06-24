@@ -26,6 +26,7 @@ import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsSc
 import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsViewModel
 import com.nullPointerSociety.elfogon.ui.screens.recipes.made.MadeRecipesScreen
 import com.nullPointerSociety.elfogon.ui.screens.recipes.saved.SavedRecipesScreen
+import com.nullPointerSociety.elfogon.viewmodel.UserViewModel
 
 
 @SuppressLint("ContextCastToActivity")
@@ -35,7 +36,7 @@ fun AppNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     titleScreen: MutableState<String>,
-    scrollState: LazyListState
+    scrollState: LazyListState,
 ) {
     //ViewModels
     //val spooncularViewModel: SpooncularViewModel = viewModel(factory = SpooncularViewModel.Factory)
@@ -45,6 +46,7 @@ fun AppNavGraph(
     val profileHomeViewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)
     val detailsScreenViewModel: RecipeDetailsViewModel =
         viewModel(factory = RecipeDetailsViewModel.Factory)
+    val userViewModel: UserViewModel = viewModel(factory = UserViewModel.Factory)
 
 
     //Solamente usado en el LaunchedEffect para redirigir al usuario si no está autenticado
@@ -96,6 +98,8 @@ fun AppNavGraph(
 
         composable<RecipeDetailsScreenNav> { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getInt("id") ?: 0
+            userViewModel.setRecipeIdSelected(recipeId.toString())
+
             RecipeDetailsScreen(
                 recipeId,
                 detailsScreenViewModel,

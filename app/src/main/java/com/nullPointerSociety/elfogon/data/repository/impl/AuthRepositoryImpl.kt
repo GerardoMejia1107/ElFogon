@@ -79,6 +79,10 @@ class AuthRepositoryImplementation(
         }
     }
 
+    override suspend fun getUserUid(): String? {
+        return authService.currentUser?.uid
+    }
+
     override suspend fun logout() {
         authService.signOut()
         _authState.value = AuthState.Unauthenticated

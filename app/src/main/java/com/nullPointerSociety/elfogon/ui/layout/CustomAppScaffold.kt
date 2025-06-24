@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.layout
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -24,23 +25,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nullPointerSociety.elfogon.ui.navigation.AppNavGraph
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.MadeRecipesScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.ProfileScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.SavedRecipesScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
+import com.nullPointerSociety.elfogon.viewmodel.UserViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun CustomScaffold(
 ) {
+    val userViewModel: UserViewModel = viewModel(factory = UserViewModel.Factory)
+
     val navController = rememberNavController()
 
     var titleScreen = rememberSaveable { mutableStateOf("") }
@@ -65,8 +68,12 @@ fun CustomScaffold(
         listOf(LogInScreenNav::class.qualifiedName, SignUpScreenNav::class.qualifiedName)
     val isDetailsScreen = currentRoute?.contains("RecipeDetailsScreenNav") == true
 
-    LaunchedEffect(currentRoute) {
-        println("🌐 Current Route: $currentRoute")
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        userViewModel.eventFlow.collect { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     Scaffold(
@@ -79,7 +86,8 @@ fun CustomScaffold(
                         navController.popBackStack(HomeScreenNav, inclusive = false)
                     },
                     showLogo = true,
-                    currentRoute
+                    currentRoute,
+                    detailsAction = { userViewModel.saveRecipe(userViewModel.recipeIdSelected.value) }
                 )
             }
         },
@@ -123,8 +131,9 @@ fun CustomScaffold(
             navController = navController,
             Modifier.padding(innerPadding),
             titleScreen,
-            scrollState
-        )
+            scrollState,
+
+            )
     }
 }
 

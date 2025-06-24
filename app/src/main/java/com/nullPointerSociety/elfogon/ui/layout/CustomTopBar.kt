@@ -26,7 +26,8 @@ fun CustomTopBar(
     customTitle: String,
     onAction: (() -> Unit)? = null,
     showLogo: Boolean = true,
-    selectedRoute: String?
+    selectedRoute: String?,
+    detailsAction: () -> Unit
 ) {
     val isDetails = selectedRoute?.contains("RecipeDetailsScreenNav") == true
     val maxHeight = if (isDetails) 115.dp else 200.dp
@@ -65,7 +66,7 @@ fun CustomTopBar(
         },
         actions = {
             if (isDetails) {
-                IconButton(onClick = { /* save/favorite */ }) {
+                IconButton(onClick = { detailsAction() }) {
                     Icon(
                         imageVector = Icons.Outlined.BookmarkAdd,
                         contentDescription = "Add to favorites"
