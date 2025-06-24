@@ -114,6 +114,7 @@ fun AppNavGraph(
             )
         }
 
+        //filerscreen
         /*composable<SearchByFilterScreenNav> {
             FilterScreen(viewModel = spooncularViewModel)
         }*/
