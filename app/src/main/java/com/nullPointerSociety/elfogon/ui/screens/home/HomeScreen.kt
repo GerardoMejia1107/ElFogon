@@ -2,17 +2,13 @@ package com.nullPointerSociety.elfogon.ui.screens.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -29,7 +25,6 @@ import com.nullPointerSociety.elfogon.ui.components.RecipeCard
 import com.nullPointerSociety.elfogon.ui.components.SearchBar
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
 
-
 @Composable
 fun HomeScreen(
     onNavigateToFilters: () -> Unit,
@@ -38,7 +33,8 @@ fun HomeScreen(
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
     navController: NavController
 ) {
-    val sampleRecipes = homeViewModel.searchResults.collectAsState()
+    val searchResults = homeViewModel.searchResults.collectAsState()
+    val categorizedRecipes = homeViewModel.categorizedRecipes.collectAsState()
     val auth = homeViewModel.authState.collectAsState()
 
     LaunchedEffect(auth.value) {
@@ -64,7 +60,6 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Surface(
             modifier = Modifier.fillMaxWidth()
-
         ) {
             Text(
                 text = "Descubre recetas deliciosas y fáciles de preparar",
@@ -76,20 +71,9 @@ fun HomeScreen(
             )
         }
 
-
         Spacer(modifier = Modifier.height(16.dp))
 
-        //sampleRecipes.value.isEmpty()
-        if (sampleRecipes.value.isEmpty()) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                CircularProgressIndicator()
-            }
-
-        } else
+        if (searchResults.value.isNotEmpty()) {
             LazyVerticalGrid(
                 userScrollEnabled = true,
                 columns = GridCells.Fixed(2),
@@ -97,12 +81,37 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(sampleRecipes.value) { RecipeCard(it, onRecipeClick) }
+                items(searchResults.value) { RecipeCard(it, onRecipeClick) }
             }
-
+        } else if (categorizedRecipes.value.isNotEmpty()) {
+            LazyColumn(
+                contentPadding = PaddingValues(bottom = 140.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(categorizedRecipes.value) { group ->
+                    Text(
+                        text = group.tag,
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(group.recipes) { recipe ->
+                            RecipeCard(recipe, onRecipeClick)
+                        }
+                    }
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                CircularProgressIndicator()
+            }
+        }
     }
-
-
 }
-
-

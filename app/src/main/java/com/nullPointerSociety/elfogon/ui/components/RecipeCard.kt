@@ -2,22 +2,11 @@ package com.nullPointerSociety.elfogon.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +27,7 @@ fun RecipeCard(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .width(200.dp) // ✅ Uniforme en LazyRow y Grid
             .height(280.dp)
             .clickable(onClick = { onClick(recipeApiSpoon.id) }),
         shape = RoundedCornerShape(16.dp),
@@ -49,18 +38,18 @@ fun RecipeCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(130.dp)
+                    .aspectRatio(1.5f) // ✅ Proporción uniforme
             ) {
                 Image(
                     painter = rememberAsyncImagePainter(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(recipeApiSpoon.image)
+                            .data(recipeApiSpoon.image.orEmpty()) // ✅ evita null
                             .crossfade(true)
                             .scale(Scale.FILL)
-                            .build()
+                            .build(),
+                        contentScale = ContentScale.Crop
                     ),
                     contentDescription = recipeApiSpoon.title,
-                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
@@ -77,7 +66,6 @@ fun RecipeCard(
                 )
             }
 
-            // 2) Text area
             Column(
                 modifier = Modifier
                     .padding(12.dp)

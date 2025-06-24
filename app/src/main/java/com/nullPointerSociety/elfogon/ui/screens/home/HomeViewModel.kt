@@ -11,6 +11,7 @@ import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.model.RecipeApi
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
+import com.nullPointerSociety.elfogon.data.repository.impl.SpooncularRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -20,51 +21,59 @@ class HomeViewModel(
     private val spooncularRepository: SpooncularRepository
 ) : ViewModel() {
     val authState = authRepository.authState
-    val recipes = spooncularRepository.recipes
 
     private val _searchResults = MutableStateFlow<List<RecipeApi>>(emptyList())
     val searchResults: StateFlow<List<RecipeApi>> = _searchResults
 
+    private val _categorizedRecipes = MutableStateFlow<List<RecipeCategoryGroup>>(emptyList())
+    val categorizedRecipes: StateFlow<List<RecipeCategoryGroup>> = _categorizedRecipes
 
     init {
-        //fetchRecipes()
+        fetchCategorizedRecipes()
     }
 
     fun getRecipeById(id: Int): RecipeApi? {
-        return spooncularRepository.getRecipeById(id)
+        return categorizedRecipes.value.flatMap { it.recipes }.find { it.id == id }
     }
 
-    fun fetchRecipes() {
+    fun fetchCategorizedRecipes() {
         viewModelScope.launch {
-            spooncularRepository.fetchRecipes(token = BuildConfig.SPOONACULAR_API_KEY, number = 10)
-            // ✅ Actualiza también los searchResults con los datos iniciales
-            _searchResults.value = spooncularRepository.recipes.value
+            val tags = listOf("vegan", "vegetarian", "dessert", "italian", "mexican", "breakfast", "soup", "snack")
+            val categoryGroups = mutableListOf<RecipeCategoryGroup>()
+
+            // ⚠️ Importante: usamos el método directo del implementation
+            val realRepo = spooncularRepository as? SpooncularRepositoryImpl
+
+            if (realRepo != null) {
+                for (tag in tags) {
+                    val fetched = realRepo.fetchRecipesByTagDirect(
+                        token = BuildConfig.SPOONACULAR_API_KEY,
+                        tag = tag,
+                        number = 8
+                    )
+                    categoryGroups.add(RecipeCategoryGroup(tag.replaceFirstChar { it.uppercase() }, fetched))
+                }
+                _categorizedRecipes.value = categoryGroups
+                _searchResults.value = emptyList()
+            }
         }
     }
-
-    fun fetchRecipesByCategory(category: String) {
-        viewModelScope.launch {
-            spooncularRepository.fetchRecipesByTag(
-                token = BuildConfig.SPOONACULAR_API_KEY,
-                tag = category
-            )
-        }
-    }
-
-//    cambios con elvis
 
     fun filterRecipesByQuery(query: String) {
-        _searchResults.value = recipes.value.filter {
-            it.title?.contains(query, ignoreCase = true) ?: true // Provide true if title is null
+        if (query.isBlank()) {
+            _searchResults.value = emptyList()
+        } else {
+            val allRecipes = categorizedRecipes.value.flatMap { it.recipes }
+            _searchResults.value = allRecipes.filter {
+                it.title?.contains(query, ignoreCase = true) ?: false
+            }
         }
     }
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application =
-                    (this[APPLICATION_KEY] as DelFogonApplication)
-
+                val application = (this[APPLICATION_KEY] as DelFogonApplication)
                 HomeViewModel(
                     application.appProvider.provideAuthRepository(),
                     application.appProvider.provideSpooncularRepository()
@@ -72,5 +81,9 @@ class HomeViewModel(
             }
         }
     }
-
 }
+
+data class RecipeCategoryGroup(
+    val tag: String,
+    val recipes: List<RecipeApi>
+)

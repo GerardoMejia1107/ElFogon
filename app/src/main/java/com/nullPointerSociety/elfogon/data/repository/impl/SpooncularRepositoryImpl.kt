@@ -26,17 +26,31 @@ class SpooncularRepositoryImpl : SpooncularRepository {
         }
     }
 
-    // NUEVO: Fetch por categoría (etiqueta/tag)
     override suspend fun fetchRecipesByTag(token: String, tag: String, number: Int) {
         try {
             val response = RetrofitInstance.api.getRecipes(
                 token = token,
                 number = number,
-                tags = tag // Todavia hay que ver si la API endpoint, acepte este parámetro
+                tags = tag
             )
             _recipes.value = response.recipes
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    // ✅ NUEVO MÉTODO para devolver recetas directamente sin sobrescribir el flujo
+    suspend fun fetchRecipesByTagDirect(token: String, tag: String, number: Int = 8): List<RecipeApi> {
+        return try {
+            val response = RetrofitInstance.api.getRecipes(
+                token = token,
+                number = number,
+                tags = tag
+            )
+            response.recipes
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
         }
     }
 }

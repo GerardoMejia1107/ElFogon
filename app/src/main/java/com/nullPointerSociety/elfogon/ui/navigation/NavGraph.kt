@@ -18,6 +18,7 @@ import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginViewModel
 import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterScreen
 import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterViewModel
+import com.nullPointerSociety.elfogon.ui.screens.filter.FilterScreen
 import com.nullPointerSociety.elfogon.ui.screens.home.HomeScreen
 import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
 import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileScreen
@@ -77,7 +78,7 @@ fun AppNavGraph(
         }
         composable<HomeScreenNav> {
             HomeScreen(
-                onNavigateToFilters = { navController.navigate("filters") },
+                onNavigateToFilters = { navController.navigate(SearchByFilterScreenNav) },
                 homeViewModel = homeViewModel,
                 onRecipeClick = onClickRecipe,
                 modifier,
@@ -112,6 +113,10 @@ fun AppNavGraph(
 
             )
         }
+
+        /*composable<SearchByFilterScreenNav> {
+            FilterScreen(viewModel = spooncularViewModel)
+        }*/
 
         /*composable("filters") {
             FilterScreen(viewModel = viewModel())
