@@ -26,7 +26,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.components.profile.BasicInfo
@@ -45,11 +45,11 @@ import com.nullPointerSociety.elfogon.ui.components.profile.ProfileStatCard
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel,
     modifier: Modifier = Modifier,
     navController: NavController,
     scrollState: LazyListState
 ) {
+    val profileHomeViewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)
 
     var expandPassword by remember { mutableStateOf(false) }
     var expandEmail by remember { mutableStateOf(false) }
@@ -57,7 +57,7 @@ fun ProfileScreen(
     val confirmPass = remember { mutableStateOf("") }
     val newEmail = remember { mutableStateOf("") }
 
-    val userData = viewModel.userData.collectAsState()
+    val userData = profileHomeViewModel.userData.collectAsState()
 
 
     LazyColumn(
@@ -178,7 +178,7 @@ fun ProfileScreen(
             // Botón cerrar sesión
             CustomButton(
                 text = "Sing Out",
-                onClick = { viewModel.logout() },
+                onClick = { profileHomeViewModel.logout() },
             )
 
         }

@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
@@ -41,10 +42,10 @@ import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    registerViewModel: RegisterViewModel,
+
 
 ) {
-
+    val registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory)
     val name = remember { mutableStateOf("") }
     val lastname = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }

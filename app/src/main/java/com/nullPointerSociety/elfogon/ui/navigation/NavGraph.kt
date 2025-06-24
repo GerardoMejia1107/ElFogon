@@ -17,13 +17,9 @@ import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginViewModel
 import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterScreen
-import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterViewModel
 import com.nullPointerSociety.elfogon.ui.screens.home.HomeScreen
-import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
 import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileScreen
-import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileViewModel
 import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsScreen
-import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsViewModel
 import com.nullPointerSociety.elfogon.ui.screens.recipes.made.MadeRecipesScreen
 import com.nullPointerSociety.elfogon.ui.screens.recipes.saved.SavedRecipesScreen
 import com.nullPointerSociety.elfogon.viewmodel.UserViewModel
@@ -38,14 +34,8 @@ fun AppNavGraph(
     titleScreen: MutableState<String>,
     scrollState: LazyListState,
 ) {
-    //ViewModels
-    //val spooncularViewModel: SpooncularViewModel = viewModel(factory = SpooncularViewModel.Factory)
+
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory)
-    val registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory)
-    val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
-    val profileHomeViewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)
-    val detailsScreenViewModel: RecipeDetailsViewModel =
-        viewModel(factory = RecipeDetailsViewModel.Factory)
     val userViewModel: UserViewModel = viewModel(factory = UserViewModel.Factory)
 
 
@@ -67,15 +57,14 @@ fun AppNavGraph(
     NavHost(navController = navController, startDestination = LogInScreenNav) {
 
         composable<LogInScreenNav> {
-            LoginScreen(navController, loginViewModel)
+            LoginScreen(navController)
         }
         composable<SignUpScreenNav> {
-            RegisterScreen(navController, registerViewModel)
+            RegisterScreen(navController)
         }
         composable<HomeScreenNav> {
             HomeScreen(
                 onNavigateToFilters = { navController.navigate("filters") },
-                homeViewModel = homeViewModel,
                 onRecipeClick = onClickRecipe,
                 modifier,
                 navController = navController,
@@ -89,7 +78,6 @@ fun AppNavGraph(
         }
         composable<ProfileScreenNav> {
             ProfileScreen(
-                viewModel = profileHomeViewModel,
                 modifier = modifier,
                 navController = navController,
                 scrollState = scrollState
@@ -102,7 +90,6 @@ fun AppNavGraph(
 
             RecipeDetailsScreen(
                 recipeId,
-                detailsScreenViewModel,
                 onBack = { navController.popBackStack() },
                 modifier = modifier,
                 titleScreen,

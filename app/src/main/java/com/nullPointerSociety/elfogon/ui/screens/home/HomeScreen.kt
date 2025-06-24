@@ -19,11 +19,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.RecipeCard
@@ -31,16 +31,16 @@ import com.nullPointerSociety.elfogon.ui.components.SearchBar
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
 
 
-
 @Composable
 fun HomeScreen(
     onNavigateToFilters: () -> Unit,
-    homeViewModel: HomeViewModel,
+
     onRecipeClick: (Int) -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
     navController: NavController,
 
-) {
+    ) {
+    val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
     val sampleRecipes = homeViewModel.searchResults.collectAsState()
     val auth = homeViewModel.authState.collectAsState()
 
