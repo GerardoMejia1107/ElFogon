@@ -37,6 +37,14 @@ class UserRepositoryImpl(
 
     }
 
+    override suspend fun getSavedRecipes(uid: String): List<String> {
+        val snapshot = firestoreService.collection("users").document(uid).get().await()
+        if (snapshot.exists()) {
+            Log.d("UserRepositoryImpl", "getSavedRecipes: ${snapshot.get("savedRecipes")}")
+        }
+        return snapshot.get("savedRecipes") as List<String>
+    }
+
 
     override suspend fun saveUserData(
         uid: String,

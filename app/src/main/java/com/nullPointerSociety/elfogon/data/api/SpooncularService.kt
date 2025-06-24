@@ -4,6 +4,7 @@ import com.nullPointerSociety.elfogon.data.model.RecipeApi
 import com.nullPointerSociety.elfogon.data.wrapper.SpooncularResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface SpooncularService {
@@ -13,5 +14,11 @@ interface SpooncularService {
         @Query("number") number: Int = 100,
         @Query("tags") tags: String? = null // ✅ NUEVO: filtro por categoría
     ): SpooncularResponse<RecipeApi>
+
+    @GET("recipes/{id}/information")
+    suspend fun getRecipeByIdInfo(
+        @Header("x-api-key") token: String,
+        @Path("id") id: Int
+    ): RecipeApi
 }
 

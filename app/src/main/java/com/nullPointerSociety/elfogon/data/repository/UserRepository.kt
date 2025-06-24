@@ -13,6 +13,8 @@ interface UserRepository {
         recipeId: String
     )
 
+    suspend fun getSavedRecipes(uid: String): List<String>
+
     /*
     *  suspend fun updateMadeRecipes(
          uid: String,
