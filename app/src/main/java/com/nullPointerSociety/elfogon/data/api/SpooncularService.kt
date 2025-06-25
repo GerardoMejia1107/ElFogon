@@ -13,5 +13,11 @@ interface SpooncularService {
         @Query("number") number: Int = 100,
         @Query("tags") tags: String? = null // ✅ NUEVO: filtro por categoría
     ): SpooncularResponse<RecipeApi>
+
+    @GET("recipes/informationBulk")
+    suspend fun getRecipeByIdInfo(
+        @Header("x-api-key") token: String,
+        @Query("ids") ids: String
+    ): List<RecipeApi>
 }
 

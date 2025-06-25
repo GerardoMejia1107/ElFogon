@@ -9,12 +9,15 @@ import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.model.RecipeApi
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 
-class RecipeDetailsViewModel(private val spooncularRepository: SpooncularRepository) : ViewModel() {
+class RecipeDetailsViewModel(
+    private val spooncularRepository: SpooncularRepository,
+) : ViewModel() {
     val recipes = spooncularRepository.recipes
 
     fun getRecipeById(id: Int): RecipeApi? {
         return spooncularRepository.getRecipeById(id)
     }
+
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
@@ -23,7 +26,7 @@ class RecipeDetailsViewModel(private val spooncularRepository: SpooncularReposit
                     (this[APPLICATION_KEY] as DelFogonApplication)
 
                 RecipeDetailsViewModel(
-                    application.appProvider.provideSpooncularRepository()
+                    application.appProvider.provideSpooncularRepository(),
                 )
             }
         }

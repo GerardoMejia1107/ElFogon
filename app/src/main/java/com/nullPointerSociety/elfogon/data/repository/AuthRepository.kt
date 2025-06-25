@@ -17,6 +17,8 @@ interface AuthRepository {
         lastName: String
     )
 
+    suspend fun getUserUid(): String?
+
     suspend fun logout()
     suspend fun signInWithGoogleCredential(credential: AuthCredential)
 

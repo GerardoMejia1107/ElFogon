@@ -10,9 +10,13 @@ class SpooncularRepositoryImpl : SpooncularRepository {
     private val _recipes = MutableStateFlow<List<RecipeApi>>(emptyList())
     override val recipes: StateFlow<List<RecipeApi>> = _recipes
 
+    private val _savedRecipes = MutableStateFlow<List<RecipeApi>>(emptyList())
+    override val recipeById: StateFlow<List<RecipeApi>> = _savedRecipes
+
     override fun getRecipeById(id: Int): RecipeApi? {
         return recipes.value.find { it.id == id }
     }
+
 
     override suspend fun fetchRecipes(token: String, number: Int) {
         try {
@@ -21,6 +25,22 @@ class SpooncularRepositoryImpl : SpooncularRepository {
                 number = number
             )
             _recipes.value = response.recipes
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override suspend fun fetchRecipesByIdList(token: String, ids: List<String>) {
+        try {
+            val allRecipes = mutableListOf<RecipeApi>()
+            val chunks = ids.chunked(100)
+
+            for (chunk in chunks) {
+                val idsParam = chunk.joinToString(",")
+                val response = RetrofitInstance.api.getRecipeByIdInfo(token, idsParam)
+                allRecipes.addAll(response)
+            }
+            _savedRecipes.value = allRecipes
         } catch (e: Exception) {
             e.printStackTrace()
         }

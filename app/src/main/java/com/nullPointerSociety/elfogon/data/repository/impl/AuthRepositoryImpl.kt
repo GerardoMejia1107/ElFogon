@@ -27,6 +27,7 @@ class AuthRepositoryImplementation(
             _authState.value = AuthState.Unauthenticated
         } else {
             _authState.value = AuthState.Authenticated
+            _userData.value = userRepository.fetchUserData(authService.currentUser?.uid.toString())
         }
     }
 
@@ -76,6 +77,10 @@ class AuthRepositoryImplementation(
         } catch (e: Exception) {
             _authState.value = AuthState.Error(e.message ?: "Sign up failed")
         }
+    }
+
+    override suspend fun getUserUid(): String? {
+        return authService.currentUser?.uid
     }
 
     override suspend fun logout() {
