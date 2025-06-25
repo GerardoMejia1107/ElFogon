@@ -71,7 +71,7 @@ fun AppNavGraph(
             )
         }
         composable<SavedRecipesScreenNav> {
-            SavedRecipesScreen()
+            SavedRecipesScreen(modifier = modifier, onRecipeClick = onClickRecipe)
         }
         composable<MadeRecipesScreenNav> {
             MadeRecipesScreen()
