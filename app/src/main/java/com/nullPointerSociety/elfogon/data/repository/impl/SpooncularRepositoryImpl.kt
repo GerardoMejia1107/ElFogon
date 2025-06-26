@@ -13,8 +13,12 @@ class SpooncularRepositoryImpl : SpooncularRepository {
     private val _savedRecipes = MutableStateFlow<List<RecipeApi>>(emptyList())
     override val recipeById: StateFlow<List<RecipeApi>> = _savedRecipes
 
-    override fun getRecipeById(id: Int): RecipeApi? {
+    override fun getRecipeByIdFetched(id: Int): RecipeApi? {
         return recipes.value.find { it.id == id }
+    }
+
+    override fun getRecipeSavedByIdFetched(id: Int): RecipeApi? {
+        return recipeById.value.find { it.id == id }
     }
 
 

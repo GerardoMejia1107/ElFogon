@@ -23,24 +23,29 @@ fun SavedRecipesScreen(
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
 ) {
     val userViewModel: UserViewModel = viewModel(factory = UserViewModel.Factory)
+
     val savedRecipes = userViewModel.getListOfSavedRecipes().collectAsState()
     val savedRecipesList = savedRecipes.value
+
+
+
+
 
 
     Log.d("SavedRecipesScreen", "User ID: ${userViewModel.getListOfSavedRecipes()}")
 
     Column(modifier = modifier.fillMaxSize()) {
-        Text(
-            "Aquí se mostrarán las recetas que has guardado.",
-        )
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(savedRecipesList) {
-                SavedCard(it, onViewClick = onRecipeClick) {}
+            items(savedRecipesList) { recipe ->
+                SavedCard(
+                    recipe,
+                    onViewClick = onRecipeClick
+                ) {}
             }
         }
     }

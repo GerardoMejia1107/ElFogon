@@ -31,7 +31,7 @@ class HomeViewModel(
     }
 
     fun getRecipeById(id: Int): RecipeApi? {
-        return spooncularRepository.getRecipeById(id)
+        return spooncularRepository.getRecipeByIdFetched(id)
     }
 
     fun fetchRecipes() {

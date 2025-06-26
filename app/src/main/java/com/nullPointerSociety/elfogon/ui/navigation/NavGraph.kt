@@ -49,8 +49,8 @@ fun AppNavGraph(
     }
 
 
-    val onClickRecipe = { recipeId: Int ->
-        navController.navigate(RecipeDetailsScreenNav(recipeId))
+    val onClickRecipe = { recipeId: Int, requester: String ->
+        navController.navigate(RecipeDetailsScreenNav(recipeId, requester))
     }
 
 
@@ -63,15 +63,21 @@ fun AppNavGraph(
             RegisterScreen(navController)
         }
         composable<HomeScreenNav> {
+            val requester = HomeScreenNav::class.qualifiedName
             HomeScreen(
                 onNavigateToFilters = { navController.navigate("filters") },
-                onRecipeClick = onClickRecipe,
+                onRecipeClick = { recipeID: Int ->
+                    onClickRecipe(recipeID, requester ?: "default")
+                },
                 modifier,
                 navController = navController,
             )
         }
         composable<SavedRecipesScreenNav> {
-            SavedRecipesScreen(modifier = modifier, onRecipeClick = onClickRecipe)
+            val requester = SavedRecipesScreenNav::class.qualifiedName
+            SavedRecipesScreen(modifier = modifier, onRecipeClick = { recipeID: Int ->
+                onClickRecipe(recipeID, requester ?: "default")
+            })
         }
         composable<MadeRecipesScreenNav> {
             MadeRecipesScreen()
@@ -86,10 +92,13 @@ fun AppNavGraph(
 
         composable<RecipeDetailsScreenNav> { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getInt("id") ?: 0
+            val requester: String =
+                backStackEntry.arguments?.getString("requestOrigin") ?: "default"
             userViewModel.setRecipeIdSelected(recipeId.toString())
 
             RecipeDetailsScreen(
                 recipeId,
+                requester,
                 onBack = { navController.popBackStack() },
                 modifier = modifier,
                 titleScreen,

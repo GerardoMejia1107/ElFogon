@@ -39,7 +39,7 @@ fun SavedCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(160.dp)
+            .height(140.dp)
             .clickable(onClick = { onViewClick(recipe.id.toInt()) }),
         shape = RoundedCornerShape(16.dp),
 
@@ -89,7 +89,7 @@ fun SavedCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(4.dp)
-                        .size(20.dp)
+                        .size(25.dp)
                         .clickable { onDeleteClick(recipe.id) }
                 )
             }
