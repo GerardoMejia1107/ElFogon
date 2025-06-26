@@ -6,11 +6,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.nullPointerSociety.elfogon.BuildConfig
 import com.nullPointerSociety.elfogon.DelFogonApplication
-import com.nullPointerSociety.elfogon.data.model.RecipeApi
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
-import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import com.nullPointerSociety.elfogon.data.repository.UserRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,9 +19,6 @@ import kotlinx.coroutines.launch
 class UserViewModel(
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository,
-    private val spooncularRepository: SpooncularRepository
-
-
 ) : ViewModel() {
 
     private val _recipeIdSelected = MutableStateFlow<String>("")
@@ -36,20 +30,6 @@ class UserViewModel(
     fun setRecipeIdSelected(recipeId: String) {
         _recipeIdSelected.value = recipeId
     }
-
-    init {
-        viewModelScope.launch {
-            spooncularRepository.fetchRecipesByIdList(
-                BuildConfig.SPOONACULAR_API_KEY,
-                userRepository.getSavedRecipes(authRepository.getUserUid().toString())
-            )
-        }
-    }
-
-    fun getListOfSavedRecipes(): StateFlow<List<RecipeApi>> {
-        return spooncularRepository.recipeById
-    }
-
 
     fun saveRecipe(recipeId: String?) {
         viewModelScope.launch {
@@ -75,7 +55,6 @@ class UserViewModel(
                 UserViewModel(
                     application.appProvider.provideUserRepository(),
                     application.appProvider.provideAuthRepository(),
-                    application.appProvider.provideSpooncularRepository()
                 )
             }
         }

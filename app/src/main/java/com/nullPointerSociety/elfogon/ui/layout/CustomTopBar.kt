@@ -27,10 +27,13 @@ fun CustomTopBar(
     onAction: (() -> Unit)? = null,
     showLogo: Boolean = true,
     selectedRoute: String?,
+    previousRoute: String?,
     detailsAction: () -> Unit
 ) {
     val isDetails = selectedRoute?.contains("RecipeDetailsScreenNav") == true
     val maxHeight = if (isDetails) 115.dp else 200.dp
+
+    val isFromSaved = previousRoute?.contains("SavedRecipesScreenNav") == true
 
     CenterAlignedTopAppBar(
         modifier = Modifier.heightIn(min = 115.dp, max = maxHeight),
@@ -65,7 +68,7 @@ fun CustomTopBar(
             }
         },
         actions = {
-            if (isDetails) {
+            if (isDetails && !isFromSaved) {
                 IconButton(onClick = { detailsAction() }) {
                     Icon(
                         imageVector = Icons.Outlined.BookmarkAdd,

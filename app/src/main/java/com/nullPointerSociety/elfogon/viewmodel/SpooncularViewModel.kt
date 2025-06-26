@@ -29,7 +29,7 @@ class SpooncularViewModel(
     }
 
     fun getRecipeById(id: Int): RecipeApi? {
-        return repository.getRecipeById(id)
+        return repository.getRecipeByIdFetched(id)
     }
 
     fun fetchRecipes() {

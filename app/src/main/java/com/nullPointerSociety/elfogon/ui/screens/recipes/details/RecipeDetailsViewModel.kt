@@ -15,7 +15,11 @@ class RecipeDetailsViewModel(
     val recipes = spooncularRepository.recipes
 
     fun getRecipeById(id: Int): RecipeApi? {
-        return spooncularRepository.getRecipeById(id)
+        return spooncularRepository.getRecipeByIdFetched(id)
+    }
+
+    fun getRecipeSavedById(id: Int): RecipeApi? {
+        return spooncularRepository.getRecipeSavedByIdFetched(id)
     }
 
 

@@ -42,7 +42,7 @@ class UserRepositoryImpl(
         if (snapshot.exists()) {
             Log.d("UserRepositoryImpl", "getSavedRecipes: ${snapshot.get("savedRecipes")}")
         }
-        return snapshot.get("savedRecipes") as List<String>
+        return snapshot.get("savedRecipes") as? List<String> ?: emptyList()
     }
 
 

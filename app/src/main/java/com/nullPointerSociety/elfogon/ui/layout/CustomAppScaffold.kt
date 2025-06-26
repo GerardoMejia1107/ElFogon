@@ -43,22 +43,20 @@ import com.nullPointerSociety.elfogon.viewmodel.UserViewModel
 fun CustomScaffold(
 ) {
     val userViewModel: UserViewModel = viewModel(factory = UserViewModel.Factory)
-
-
     val navController = rememberNavController()
-
     var titleScreen = rememberSaveable { mutableStateOf("") }
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val previousRoute = navController.previousBackStackEntry?.destination?.route
 
-    var scrollState = rememberLazyListState()
-    var showTitleTopBar = remember {
+    val scrollState = rememberLazyListState()
+    val showTitleTopBar = remember {
         derivedStateOf {
             scrollState.firstVisibleItemIndex > 0 ||
                     scrollState.firstVisibleItemScrollOffset > 100
         }
     }
+
 
 
     fun onItemSelected(route: Any) {
@@ -88,6 +86,7 @@ fun CustomScaffold(
                     },
                     showLogo = true,
                     currentRoute,
+                    previousRoute,
                     detailsAction = { userViewModel.saveRecipe(userViewModel.recipeIdSelected.value) }
                 )
             }

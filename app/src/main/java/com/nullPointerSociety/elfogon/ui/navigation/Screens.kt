@@ -15,7 +15,7 @@ object ProfileScreenNav
 object MadeRecipesScreenNav
 
 @Serializable
-data class RecipeDetailsScreenNav(val id: Int)
+data class RecipeDetailsScreenNav(val id: Int, val requestOrigin: String)
 
 @Serializable
 object SearchByFilterScreenNav
