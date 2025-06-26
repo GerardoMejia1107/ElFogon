@@ -13,15 +13,18 @@ class SpooncularRepositoryImpl : SpooncularRepository {
     private val _savedRecipes = MutableStateFlow<List<RecipeApi>>(emptyList())
     override val recipeById: StateFlow<List<RecipeApi>> = _savedRecipes
 
+    //Me retorna una receta por ID de las recetas obtenidas (busca en la lista de recetas obtenidas (fetch para Home))
     override fun getRecipeByIdFetched(id: Int): RecipeApi? {
         return recipes.value.find { it.id == id }
     }
 
+    //Me retorna una receta guardada por ID de las recetas guardadas (busca en la lista de recetas guardadas)
     override fun getRecipeSavedByIdFetched(id: Int): RecipeApi? {
         return recipeById.value.find { it.id == id }
     }
 
 
+    // Fetch recipes from the Spoonacular API
     override suspend fun fetchRecipes(token: String, number: Int) {
         try {
             val response = RetrofitInstance.api.getRecipes(
@@ -34,6 +37,7 @@ class SpooncularRepositoryImpl : SpooncularRepository {
         }
     }
 
+    // Fetch recipes by ID list from the Spoonacular API
     override suspend fun fetchRecipesByIdList(token: String, ids: List<String>) {
         try {
             val allRecipes = mutableListOf<RecipeApi>()

@@ -11,16 +11,28 @@ import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.model.RecipeApi
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.nullPointerSociety.elfogon.data.repository.UserRepository
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SavedRecipesViewModel(
+    private val userRepository: UserRepository,
     private val spooncularRepository: SpooncularRepository,
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
+    init {
+        viewModelScope.launch {
+            spooncularRepository.fetchRecipesByIdList(
+                BuildConfig.SPOONACULAR_API_KEY,
+                userRepository.getSavedRecipes(authRepository.getUserUid().toString())
+            )
+        }
+    }
 
+    fun getListOfSavedRecipes(): StateFlow<List<RecipeApi>> {
+        return spooncularRepository.recipeById
+    }
 
 
     companion object {
@@ -30,6 +42,7 @@ class SavedRecipesViewModel(
                     (this[APPLICATION_KEY] as DelFogonApplication)
 
                 SavedRecipesViewModel(
+                    application.appProvider.provideUserRepository(),
                     application.appProvider.provideSpooncularRepository(),
                     application.appProvider.provideAuthRepository()
                 )

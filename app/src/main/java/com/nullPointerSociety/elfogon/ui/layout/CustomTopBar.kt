@@ -1,6 +1,5 @@
 package com.nullPointerSociety.elfogon.ui.layout
 
-import android.util.Log
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -34,7 +33,6 @@ fun CustomTopBar(
     val isDetails = selectedRoute?.contains("RecipeDetailsScreenNav") == true
     val maxHeight = if (isDetails) 115.dp else 200.dp
 
-    Log.d("Verify previousRoute", "Previous Route: $previousRoute")
     val isFromSaved = previousRoute?.contains("SavedRecipesScreenNav") == true
 
     CenterAlignedTopAppBar(
