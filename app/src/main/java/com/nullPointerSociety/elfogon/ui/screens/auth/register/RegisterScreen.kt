@@ -30,21 +30,22 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.Routes
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    registerViewModel: RegisterViewModel,
-    specifyRoute: MutableState<String>,
+
+
 ) {
-    specifyRoute.value = Routes.SIGN_UP
+    val registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory)
     val name = remember { mutableStateOf("") }
     val lastname = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
@@ -57,7 +58,6 @@ fun RegisterScreen(
         when (auth.value) {
             is AuthState.Authenticated -> {
                 navController.navigate(HomeScreenNav)
-                specifyRoute.value = Routes.HOME
             }
 
             is AuthState.Error -> Toast.makeText(

@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
-
 }
 
 android {
@@ -101,14 +100,14 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
-    implementation(libs.firebase.ui.auth)
-    implementation(libs.androidx.appcompat)
     implementation(libs.kotlinx.coroutines.play.services)
-    implementation(libs.credentials.play.services.auth)
-    implementation(libs.credentials)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.mockk)
     implementation(libs.junit)
+    implementation(libs.core)
+    implementation(libs.google.services)
+
+
 
 
 

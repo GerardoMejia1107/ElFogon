@@ -8,15 +8,16 @@ import com.google.firebase.ktx.Firebase
 import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
+import com.nullPointerSociety.elfogon.data.repository.SystemRepository
 import com.nullPointerSociety.elfogon.data.repository.UserRepository
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthRepositoryImplementation
 import com.nullPointerSociety.elfogon.data.repository.impl.SpooncularRepositoryImpl
+import com.nullPointerSociety.elfogon.data.repository.impl.SystemRepositoryImp
 import com.nullPointerSociety.elfogon.data.repository.impl.UserRepositoryImpl
 
 class AppProvider(context: DelFogonApplication) {
     private val firebaseAuthInstance: FirebaseAuth = FirebaseAuth.getInstance()
     private val firebaseFirestoreInstance: FirebaseFirestore = Firebase.firestore
-
 
 
     private val userRepository: UserRepository = UserRepositoryImpl(firebaseFirestoreInstance)
@@ -25,6 +26,7 @@ class AppProvider(context: DelFogonApplication) {
 
 
     private val spooncularRepository: SpooncularRepository = SpooncularRepositoryImpl()
+    private val systemRepository: SystemRepository = SystemRepositoryImp(firebaseFirestoreInstance)
 
 
     fun provideAuthRepository(): AuthRepository {
@@ -37,6 +39,10 @@ class AppProvider(context: DelFogonApplication) {
 
     fun provideSpooncularRepository(): SpooncularRepository {
         return spooncularRepository
+    }
+
+    fun provideSystemRepository(): SystemRepository {
+        return systemRepository
     }
 
 

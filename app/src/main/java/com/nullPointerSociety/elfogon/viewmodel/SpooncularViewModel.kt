@@ -8,7 +8,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.nullPointerSociety.elfogon.BuildConfig
 import com.nullPointerSociety.elfogon.DelFogonApplication
-import com.nullPointerSociety.elfogon.data.model.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,7 +29,7 @@ class SpooncularViewModel(
     }
 
     fun getRecipeById(id: Int): RecipeApi? {
-        return repository.getRecipeById(id)
+        return repository.getRecipeByIdFetched(id)
     }
 
     fun fetchRecipes() {

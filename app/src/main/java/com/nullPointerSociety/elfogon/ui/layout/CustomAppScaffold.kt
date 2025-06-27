@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.layout
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,77 +18,91 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nullPointerSociety.elfogon.ui.navigation.AppNavGraph
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.MadeRecipesScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.ProfileScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.Routes
-import com.nullPointerSociety.elfogon.ui.navigation.SavedRecipesScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
+import com.nullPointerSociety.elfogon.viewmodel.UserViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun CustomScaffold(
 ) {
+    val userViewModel: UserViewModel = viewModel(factory = UserViewModel.Factory)
     val navController = rememberNavController()
     var titleScreen = rememberSaveable { mutableStateOf("") }
-    var selectedItem = rememberSaveable { mutableStateOf("Del Fogon") }
-    val currentDestination = navController
-        .currentBackStackEntryAsState().value?.destination?.route
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    val previousRoute = navController.previousBackStackEntry?.destination?.route
 
-    var scrollState = rememberLazyListState()
-    var showTitleTopBar = remember {
+    val scrollState = rememberLazyListState()
+    val showTitleTopBar = remember {
         derivedStateOf {
-            scrollState.firstVisibleItemIndex > 0 || scrollState.firstVisibleItemScrollOffset > 100
+            scrollState.firstVisibleItemIndex > 0 ||
+                    scrollState.firstVisibleItemScrollOffset > 100
         }
     }
 
 
-    fun onItemSelected(currentItem: String) {
-        selectedItem.value = currentItem
-        when (currentItem) {
-            Routes.HOME -> navController.navigate(HomeScreenNav)
-            Routes.SAVED_RECIPES -> navController.navigate(SavedRecipesScreenNav)
-            Routes.MADE_RECIPES -> navController.navigate(MadeRecipesScreenNav)
-            Routes.PROFILE -> navController.navigate(ProfileScreenNav)
-            else -> ""
+
+    fun onItemSelected(route: Any) {
+        navController.navigate(route)
+    }
+
+    val hideBarsIn =
+        listOf(LogInScreenNav::class.qualifiedName, SignUpScreenNav::class.qualifiedName)
+    val isDetailsScreen = currentRoute?.contains("RecipeDetailsScreenNav") == true
+
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        userViewModel.eventFlow.collect { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
 
     Scaffold(
         contentWindowInsets = WindowInsets.systemBars,
         topBar = {
-            if (selectedItem.value !in listOf(Routes.LOGIN, Routes.SIGN_UP)) {
+            if (currentRoute !in hideBarsIn) {
                 CustomTopBar(
                     customTitle = if (showTitleTopBar.value) titleScreen.value else "",
                     onAction = {
-                        navController.navigate(HomeScreenNav)
-                        selectedItem.value = Routes.HOME
+                        navController.popBackStack(HomeScreenNav, inclusive = false)
                     },
                     showLogo = true,
-                    selectedItem
+                    currentRoute,
+                    previousRoute,
+                    detailsAction = { userViewModel.saveRecipe(userViewModel.recipeIdSelected.value) }
                 )
             }
         },
         bottomBar = {
-            if (selectedItem.value !in listOf(Routes.LOGIN, Routes.SIGN_UP)) {
+            if (currentRoute !in hideBarsIn) {
                 BottomNavigationBar(
-                    selectedItem = selectedItem.value,
-                    onItemSelected = { onItemSelected(it) }
+                    selectedRoute = currentRoute,
+                    onItemSelected = { routeObject ->
+                        onItemSelected(routeObject)
+                    }
                 )
             }
         },
         floatingActionButton = {
-            if (selectedItem.value == Routes.DETAILS_RECIPE) {
+            if (isDetailsScreen) {
                 FloatingActionButton(
                     shape = RoundedCornerShape(30.dp),
                     onClick = {},
@@ -114,12 +129,11 @@ fun CustomScaffold(
     ) { innerPadding ->
         AppNavGraph(
             navController = navController,
-            selectedItem,
             Modifier.padding(innerPadding),
             titleScreen,
-            scrollState
+            scrollState,
 
-        )
+            )
     }
 }
 

@@ -27,7 +27,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,13 +39,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.components.Heading
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
-import com.nullPointerSociety.elfogon.ui.navigation.Routes
 import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
 import com.nullPointerSociety.elfogon.utils.GoogleSignUtils
 
@@ -54,10 +53,10 @@ import com.nullPointerSociety.elfogon.utils.GoogleSignUtils
 @Composable
 fun LoginScreen(
     navController: NavController,
-    loginViewModel: LoginViewModel,
-    specifyRoute: MutableState<String>,
-) {
-    specifyRoute.value = Routes.LOGIN
+
+    ) {
+    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory)
+
     val email = remember { mutableStateOf("") }
     val pass = remember { mutableStateOf("") }
     var showPassword = remember { mutableStateOf(false) }
@@ -90,7 +89,6 @@ fun LoginScreen(
     LaunchedEffect(auth.value) {
         when (auth.value) {
             is AuthState.Authenticated -> {
-                specifyRoute.value = Routes.HOME
                 Toast.makeText(context, "Welcome!", Toast.LENGTH_SHORT).show()
                 navController.navigate(HomeScreenNav)
             }

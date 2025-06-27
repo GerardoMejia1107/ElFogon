@@ -3,7 +3,7 @@ package com.nullPointerSociety.elfogon.data.repository.impl
 
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
-import com.nullPointerSociety.elfogon.data.model.UserData
+import com.nullPointerSociety.elfogon.data.model.user.UserData
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import com.nullPointerSociety.elfogon.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +27,7 @@ class AuthRepositoryImplementation(
             _authState.value = AuthState.Unauthenticated
         } else {
             _authState.value = AuthState.Authenticated
+            _userData.value = userRepository.fetchUserData(authService.currentUser?.uid.toString())
         }
     }
 
@@ -76,6 +77,10 @@ class AuthRepositoryImplementation(
         } catch (e: Exception) {
             _authState.value = AuthState.Error(e.message ?: "Sign up failed")
         }
+    }
+
+    override suspend fun getUserUid(): String? {
+        return authService.currentUser?.uid
     }
 
     override suspend fun logout() {
