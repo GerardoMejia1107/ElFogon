@@ -1,6 +1,6 @@
 package com.nullPointerSociety.elfogon.data.repository
 
-import com.nullPointerSociety.elfogon.data.model.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
 import kotlinx.coroutines.flow.StateFlow
 
 /**

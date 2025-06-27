@@ -1,7 +1,7 @@
 package com.nullPointerSociety.elfogon.data.repository.impl
 
 import com.nullPointerSociety.elfogon.data.api.RetrofitInstance
-import com.nullPointerSociety.elfogon.data.model.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -27,7 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.nullPointerSociety.elfogon.data.model.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
 
 
 @Composable

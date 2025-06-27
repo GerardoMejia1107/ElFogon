@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.data.model
+package com.nullPointerSociety.elfogon.data.model.user
 
 data class UserData(
     val email: String? = null,

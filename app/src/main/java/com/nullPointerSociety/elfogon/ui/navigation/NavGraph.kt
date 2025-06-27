@@ -18,6 +18,7 @@ import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginViewModel
 import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterScreen
 import com.nullPointerSociety.elfogon.ui.screens.home.HomeScreen
+import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
 import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileScreen
 import com.nullPointerSociety.elfogon.ui.screens.recipes.details.RecipeDetailsScreen
 import com.nullPointerSociety.elfogon.ui.screens.recipes.made.MadeRecipesScreen
@@ -37,6 +38,7 @@ fun AppNavGraph(
 
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory)
     val userViewModel: UserViewModel = viewModel(factory = UserViewModel.Factory)
+    val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
 
 
     //Solamente usado en el LaunchedEffect para redirigir al usuario si no está autenticado
@@ -65,6 +67,7 @@ fun AppNavGraph(
         composable<HomeScreenNav> {
             val requester = HomeScreenNav::class.qualifiedName
             HomeScreen(
+                homeViewModel = homeViewModel,
                 onNavigateToFilters = { navController.navigate("filters") },
                 onRecipeClick = { recipeID: Int ->
                     onClickRecipe(recipeID, requester ?: "default")

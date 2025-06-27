@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.screens.home
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,21 +33,26 @@ import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.RecipeCard
 import com.nullPointerSociety.elfogon.ui.components.SearchBar
+import com.nullPointerSociety.elfogon.ui.components.TipModal
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
 
 
 @Composable
 fun HomeScreen(
+    homeViewModel: HomeViewModel,
     onNavigateToFilters: () -> Unit,
-
     onRecipeClick: (Int) -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
     navController: NavController,
 
     ) {
-    val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+
     val sampleRecipes = homeViewModel.searchResults.collectAsState()
     val auth = homeViewModel.authState.collectAsState()
+    val tips = homeViewModel.tips.collectAsState()
+
+    val hasShownTip by homeViewModel.hasShownTip.collectAsState()
+
 
     LaunchedEffect(auth.value) {
         when (auth.value) {
@@ -51,11 +61,23 @@ fun HomeScreen(
         }
     }
 
+
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
+        if (!hasShownTip && tips.value.isNotEmpty()) {
+            TipModal(
+                tipData = tips.value.random(),
+                onDismiss = {
+                    homeViewModel.markTipAsShown()
+                }
+            )
+        }
+
+
         SearchBar(
             onFilterClick = onNavigateToFilters,
             onBackClick = { /* sin acción */ },
@@ -78,11 +100,7 @@ fun HomeScreen(
                     .background(MaterialTheme.colorScheme.background)
             )
         }
-
-
         Spacer(modifier = Modifier.height(16.dp))
-
-        //sampleRecipes.value.isEmpty()
         if (sampleRecipes.value.isEmpty()) {
             Column(
                 modifier = Modifier.fillMaxSize(),

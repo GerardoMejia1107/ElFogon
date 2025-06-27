@@ -1,7 +1,7 @@
 package com.nullPointerSociety.elfogon.data.repository
 
 import com.google.firebase.auth.AuthCredential
-import com.nullPointerSociety.elfogon.data.model.UserData
+import com.nullPointerSociety.elfogon.data.model.user.UserData
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import kotlinx.coroutines.flow.StateFlow
 
