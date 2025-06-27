@@ -7,7 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.nullPointerSociety.elfogon.data.model.Instructions
+import com.nullPointerSociety.elfogon.data.model.recipes.Instructions
 
 @Composable
 fun Steps(instructions: List<Instructions>) {

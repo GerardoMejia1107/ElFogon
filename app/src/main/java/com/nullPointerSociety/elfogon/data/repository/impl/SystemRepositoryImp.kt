@@ -2,7 +2,7 @@ package com.nullPointerSociety.elfogon.data.repository.impl
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.nullPointerSociety.elfogon.data.model.Tip
+import com.nullPointerSociety.elfogon.data.model.tips.Tip
 import com.nullPointerSociety.elfogon.data.repository.SystemRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

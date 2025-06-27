@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.nullPointerSociety.elfogon.R
-import com.nullPointerSociety.elfogon.data.model.UserData
+import com.nullPointerSociety.elfogon.data.model.user.UserData
 
 @Composable
 fun BasicInfo(userData: State<UserData?>) {

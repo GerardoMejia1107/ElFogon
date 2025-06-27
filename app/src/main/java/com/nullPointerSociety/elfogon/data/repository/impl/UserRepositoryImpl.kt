@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.nullPointerSociety.elfogon.data.model.UserData
+import com.nullPointerSociety.elfogon.data.model.user.UserData
 import com.nullPointerSociety.elfogon.data.repository.UserRepository
 import kotlinx.coroutines.tasks.await
 

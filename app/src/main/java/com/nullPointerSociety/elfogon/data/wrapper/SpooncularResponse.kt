@@ -1,10 +1,8 @@
 package com.nullPointerSociety.elfogon.data.wrapper
 
 import com.google.gson.annotations.SerializedName
-import com.nullPointerSociety.elfogon.data.model.ExtendedIngredient
-import com.nullPointerSociety.elfogon.data.model.Instructions
-import com.nullPointerSociety.elfogon.data.model.ShortIngredient
-import com.nullPointerSociety.elfogon.data.model.Step
+import com.nullPointerSociety.elfogon.data.model.recipes.ExtendedIngredient
+import com.nullPointerSociety.elfogon.data.model.recipes.Step
 
 data class SpooncularResponse<T>(
     @SerializedName("page")
@@ -18,4 +16,4 @@ data class SpooncularResponse<T>(
     @SerializedName("steps")
     val steps: List<Step>,
 
-)
+    )

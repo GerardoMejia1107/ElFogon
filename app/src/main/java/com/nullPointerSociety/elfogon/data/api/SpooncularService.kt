@@ -1,6 +1,6 @@
 package com.nullPointerSociety.elfogon.data.api
 
-import com.nullPointerSociety.elfogon.data.model.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
 import com.nullPointerSociety.elfogon.data.wrapper.SpooncularResponse
 import retrofit2.http.GET
 import retrofit2.http.Header

@@ -1,7 +1,6 @@
 package com.nullPointerSociety.elfogon.data.repository
 
-import com.google.firebase.firestore.FirebaseFirestore
-import com.nullPointerSociety.elfogon.data.model.Tip
+import com.nullPointerSociety.elfogon.data.model.tips.Tip
 import kotlinx.coroutines.flow.StateFlow
 
 interface SystemRepository {

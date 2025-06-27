@@ -1,6 +1,6 @@
 package com.nullPointerSociety.elfogon.data.repository
 
-import com.nullPointerSociety.elfogon.data.model.UserData
+import com.nullPointerSociety.elfogon.data.model.user.UserData
 
 interface UserRepository {
     suspend fun getUserData(uid: String): UserData?
