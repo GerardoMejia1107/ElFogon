@@ -1,16 +1,10 @@
 package com.nullPointerSociety.elfogon.ui.screens.home
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -22,9 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -36,48 +27,40 @@ import com.nullPointerSociety.elfogon.ui.components.SearchBar
 import com.nullPointerSociety.elfogon.ui.components.TipModal
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
 
-
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel,
+    homeViewModel: HomeViewModel = viewModel(),
     onNavigateToFilters: () -> Unit,
     onRecipeClick: (Int) -> Unit = {},
-    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
-    navController: NavController,
-
-    ) {
-
-    val sampleRecipes = homeViewModel.searchResults.collectAsState()
-    val auth = homeViewModel.authState.collectAsState()
-    val tips = homeViewModel.tips.collectAsState()
-
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
+    val searchResults by homeViewModel.searchResults.collectAsState()
+    val categorizedRecipes by homeViewModel.categorizedRecipes.collectAsState()
+    val authState by homeViewModel.authState.collectAsState()
+    val tips by homeViewModel.tips.collectAsState()
     val hasShownTip by homeViewModel.hasShownTip.collectAsState()
 
-
-    LaunchedEffect(auth.value) {
-        when (auth.value) {
-            is AuthState.Unauthenticated -> navController.navigate(LogInScreenNav)
-            else -> Unit
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Unauthenticated) {
+            navController.navigate(LogInScreenNav)
         }
     }
-
-
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
-        if (!hasShownTip && tips.value.isNotEmpty()) {
+        // Tip modal
+        if (!hasShownTip && tips.isNotEmpty()) {
             TipModal(
-                tipData = tips.value.random(),
-                onDismiss = {
-                    homeViewModel.markTipAsShown()
-                }
+                tipData = tips.random(),
+                onDismiss = { homeViewModel.markTipAsShown() }
             )
         }
 
-
+        // Search bar
         SearchBar(
             onFilterClick = onNavigateToFilters,
             onBackClick = { /* sin acción */ },
@@ -87,10 +70,9 @@ fun HomeScreen(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-        Surface(
-            modifier = Modifier.fillMaxWidth()
 
-        ) {
+        // Subtitle
+        Surface(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = "Descubre recetas deliciosas y fáciles de preparar",
                 style = MaterialTheme.typography.displaySmall,
@@ -100,30 +82,56 @@ fun HomeScreen(
                     .background(MaterialTheme.colorScheme.background)
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        if (sampleRecipes.value.isEmpty()) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                CircularProgressIndicator()
-            }
 
-        } else
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // 1) show search results grid
+        if (searchResults.isNotEmpty()) {
             LazyVerticalGrid(
-                userScrollEnabled = true,
                 columns = GridCells.Fixed(2),
+                userScrollEnabled = true,
                 contentPadding = PaddingValues(bottom = 140.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(sampleRecipes.value) { RecipeCard(it, onRecipeClick) }
+                items(searchResults) { recipe ->
+                    RecipeCard(recipe, onRecipeClick)
+                }
             }
 
+        // 2) else show categorized lists
+        } else if (categorizedRecipes.isNotEmpty()) {
+            LazyColumn(
+                contentPadding = PaddingValues(bottom = 140.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(categorizedRecipes) { group ->
+                    Text(
+                        text = group.tag,
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(group.recipes) { recipe ->
+                            RecipeCard(recipe, onRecipeClick)
+                        }
+                    }
+                }
+            }
+
+        // 3) else show loading spinner
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        }
     }
-
-
 }
-
-
