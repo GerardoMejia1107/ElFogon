@@ -1,5 +1,8 @@
 package com.nullPointerSociety.elfogon.ui.screens.home
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -12,6 +15,7 @@ import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import com.nullPointerSociety.elfogon.data.repository.SystemRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -25,12 +29,20 @@ class HomeViewModel(
     val recipes = spooncularRepository.recipes
     val tips = systemRepository.tips
 
+    var hasShownTip: MutableStateFlow<Boolean> = MutableStateFlow(false)
+        private set
+
+    fun markTipAsShown() {
+        hasShownTip.value = true
+    }
+
+
     private val _searchResults = MutableStateFlow<List<RecipeApi>>(emptyList())
     val searchResults: StateFlow<List<RecipeApi>> = _searchResults
 
 
     init {
-        //fetchRecipes()
+       // fetchRecipes()
         fetchTips()
     }
 
