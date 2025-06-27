@@ -11,34 +11,44 @@ import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.model.RecipeApi
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
+import com.nullPointerSociety.elfogon.data.repository.SystemRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val authRepository: AuthRepository,
-    private val spooncularRepository: SpooncularRepository
+    private val spooncularRepository: SpooncularRepository,
+    private val systemRepository: SystemRepository
 ) : ViewModel() {
     val authState = authRepository.authState
     val recipes = spooncularRepository.recipes
+    val tips = systemRepository.tips
 
     private val _searchResults = MutableStateFlow<List<RecipeApi>>(emptyList())
     val searchResults: StateFlow<List<RecipeApi>> = _searchResults
 
 
     init {
-        fetchRecipes()
+        //fetchRecipes()
+        fetchTips()
     }
 
     fun getRecipeById(id: Int): RecipeApi? {
         return spooncularRepository.getRecipeByIdFetched(id)
     }
 
-    fun fetchRecipes() {
+    private fun fetchRecipes() {
         viewModelScope.launch {
             spooncularRepository.fetchRecipes(token = BuildConfig.SPOONACULAR_API_KEY, number = 10)
             // ✅ Actualiza también los searchResults con los datos iniciales
             _searchResults.value = spooncularRepository.recipes.value
+        }
+    }
+
+    private fun fetchTips() {
+        viewModelScope.launch {
+            systemRepository.fetchTips()
         }
     }
 
@@ -67,7 +77,8 @@ class HomeViewModel(
 
                 HomeViewModel(
                     application.appProvider.provideAuthRepository(),
-                    application.appProvider.provideSpooncularRepository()
+                    application.appProvider.provideSpooncularRepository(),
+                    application.appProvider.provideSystemRepository()
                 )
             }
         }

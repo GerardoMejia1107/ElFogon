@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.screens.home
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ fun HomeScreen(
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
     val sampleRecipes = homeViewModel.searchResults.collectAsState()
     val auth = homeViewModel.authState.collectAsState()
+    val tips = homeViewModel.tips.collectAsState()
 
     LaunchedEffect(auth.value) {
         when (auth.value) {
@@ -50,6 +52,7 @@ fun HomeScreen(
             else -> Unit
         }
     }
+
 
     Column(
         modifier = modifier
