@@ -23,10 +23,10 @@ class SavedRecipesViewModel(
 
     init {
         viewModelScope.launch {
-            /*spooncularRepository.fetchRecipesByIdList(
+            spooncularRepository.fetchRecipesByIdList(
                 BuildConfig.SPOONACULAR_API_KEY,
                 userRepository.getSavedRecipes(authRepository.getUserUid().toString())
-            )*/
+            )
         }
     }
 

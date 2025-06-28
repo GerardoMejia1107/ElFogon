@@ -5,6 +5,7 @@ import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class SpooncularRepositoryImpl : SpooncularRepository {
     private val _recipes = MutableStateFlow<List<RecipeApi>>(emptyList())
@@ -12,6 +13,10 @@ class SpooncularRepositoryImpl : SpooncularRepository {
 
     private val _savedRecipes = MutableStateFlow<List<RecipeApi>>(emptyList())
     override val recipeById: StateFlow<List<RecipeApi>> = _savedRecipes
+    override fun setMainRecipeList(recipes: List<RecipeApi>) {
+        _recipes.update { recipes }
+    }
+
 
     //Me retorna una receta por ID de las recetas obtenidas (busca en la lista de recetas obtenidas (fetch para Home))
     override fun getRecipeByIdFetched(id: Int): RecipeApi? {
@@ -54,24 +59,13 @@ class SpooncularRepositoryImpl : SpooncularRepository {
             e.printStackTrace()
         }
     }
-    
 
-    // NUEVO: Fetch por categoría (etiqueta/tag)
-    override suspend fun fetchRecipesByTag(token: String, tag: String, number: Int) {
-        try {
-            val response = RetrofitInstance.api.getRecipes(
-                token = token,
-                number = number,
-                tags = tag
-            )
-            _recipes.value = response.recipes
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    // ✅ NUEVO MÉTODO para devolver recetas directamente sin sobrescribir el flujo
-    suspend fun fetchRecipesByTagDirect(token: String, tag: String, number: Int = 8): List<RecipeApi> {
+    // Devuelve recetas de una sola categoría
+    override suspend fun fetchRecipesByTagDirect(
+        token: String,
+        tag: String,
+        number: Int
+    ): List<RecipeApi> {
         return try {
             val response = RetrofitInstance.api.getRecipes(
                 token = token,

@@ -40,14 +40,7 @@ class SpooncularViewModel(
         }
     }
 
-    fun fetchRecipesByCategory(category: String) {
-        viewModelScope.launch {
-            repository.fetchRecipesByTag(
-                token = BuildConfig.SPOONACULAR_API_KEY,
-                tag = category
-            )
-        }
-    }
+
 
 //    cambios con elvis
 
