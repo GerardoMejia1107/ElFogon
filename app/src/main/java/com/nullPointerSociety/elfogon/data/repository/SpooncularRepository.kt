@@ -1,6 +1,6 @@
 package com.nullPointerSociety.elfogon.data.repository
 
-import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -8,17 +8,17 @@ import kotlinx.coroutines.flow.StateFlow
  */
 interface SpooncularRepository {
 
-    val recipes: StateFlow<List<RecipeApi>>
-    val recipeById: StateFlow<List<RecipeApi>>
+    val recipes: StateFlow<List<Recipe>>
+    val recipeById: StateFlow<List<Recipe>>
 
-    fun setMainRecipeList(recipes: List<RecipeApi>)
-    fun getRecipeByIdFetched(id: Int): RecipeApi?
+    fun setMainRecipeList(recipes: List<Recipe>)
+    fun getRecipeByIdFetched(id: Int): Recipe?
     suspend fun fetchRecipes(token: String, number: Int = 10)
     suspend fun fetchRecipesByIdList(token: String, ids: List<String>)
-    fun getRecipeSavedByIdFetched(id: Int): RecipeApi?
+    fun getRecipeSavedByIdFetched(id: Int): Recipe?
     suspend fun fetchRecipesByTagDirect(
         token: String,
         tag: String,
         number: Int = 2
-    ): List<RecipeApi>
+    ): List<Recipe>
 }

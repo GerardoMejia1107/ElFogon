@@ -21,15 +21,15 @@ import coil.size.Scale
 import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 
 @Composable
-fun RecipeCard(
-    recipeSpoon: Recipe,
-    onClick: (Int) -> Unit,
+fun SystemRecipeCard(
+    recipeSystem: Recipe,
+    onClick: (Int) -> Unit
 ) {
     Card(
         modifier = Modifier
             .width(200.dp) // ✅ Uniforme en LazyRow y Grid
             .height(280.dp)
-            .clickable(onClick = { onClick(recipeSpoon.id) }),
+            .clickable(onClick = { onClick(recipeSystem.id) }),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
@@ -43,13 +43,13 @@ fun RecipeCard(
                 Image(
                     painter = rememberAsyncImagePainter(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(recipeSpoon.image.orEmpty()) // ✅ evita null
+                            .data(recipeSystem.image.orEmpty()) // ✅ evita null
                             .crossfade(true)
                             .scale(Scale.FILL)
                             .build(),
                         contentScale = ContentScale.Crop
                     ),
-                    contentDescription = recipeSpoon.title,
+                    contentDescription = recipeSystem.title,
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
@@ -73,19 +73,19 @@ fun RecipeCard(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = recipeSpoon.title.orEmpty(),
+                    text = recipeSystem.title.orEmpty(),
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "Porciones: ${recipeSpoon.servings ?: "-"}",
+                    text = "Porciones: ${recipeSystem.servings ?: "-"}",
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "⏱ ${recipeSpoon.readyInMinutes ?: "-"} min",
+                    text = "⏱ ${recipeSystem.readyInMinutes ?: "-"} min",
                     style = MaterialTheme.typography.bodySmall
                 )
             }

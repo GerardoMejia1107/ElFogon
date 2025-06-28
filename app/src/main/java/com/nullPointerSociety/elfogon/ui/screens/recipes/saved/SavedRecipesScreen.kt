@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.screens.recipes.saved
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +34,7 @@ fun SavedRecipesScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(savedRecipesList) { recipe ->
+                Log.d("SavedRecipesScreen", "Recipe: $recipe")
                 SavedCard(
                     recipe,
                     onViewClick = onRecipeClick

@@ -1,30 +1,30 @@
 package com.nullPointerSociety.elfogon.data.repository.impl
 
 import com.nullPointerSociety.elfogon.data.api.RetrofitInstance
-import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class SpooncularRepositoryImpl : SpooncularRepository {
-    private val _recipes = MutableStateFlow<List<RecipeApi>>(emptyList())
-    override val recipes: StateFlow<List<RecipeApi>> = _recipes
+    private val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
+    override val recipes: StateFlow<List<Recipe>> = _recipes
 
-    private val _savedRecipes = MutableStateFlow<List<RecipeApi>>(emptyList())
-    override val recipeById: StateFlow<List<RecipeApi>> = _savedRecipes
-    override fun setMainRecipeList(recipes: List<RecipeApi>) {
+    private val _savedRecipes = MutableStateFlow<List<Recipe>>(emptyList())
+    override val recipeById: StateFlow<List<Recipe>> = _savedRecipes
+    override fun setMainRecipeList(recipes: List<Recipe>) {
         _recipes.update { recipes }
     }
 
 
     //Me retorna una receta por ID de las recetas obtenidas (busca en la lista de recetas obtenidas (fetch para Home))
-    override fun getRecipeByIdFetched(id: Int): RecipeApi? {
+    override fun getRecipeByIdFetched(id: Int): Recipe? {
         return recipes.value.find { it.id == id }
     }
 
     //Me retorna una receta guardada por ID de las recetas guardadas (busca en la lista de recetas guardadas)
-    override fun getRecipeSavedByIdFetched(id: Int): RecipeApi? {
+    override fun getRecipeSavedByIdFetched(id: Int): Recipe? {
         return recipeById.value.find { it.id == id }
     }
 
@@ -46,7 +46,7 @@ class SpooncularRepositoryImpl : SpooncularRepository {
     // Fetch recipes by ID list from the Spoonacular API
     override suspend fun fetchRecipesByIdList(token: String, ids: List<String>) {
         try {
-            val allRecipes = mutableListOf<RecipeApi>()
+            val allRecipes = mutableListOf<Recipe>()
             val chunks = ids.chunked(100)
 
             for (chunk in chunks) {
@@ -65,7 +65,7 @@ class SpooncularRepositoryImpl : SpooncularRepository {
         token: String,
         tag: String,
         number: Int
-    ): List<RecipeApi> {
+    ): List<Recipe> {
         return try {
             val response = RetrofitInstance.api.getRecipes(
                 token = token,

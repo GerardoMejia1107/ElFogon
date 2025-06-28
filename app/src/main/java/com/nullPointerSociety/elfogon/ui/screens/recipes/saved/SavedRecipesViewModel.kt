@@ -8,7 +8,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.nullPointerSociety.elfogon.BuildConfig
 import com.nullPointerSociety.elfogon.DelFogonApplication
-import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import com.nullPointerSociety.elfogon.data.repository.UserRepository
@@ -30,7 +30,7 @@ class SavedRecipesViewModel(
         }
     }
 
-    fun getListOfSavedRecipes(): StateFlow<List<RecipeApi>> {
+    fun getListOfSavedRecipes(): StateFlow<List<Recipe>> {
         return spooncularRepository.recipeById
     }
 
