@@ -25,6 +25,7 @@ fun SavedRecipesScreen(
         viewModel(factory = SavedRecipesViewModel.Factory)
 
     val savedRecipesList = savedRecipesViewModel.getListOfSavedRecipes().collectAsState().value
+    val customRecipeList = savedRecipesViewModel.customRecipesSaved.collectAsState().value
 
     Column(modifier = modifier.fillMaxSize()) {
         LazyColumn(
@@ -39,6 +40,11 @@ fun SavedRecipesScreen(
                     recipe,
                     onViewClick = onRecipeClick
                 ) {}
+            }
+            items(customRecipeList) { customOne ->
+                SavedCard(
+                    customOne, onViewClick = onRecipeClick
+                ) { }
             }
         }
     }

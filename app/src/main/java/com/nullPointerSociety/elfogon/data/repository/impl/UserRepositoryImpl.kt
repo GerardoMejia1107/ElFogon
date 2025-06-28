@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 import com.nullPointerSociety.elfogon.data.model.user.UserData
 import com.nullPointerSociety.elfogon.data.repository.UserRepository
 import kotlinx.coroutines.tasks.await
@@ -37,12 +38,42 @@ class UserRepositoryImpl(
 
     }
 
+    override suspend fun updateCustomSavedRecipes(uid: String?, recipeId: String) {
+        val updateMap = mapOf("customSavedRecipes" to FieldValue.arrayUnion(recipeId))
+        firestoreService.collection("users").document(uid ?: "").set(updateMap, SetOptions.merge())
+            .await()
+
+    }
+
     override suspend fun getSavedRecipes(uid: String): List<String> {
         val snapshot = firestoreService.collection("users").document(uid).get().await()
         if (snapshot.exists()) {
             Log.d("UserRepositoryImpl", "getSavedRecipes: ${snapshot.get("savedRecipes")}")
         }
         return snapshot.get("savedRecipes") as? List<String> ?: emptyList()
+    }
+
+    override suspend fun getCustomSavedRecipes(uid: String): List<Recipe> {
+        return try {
+            val snapshot = firestoreService.collection("users").document(uid).get().await()
+
+            val ids = snapshot.get("customSavedRecipes") as? List<String> ?: emptyList()
+
+            if (ids.isEmpty()) return emptyList()
+
+            val recipes = ids.mapNotNull { id ->
+                firestoreService.collection("custom-recipes")
+                    .document(id)
+                    .get()
+                    .await()
+                    .toObject(Recipe::class.java)
+            }
+
+            recipes
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
     }
 
 
@@ -56,7 +87,8 @@ class UserRepositoryImpl(
             "lastName" to userData.lastName,
             "profilePictureUrl" to userData.profilePictureUrl,
             "savedRecipes" to listOf<String>(),
-            "madeRecipes" to listOf<String>()
+            "madeRecipes" to listOf<String>(),
+            "customSavedRecipes" to listOf<String>(),
         )
         firestoreService.collection("users").document(uid).set(doc).await()
     }
