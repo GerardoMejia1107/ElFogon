@@ -28,7 +28,9 @@ class HomeViewModel(
     val tips = systemRepository.tips
     private val _hasShownTip = MutableStateFlow(false)
     val hasShownTip: StateFlow<Boolean> = _hasShownTip
-    fun markTipAsShown() { _hasShownTip.value = true }
+    fun markTipAsShown() {
+        _hasShownTip.value = true
+    }
 
     // --- Recipe data ---
     private val _searchResults = MutableStateFlow<List<RecipeApi>>(emptyList())
@@ -37,9 +39,11 @@ class HomeViewModel(
     private val _categorizedRecipes = MutableStateFlow<List<RecipeCategoryGroup>>(emptyList())
     val categorizedRecipes: StateFlow<List<RecipeCategoryGroup>> = _categorizedRecipes
 
+    private val _allRecipes = MutableStateFlow<List<RecipeApi>>(emptyList())
+
     init {
         fetchTips()
-        fetchCategorizedRecipes()
+        fetchAllRecipesAndGrouped()
     }
 
     private fun fetchTips() {
@@ -48,35 +52,32 @@ class HomeViewModel(
         }
     }
 
-    private fun fetchCategorizedRecipes() {
+    private fun fetchAllRecipesAndGrouped() {
         viewModelScope.launch {
             val tags = listOf(
                 "vegan", "vegetarian", "dessert",
                 "italian", "mexican", "breakfast",
                 "soup", "snack"
             )
-            val groups = mutableListOf<RecipeCategoryGroup>()
-            // Use the implementation to fetch directly
-            (spooncularRepository as? SpooncularRepositoryImpl)?.let { realRepo ->
-                for (tag in tags) {
-                    val items = realRepo.fetchRecipesByTagDirect(
-                        token = BuildConfig.SPOONACULAR_API_KEY,
-                        tag = tag,
-                        number = 8
-                    )
-                    groups += RecipeCategoryGroup(tag.replaceFirstChar { it.uppercase() }, items)
-                }
-            }
-            _categorizedRecipes.value = groups
-            // clear any previous search
-            _searchResults.value = emptyList()
-        }
-    }
 
-    fun getRecipeById(id: Int): RecipeApi? {
-        return _categorizedRecipes.value
-            .flatMap { it.recipes }
-            .find { it.id == id }
+            val groups = mutableListOf<RecipeCategoryGroup>()
+            val all = mutableListOf<RecipeApi>()
+
+
+            for (tag in tags) {
+                val list = spooncularRepository.fetchRecipesByTagDirect(
+                    token = BuildConfig.SPOONACULAR_API_KEY,
+                    tag = tag
+                )
+                groups += RecipeCategoryGroup(tag.replaceFirstChar { it.uppercase() }, list)
+                all += list
+            }
+
+
+            _categorizedRecipes.value = groups
+            _allRecipes.value = all
+            spooncularRepository.setMainRecipeList(all)
+        }
     }
 
     fun filterRecipesByQuery(query: String) {

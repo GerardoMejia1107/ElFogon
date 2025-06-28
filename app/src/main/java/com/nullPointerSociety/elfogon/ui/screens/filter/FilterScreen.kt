@@ -65,7 +65,7 @@ fun FilterScreen(viewModel: SpooncularViewModel = viewModel()) {
         FilterSection(
             title = "Platillos",
             options = listOf("vegetarian", "dessert", "pasta", "main course", "side dish", "quick"),
-            onCategorySelected = { viewModel.fetchRecipesByCategory(it) }
+            onCategorySelected = {  }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
