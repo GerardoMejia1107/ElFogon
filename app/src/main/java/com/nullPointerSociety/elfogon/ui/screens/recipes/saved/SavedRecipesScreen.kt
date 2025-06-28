@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.screens.recipes.saved
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +17,7 @@ import com.nullPointerSociety.elfogon.ui.components.savedRecipes.SavedCard
 
 @Composable
 fun SavedRecipesScreen(
-    onRecipeClick: (Int) -> Unit = {},
+    onRecipeClick: (String) -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
 ) {
 
@@ -24,6 +25,7 @@ fun SavedRecipesScreen(
         viewModel(factory = SavedRecipesViewModel.Factory)
 
     val savedRecipesList = savedRecipesViewModel.getListOfSavedRecipes().collectAsState().value
+    val customRecipeList = savedRecipesViewModel.customRecipesSaved.collectAsState().value
 
     Column(modifier = modifier.fillMaxSize()) {
         LazyColumn(
@@ -33,10 +35,16 @@ fun SavedRecipesScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(savedRecipesList) { recipe ->
+                Log.d("SavedRecipesScreen", "Recipe: $recipe")
                 SavedCard(
                     recipe,
                     onViewClick = onRecipeClick
                 ) {}
+            }
+            items(customRecipeList) { customOne ->
+                SavedCard(
+                    customOne, onViewClick = onRecipeClick
+                ) { }
             }
         }
     }

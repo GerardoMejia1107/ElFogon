@@ -1,5 +1,6 @@
 package com.nullPointerSociety.elfogon.data.repository
 
+import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 import com.nullPointerSociety.elfogon.data.model.user.UserData
 
 interface UserRepository {
@@ -13,25 +14,10 @@ interface UserRepository {
         recipeId: String
     )
 
+    suspend fun updateCustomSavedRecipes(uid: String?, recipeId: String)
+
     suspend fun getSavedRecipes(uid: String): List<String>
+    suspend fun getCustomSavedRecipes(uid: String): List<Recipe>
 
-    /*
-    *  suspend fun updateMadeRecipes(
-         uid: String,
-         recipeId: String
-     )
-
-     suspend fun getSavedRecipes(uid: String): List<String>
-     suspend fun getMadeRecipes(uid: String): List<String>
-     suspend fun deleteSavedRecipe(
-         uid: String,
-         recipeId: String
-     )
-
-     suspend fun deleteMadeRecipe(
-         uid: String,
-         recipeId: String
-     )
-    * */
 
 }

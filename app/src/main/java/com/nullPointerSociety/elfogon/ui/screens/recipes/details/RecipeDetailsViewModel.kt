@@ -6,20 +6,26 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.nullPointerSociety.elfogon.DelFogonApplication
-import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
+import com.nullPointerSociety.elfogon.data.repository.SystemRepository
 
 class RecipeDetailsViewModel(
     private val spooncularRepository: SpooncularRepository,
+    private val systemRepository: SystemRepository
 ) : ViewModel() {
     val recipes = spooncularRepository.recipes
 
-    fun getRecipeById(id: Int): RecipeApi? {
+    fun getRecipeById(id: String): Recipe? {
         return spooncularRepository.getRecipeByIdFetched(id)
     }
 
-    fun getRecipeSavedById(id: Int): RecipeApi? {
+    fun getRecipeSavedById(id: String): Recipe? {
         return spooncularRepository.getRecipeSavedByIdFetched(id)
+    }
+
+    fun getSystemRecipeById(id: String): Recipe? {
+        return systemRepository.getRecipeById(id)
     }
 
 
@@ -31,6 +37,7 @@ class RecipeDetailsViewModel(
 
                 RecipeDetailsViewModel(
                     application.appProvider.provideSpooncularRepository(),
+                    application.appProvider.provideSystemRepository()
                 )
             }
         }

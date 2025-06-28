@@ -1,7 +1,7 @@
 package com.nullPointerSociety.elfogon.data.wrapper
 
-import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 
 data class SpooncularRecipeWrapper(
-    val recipeApiSpoons: List<RecipeApi>
+    val recipeSpoons: List<Recipe>
 )

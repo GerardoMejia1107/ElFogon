@@ -27,20 +27,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 
 
 @Composable
 fun SavedCard(
-    recipe: RecipeApi,
-    onViewClick: (Int) -> Unit,
-    onDeleteClick: (Int) -> Unit
+    recipe: Recipe,
+    onViewClick: (String) -> Unit,
+    onDeleteClick: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(140.dp)
-            .clickable(onClick = { onViewClick(recipe.id.toInt()) }),
+            .clickable(onClick = { onViewClick(recipe.id) }),
         shape = RoundedCornerShape(16.dp),
 
         elevation = CardDefaults.cardElevation(4.dp),

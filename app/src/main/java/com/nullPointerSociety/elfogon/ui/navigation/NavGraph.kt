@@ -17,8 +17,6 @@ import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginViewModel
 import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterScreen
-import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterViewModel
-import com.nullPointerSociety.elfogon.ui.screens.filter.FilterScreen
 import com.nullPointerSociety.elfogon.ui.screens.home.HomeScreen
 import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
 import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileScreen
@@ -53,7 +51,7 @@ fun AppNavGraph(
     }
 
 
-    val onClickRecipe = { recipeId: Int, requester: String ->
+    val onClickRecipe = { recipeId: String, requester: String ->
         navController.navigate(RecipeDetailsScreenNav(recipeId, requester))
     }
 
@@ -71,7 +69,7 @@ fun AppNavGraph(
             HomeScreen(
                 homeViewModel = homeViewModel,
                 onNavigateToFilters = { navController.navigate(SearchByFilterScreenNav) },
-                onRecipeClick = { recipeID: Int ->
+                onRecipeClick = { recipeID: String ->
                     onClickRecipe(recipeID, requester ?: "default")
                 },
                 modifier,
@@ -80,7 +78,7 @@ fun AppNavGraph(
         }
         composable<SavedRecipesScreenNav> {
             val requester = SavedRecipesScreenNav::class.qualifiedName
-            SavedRecipesScreen(modifier = modifier, onRecipeClick = { recipeID: Int ->
+            SavedRecipesScreen(modifier = modifier, onRecipeClick = { recipeID: String ->
                 onClickRecipe(recipeID, requester ?: "default")
             })
         }
@@ -96,7 +94,7 @@ fun AppNavGraph(
         }
 
         composable<RecipeDetailsScreenNav> { backStackEntry ->
-            val recipeId = backStackEntry.arguments?.getInt("id") ?: 0
+            val recipeId = backStackEntry.arguments?.getString("id") ?: ""
             val requester: String =
                 backStackEntry.arguments?.getString("requestOrigin") ?: "default"
             userViewModel.setRecipeIdSelected(recipeId.toString())

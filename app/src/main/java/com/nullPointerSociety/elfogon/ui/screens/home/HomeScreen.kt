@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.RecipeCard
 import com.nullPointerSociety.elfogon.ui.components.SearchBar
+import com.nullPointerSociety.elfogon.ui.components.SystemRecipeCard
 import com.nullPointerSociety.elfogon.ui.components.TipModal
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
 
@@ -32,14 +33,17 @@ import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
 fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel(),
     onNavigateToFilters: () -> Unit,
-    onRecipeClick: (Int) -> Unit = {},
-    modifier: Modifier = Modifier,
+    onRecipeClick: (String) -> Unit = {},
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
     navController: NavController
 ) {
     val searchResults by homeViewModel.searchResults.collectAsState()
     val categorizedRecipes by homeViewModel.categorizedRecipes.collectAsState()
     val authState by homeViewModel.authState.collectAsState()
     val tips by homeViewModel.tips.collectAsState()
+
+    val customRecipes by homeViewModel.customRecipes.collectAsState()
+
     val hasShownTip by homeViewModel.hasShownTip.collectAsState()
 
     LaunchedEffect(authState) {
@@ -100,12 +104,33 @@ fun HomeScreen(
                 }
             }
 
-        // 2) else show categorized lists
+            // 2) else show categorized lists
         } else if (categorizedRecipes.isNotEmpty()) {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 140.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                // Sección de recetas personalizadas
+                if (customRecipes.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = "Tus Recetas Especiales 🍽️",
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                    item {
+                        LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            items(customRecipes) { recipe ->
+                                SystemRecipeCard(recipe, onRecipeClick)
+                            }
+                        }
+                    }
+                }
+
                 items(categorizedRecipes) { group ->
                     Text(
                         text = group.tag,
@@ -123,7 +148,7 @@ fun HomeScreen(
                 }
             }
 
-        // 3) else show loading spinner
+            // 3) else show loading spinner
         } else {
             Column(
                 modifier = Modifier

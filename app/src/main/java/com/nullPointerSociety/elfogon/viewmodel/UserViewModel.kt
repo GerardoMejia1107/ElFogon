@@ -1,5 +1,6 @@
 package com.nullPointerSociety.elfogon.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -29,14 +30,19 @@ class UserViewModel(
 
     fun setRecipeIdSelected(recipeId: String) {
         _recipeIdSelected.value = recipeId
+        Log.d("UserViewModel", "Selected recipe ID: $recipeId")
     }
 
-    fun saveRecipe(recipeId: String?) {
+    fun saveRecipe(recipeId: String) {
         viewModelScope.launch {
             val uid = authRepository.getUserUid()
             if (uid != null) {
                 try {
-                    userRepository.updateSavedRecipes(uid, recipeId.toString())
+                    if (recipeId.startsWith("CUSTOM_")) {
+                        userRepository.updateCustomSavedRecipes(uid, recipeId)
+                    } else {
+                        userRepository.updateSavedRecipes(uid, recipeId)
+                    }
                     _eventChannel.send("Recipe saved successfully")
                 } catch (e: Exception) {
                     _eventChannel.send("Failed to save recipe: ${e.message}")

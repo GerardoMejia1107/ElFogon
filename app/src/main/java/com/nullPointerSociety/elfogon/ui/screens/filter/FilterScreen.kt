@@ -77,7 +77,7 @@ fun FilterScreen(viewModel: SpooncularViewModel = viewModel()) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(recipes) { recipe ->
-                RecipeCard(recipeApiSpoon = recipe) {
+                RecipeCard(recipeSpoon = recipe) {
                     // Opcional: lógica para ir al detalle
                     // navController.navigate("recipe_detail/$it")
                 }

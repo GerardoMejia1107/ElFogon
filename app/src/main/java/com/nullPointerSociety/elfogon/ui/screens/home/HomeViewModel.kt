@@ -8,11 +8,10 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.nullPointerSociety.elfogon.BuildConfig
 import com.nullPointerSociety.elfogon.DelFogonApplication
-import com.nullPointerSociety.elfogon.data.model.recipes.RecipeApi
+import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import com.nullPointerSociety.elfogon.data.repository.SystemRepository
-import com.nullPointerSociety.elfogon.data.repository.impl.SpooncularRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -26,29 +25,41 @@ class HomeViewModel(
     // --- Authentication & tips ---
     val authState = authRepository.authState
     val tips = systemRepository.tips
+
+    val customRecipes = systemRepository.customRecipes
+
     private val _hasShownTip = MutableStateFlow(false)
     val hasShownTip: StateFlow<Boolean> = _hasShownTip
+
+
     fun markTipAsShown() {
         _hasShownTip.value = true
     }
 
     // --- Recipe data ---
-    private val _searchResults = MutableStateFlow<List<RecipeApi>>(emptyList())
-    val searchResults: StateFlow<List<RecipeApi>> = _searchResults
+    private val _searchResults = MutableStateFlow<List<Recipe>>(emptyList())
+    val searchResults: StateFlow<List<Recipe>> = _searchResults
 
     private val _categorizedRecipes = MutableStateFlow<List<RecipeCategoryGroup>>(emptyList())
     val categorizedRecipes: StateFlow<List<RecipeCategoryGroup>> = _categorizedRecipes
 
-    private val _allRecipes = MutableStateFlow<List<RecipeApi>>(emptyList())
+    private val _allRecipes = MutableStateFlow<List<Recipe>>(emptyList())
 
     init {
         fetchTips()
+        fetchCustomRecipes()
         fetchAllRecipesAndGrouped()
     }
 
     private fun fetchTips() {
         viewModelScope.launch {
             systemRepository.fetchTips()
+        }
+    }
+
+    private fun fetchCustomRecipes() {
+        viewModelScope.launch {
+            systemRepository.fetchCustomRecipes()
         }
     }
 
@@ -61,7 +72,7 @@ class HomeViewModel(
             )
 
             val groups = mutableListOf<RecipeCategoryGroup>()
-            val all = mutableListOf<RecipeApi>()
+            val all = mutableListOf<Recipe>()
 
 
             for (tag in tags) {
@@ -86,7 +97,7 @@ class HomeViewModel(
         } else {
             _categorizedRecipes.value
                 .flatMap { it.recipes }
-                .filter { it.title?.contains(query, ignoreCase = true) == true }
+                .filter { it.title.contains(query, ignoreCase = true) }
         }
     }
 
@@ -106,5 +117,5 @@ class HomeViewModel(
 
 data class RecipeCategoryGroup(
     val tag: String,
-    val recipes: List<RecipeApi>
+    val recipes: List<Recipe>
 )
