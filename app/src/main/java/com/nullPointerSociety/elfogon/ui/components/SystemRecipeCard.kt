@@ -23,7 +23,7 @@ import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 @Composable
 fun SystemRecipeCard(
     recipeSystem: Recipe,
-    onClick: (Int) -> Unit
+    onClick: (String) -> Unit
 ) {
     Card(
         modifier = Modifier

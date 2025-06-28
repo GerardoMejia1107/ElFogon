@@ -12,10 +12,10 @@ interface SpooncularRepository {
     val recipeById: StateFlow<List<Recipe>>
 
     fun setMainRecipeList(recipes: List<Recipe>)
-    fun getRecipeByIdFetched(id: Int): Recipe?
+    fun getRecipeByIdFetched(id: String): Recipe?
     suspend fun fetchRecipes(token: String, number: Int = 10)
     suspend fun fetchRecipesByIdList(token: String, ids: List<String>)
-    fun getRecipeSavedByIdFetched(id: Int): Recipe?
+    fun getRecipeSavedByIdFetched(id: String): Recipe?
     suspend fun fetchRecipesByTagDirect(
         token: String,
         tag: String,

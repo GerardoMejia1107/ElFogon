@@ -28,7 +28,7 @@ class SpooncularViewModel(
         fetchRecipes()
     }
 
-    fun getRecipeById(id: Int): Recipe? {
+    fun getRecipeById(id: String): Recipe? {
         return repository.getRecipeByIdFetched(id)
     }
 
@@ -46,7 +46,7 @@ class SpooncularViewModel(
 
     fun filterRecipesByQuery(query: String) {
         _searchResults.value = recipes.value.filter {
-            it.title?.contains(query, ignoreCase = true) ?: true // Provide true if title is null
+            it.title.contains(query, ignoreCase = true) ?: true // Provide true if title is null
         }
     }
 

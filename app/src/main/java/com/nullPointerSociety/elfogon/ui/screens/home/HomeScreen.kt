@@ -33,7 +33,7 @@ import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
 fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel(),
     onNavigateToFilters: () -> Unit,
-    onRecipeClick: (Int) -> Unit = {},
+    onRecipeClick: (String) -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
     navController: NavController
 ) {

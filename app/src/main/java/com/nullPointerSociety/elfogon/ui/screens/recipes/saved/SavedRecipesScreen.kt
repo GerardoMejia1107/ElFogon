@@ -17,7 +17,7 @@ import com.nullPointerSociety.elfogon.ui.components.savedRecipes.SavedCard
 
 @Composable
 fun SavedRecipesScreen(
-    onRecipeClick: (Int) -> Unit = {},
+    onRecipeClick: (String) -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
 ) {
 

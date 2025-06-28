@@ -33,14 +33,14 @@ import com.nullPointerSociety.elfogon.data.model.recipes.Recipe
 @Composable
 fun SavedCard(
     recipe: Recipe,
-    onViewClick: (Int) -> Unit,
-    onDeleteClick: (Int) -> Unit
+    onViewClick: (String) -> Unit,
+    onDeleteClick: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(140.dp)
-            .clickable(onClick = { onViewClick(recipe.id.toInt()) }),
+            .clickable(onClick = { onViewClick(recipe.id) }),
         shape = RoundedCornerShape(16.dp),
 
         elevation = CardDefaults.cardElevation(4.dp),

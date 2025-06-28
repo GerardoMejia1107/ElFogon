@@ -19,12 +19,12 @@ class SpooncularRepositoryImpl : SpooncularRepository {
 
 
     //Me retorna una receta por ID de las recetas obtenidas (busca en la lista de recetas obtenidas (fetch para Home))
-    override fun getRecipeByIdFetched(id: Int): Recipe? {
+    override fun getRecipeByIdFetched(id: String): Recipe? {
         return recipes.value.find { it.id == id }
     }
 
     //Me retorna una receta guardada por ID de las recetas guardadas (busca en la lista de recetas guardadas)
-    override fun getRecipeSavedByIdFetched(id: Int): Recipe? {
+    override fun getRecipeSavedByIdFetched(id: String): Recipe? {
         return recipeById.value.find { it.id == id }
     }
 

@@ -1,7 +1,7 @@
 package com.nullPointerSociety.elfogon.data.model.recipes
 
 data class Recipe(
-    val id: Int = 0,
+    val id: String = "",
     val title: String = "",
     val image: String = "",
     val readyInMinutes: Int = 0,

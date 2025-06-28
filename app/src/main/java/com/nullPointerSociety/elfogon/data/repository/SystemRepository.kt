@@ -10,5 +10,5 @@ interface SystemRepository {
 
     suspend fun fetchTips()
     suspend fun fetchCustomRecipes()
-    fun getRecipeById(id: Int): Recipe?
+    fun getRecipeById(id: String): Recipe?
 }

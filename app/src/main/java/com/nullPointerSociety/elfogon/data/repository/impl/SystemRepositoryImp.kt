@@ -44,7 +44,7 @@ class SystemRepositoryImp(
         }
     }
 
-    override fun getRecipeById(id: Int): Recipe? {
+    override fun getRecipeById(id: String): Recipe? {
         return customRecipes.value.find { it.id == id }
     }
 }
