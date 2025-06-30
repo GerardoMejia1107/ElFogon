@@ -2,6 +2,7 @@ package com.nullPointerSociety.elfogon.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,16 +19,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,210 +38,202 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TextField
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.rememberImagePainter
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material3.contentColorFor
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-data class Recipe(
-    val id: Int,
-    val title: String,
-    val imageRes: Int,
+data class Receta(
+    val nombre: String,
+    val imagenUrl: String,
     val likes: Int,
     val dislikes: Int,
-    val prepared: Int,
-    var selected: Boolean = false
+    val vecesPreparada: Int
 )
 
+enum class FiltroReceta {
+    MAS_LIKE, MAS_DISLIKE, MAS_PREPARADAS
+}
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecipesStatsScreen() {
-    var searchText by remember { mutableStateOf("") }
-    var filter by remember { mutableStateOf(FilterType.None) }
-    var recipes by remember { mutableStateOf("") }
+fun RecipeStatsScreen(
+    recetas: List<Receta>,
+    onRecetaClick: (Receta) -> Unit
+) {
+    var busqueda by remember { mutableStateOf("") }
+    var filtroSeleccionado by remember { mutableStateOf<FiltroReceta?>(null) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
-    ) {
-        TopBar(searchText) { newText -> searchText = newText }
-        Spacer(modifier = Modifier.height(8.dp))
-        FilterButtons(filter) { filter = it }
-        Spacer(modifier = Modifier.height(8.dp))
-        LazyColumn {
-            val filteredRecipes = recipes.filter {
-                it.title.contains(searchText, ignoreCase = true)
-            }.let {
-                when (filter) {
-                    FilterType.None -> it
-                    FilterType.MostLiked -> it.sortedByDescending { r -> r.likes }
-                    FilterType.MostDisliked -> it.sortedByDescending { r -> r.dislikes }
-                    FilterType.MostPrepared -> it.sortedByDescending { r -> r.prepared }
+    val recetasFiltradas = remember(recetas, filtroSeleccionado, busqueda) {
+        recetas
+            .filter { it.nombre.contains(busqueda, ignoreCase = true) }
+            .let {
+                when (filtroSeleccionado) {
+                    FiltroReceta.MAS_LIKE -> it.sortedByDescending { it.likes }
+                    FiltroReceta.MAS_DISLIKE -> it.sortedByDescending { it.dislikes }
+                    FiltroReceta.MAS_PREPARADAS -> it.sortedByDescending { it.vecesPreparada }
+                    null -> it
                 }
             }
-            items(filteredRecipes) { recipe ->
-                RecipeRow(recipe) {
-                    // Toggle selected state
-                    recipes = recipes.map {
-                        if (it.id == recipe.id) it.copy(selected = !it.selected) else it
-                    }
-                }
-            }
-        }
     }
-}
 
-enum class FilterType {
-    None, MostLiked, MostDisliked, MostPrepared
-}
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)
+    ) {
 
-@Composable
-fun TopBar(searchText: String, onSearchChange: (String) -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClick = { /* Handle Back */ }) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back"
+        Row(
+            modifier = Modifier
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = {  }) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Atrás")
+            }
+            TextField(
+                value = busqueda,
+                onValueChange = { busqueda = it },
+                placeholder = { Text("Buscar Recetas") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(start = 8.dp),
+                shape = RoundedCornerShape(15.dp),
+                colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background)
             )
         }
-        OutlinedTextField(
-            value = searchText,
-            onValueChange = onSearchChange,
-            placeholder = { Text("Buscar Recetas") },
+
+        Spacer(Modifier.height(12.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier
-                .weight(1f)
-                .height(48.dp),
-            singleLine = true,
-            shape = RoundedCornerShape(24.dp)
-        )
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Button(
+                onClick = {
+                    filtroSeleccionado = if (filtroSeleccionado == FiltroReceta.MAS_LIKE) null else FiltroReceta.MAS_LIKE
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (filtroSeleccionado == FiltroReceta.MAS_LIKE) Color(0xFF4C5B4D) else Color.White
+                ),
+                border = BorderStroke(1.dp, Color.Black)
+            ) {
+                Text("Más Like", color = if (filtroSeleccionado == FiltroReceta.MAS_LIKE) Color.White else Color.Black)
+            }
+            Button(
+                onClick = { filtroSeleccionado = if (filtroSeleccionado == FiltroReceta.MAS_DISLIKE) null else FiltroReceta.MAS_DISLIKE},
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (filtroSeleccionado == FiltroReceta.MAS_DISLIKE) Color(0xFF4C5B4D) else Color.White
+                ),
+                border = BorderStroke(1.dp, Color.Black)
+            ) {
+                Text("Más Dislike", color = if (filtroSeleccionado == FiltroReceta.MAS_DISLIKE) Color.White else Color.Black)
+            }
+            Button(
+                onClick = { filtroSeleccionado = if (filtroSeleccionado == FiltroReceta.MAS_PREPARADAS) null else FiltroReceta.MAS_PREPARADAS},
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (filtroSeleccionado == FiltroReceta.MAS_PREPARADAS) Color(0xFF4C5B4D) else Color.White
+                ),
+                border = BorderStroke(1.dp, Color.Black)
+            ) {
+                Text("Más Preparadas", fontSize = 13.sp, color = if (filtroSeleccionado == FiltroReceta.MAS_PREPARADAS) Color.White else Color.Black)
+            }
+        }
+
+        Spacer(Modifier.height(12.dp))
+
+        LazyColumn(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(recetas) { receta ->
+                ItemReceta(receta = receta, onClick = { onRecetaClick(receta) })
+            }
+        }
     }
 }
 
 @Composable
-fun FilterButtons(currentFilter: FilterType, onFilterSelected: (FilterType) -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        FilterButton(
-            title = "Más Like",
-            selected = currentFilter == FilterType.MostLiked,
-            onClick = { onFilterSelected(FilterType.MostLiked) }
-        )
-        FilterButton(
-            title = "Más Dislike",
-            selected = currentFilter == FilterType.MostDisliked,
-            onClick = { onFilterSelected(FilterType.MostDisliked) }
-        )
-        FilterButton(
-            title = "Más Preparadas",
-            selected = currentFilter == FilterType.MostPrepared,
-            onClick = { onFilterSelected(FilterType.MostPrepared) }
-        )
-    }
-}
-
-@Composable
-fun FilterButton(title: String, selected: Boolean, onClick: () -> Unit) {
-    OutlinedButton(
-        onClick = onClick,
-        shape = RoundedCornerShape(24.dp),
-        border = if (selected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null,
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = if (selected) MaterialTheme.colorScheme.primary else Color.Black
-        )
-    ) {
-        Text(title)
-    }
-}
-
-@Composable
-fun RecipeRow(recipe: Recipe, onClick: () -> Unit) {
+fun ItemReceta(receta: Receta, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
-        elevation = 4.dp
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
             modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+                .background(Color(0xFFEADDD6))
         ) {
             Image(
-                painter = painterResource(id = recipe.imageRes),
-                contentDescription = recipe.title,
+                painter = rememberImagePainter(receta.imagenUrl),
+                contentDescription = "Imagen de ${receta.nombre}",
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.Crop
             )
+
             Spacer(modifier = Modifier.width(12.dp))
+
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp)
             ) {
                 Text(
-                    text = recipe.title,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    maxLines = 2
+                    receta.nombre,
+                    style = MaterialTheme.typography.titleMedium
                 )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Column(
-                horizontalAlignment = Alignment.End
-            ) {
-                Checkbox(
-                    checked = recipe.selected,
-                    onCheckedChange = { onClick() }
-                )
-                StatRow(
-                    icon = Icons.Default.ThumbUp,
-                    count = recipe.likes,
-                    iconTint = Color(0xFFFFC107) // Amber/yellow
-                )
-                StatRow(
-                    icon = Icons.Default.ThumbUp,
-                    count = recipe.dislikes,
-                    iconTint = Color(0xFFE53935) // Red
-                )
-                Text(
-                    text = recipe.prepared.toString(),
-                    modifier = Modifier.padding(top = 4.dp),
-                    fontWeight = FontWeight.SemiBold
-                )
+
+                Spacer(Modifier.height(4.dp))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(Icons.Default.ThumbUp, contentDescription = null, tint = Color(0xFFFFC107))
+                    Spacer(Modifier.width(4.dp))
+                    Text("${receta.likes}")
+
+                    Spacer(Modifier.width(12.dp))
+
+                    Icon(Icons.Default.ThumbDown, contentDescription = null, tint = Color(0xFFD32F2F))
+                    Spacer(Modifier.width(4.dp))
+                    Text("${receta.dislikes}")
+
+                    Spacer(Modifier.width(12.dp))
+
+                    Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color(0xFF4CAF50))
+                    Spacer(Modifier.width(4.dp))
+                    Text("${receta.vecesPreparada}")
+                }
             }
         }
-    }
-}
-
-@Composable
-fun StatRow(icon: ImageVector, count: Int, iconTint: Color) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(top = 2.dp)
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = iconTint,
-            modifier = Modifier.size(20.dp)
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(count.toString())
     }
 }
 
 @Preview
 @Composable
-fun RecipesStatsPreview() {
-    RecipesStatsScreen()
+fun RecipeStatsPreview() {
+    val recetaData = listOf(
+        Receta("Pizza","",25,115,135),
+        Receta("Taco","",35,100,235),
+        Receta("Hamburgues","",15,105,335),
+        Receta("Sushi","",50,200,435),
+        Receta("Pasta","",65,75,535)
+    )
+    RecipeStatsScreen(recetaData) { }
 }

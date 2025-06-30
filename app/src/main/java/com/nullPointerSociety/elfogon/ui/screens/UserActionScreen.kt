@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.nullPointerSociety.elfogon.ui.screens.profile.ExpandableSection
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserActionScreen() {
 
@@ -132,9 +132,7 @@ fun UserActionScreen() {
                 value = newPass.value,
                 onValueChange = { newPass.value = it },
                 label = { Text("Contraseña Nueva") },
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White
-                ),
+                colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
                 modifier = Modifier
                     .width(320.dp)
                     .height(50.dp)
@@ -146,9 +144,7 @@ fun UserActionScreen() {
                 value = confirmPass.value,
                 onValueChange = { newPass.value = it },
                 label = { Text("Confirmar Contraseña") },
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White
-                ),
+                colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
                 modifier = Modifier
                     .width(320.dp)
                     .height(50.dp)
@@ -182,9 +178,7 @@ fun UserActionScreen() {
                 value = newEmail.value,
                 onValueChange = { newEmail.value = it },
                 label = { Text("Correo Nuevo") },
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White
-                ),
+                colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
                 modifier = Modifier
                     .width(320.dp)
                     .height(50.dp)
