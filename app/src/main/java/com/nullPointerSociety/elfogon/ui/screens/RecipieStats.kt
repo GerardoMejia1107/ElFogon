@@ -158,7 +158,7 @@ fun RecipeStatsScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(recetas) { receta ->
+            items(recetasFiltradas) { receta ->
                 ItemReceta(receta = receta, onClick = { onRecetaClick(receta) })
             }
         }
