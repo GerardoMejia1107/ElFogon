@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
+import com.nullPointerSociety.elfogon.ui.screens.admin.DashboardViewModel
 import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginViewModel
 import com.nullPointerSociety.elfogon.ui.screens.auth.register.RegisterScreen
@@ -39,6 +40,7 @@ fun AppNavGraph(
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory)
     val userViewModel: UserViewModel = viewModel(factory = UserViewModel.Factory)
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+    val dashboardViewModel : DashboardViewModel = viewModel(factory = DashboardViewModel.Factory)
 
 
     //Solamente usado en el LaunchedEffect para redirigir al usuario si no está autenticado
