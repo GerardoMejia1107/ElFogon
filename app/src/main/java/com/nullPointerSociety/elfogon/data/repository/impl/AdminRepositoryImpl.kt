@@ -16,7 +16,7 @@ class AdminRepositoryImpl(
     override val allUsers: StateFlow<List<UserReceptor>> = _allUsers
 
     //This functions helps to obtain all the users from the Firestore database collection "users"
-    suspend fun fetchAllUsers(){
+    override suspend fun fetchAllUsers(){
         // I get all the users from the Firestore collection "users"
         val snapshot = firestoreService.collection("users").get().await()
         // I map the documents to UserReceptor objects, filtering out any that do not exist

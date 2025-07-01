@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface AdminRepository {
     val allUsers: StateFlow<List<UserReceptor>>
+    suspend fun fetchAllUsers()
     suspend fun getUserById(uid: String): UserReceptor?
     suspend fun deleteUser(uid: String)
 
