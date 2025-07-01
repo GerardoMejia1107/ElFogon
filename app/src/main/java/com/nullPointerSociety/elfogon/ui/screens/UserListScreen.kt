@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.Timestamp
+import com.nullPointerSociety.elfogon.data.model.user.UserReceptor
+import com.nullPointerSociety.elfogon.ui.components.UserCard
 
 data class User(
     val name: String,
@@ -27,92 +31,79 @@ data class User(
 )
 
 @Composable
-fun UserListScreen(users: List<User>, onBackClick: () -> Unit) {
+fun UserListScreen(users: List<UserReceptor>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFFBF9F5))
             .padding(vertical = 16.dp)
     ) {
-        Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = "Back",
-            modifier = Modifier
-                .padding(start = 16.dp, bottom = 16.dp)
-                .size(28.dp)
-                .clickable { onBackClick() },
-            tint = Color.Black
-        )
 
         users.forEachIndexed { index, user ->
-            UserRow(user = user, onClick = {  })
+            UserCard(user = user)
             if (index < users.lastIndex) {
-                Divider(
+                HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    color = Color(0xFFAAAAAA),
-                    thickness = 1.dp
+                    thickness = 1.dp,
+                    color = Color(0xFFAAAAAA)
                 )
             }
         }
     }
 }
 
-@Composable
-fun UserRow(user: User, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFF4A5E4D)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "Person"
-                )
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                Text(
-                    text = user.name,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color.Black
-                )
-                Text(
-                    text = user.email,
-                    fontSize = 14.sp,
-                    color = Color.DarkGray
-                )
-            }
-        }
-        Icon(
-            imageVector = Icons.Default.KeyboardArrowRight,
-            contentDescription = "Go to user details",
-            tint = Color.Black,
-            modifier = Modifier.size(28.dp)
-        )
-    }
-}
 
 @Preview
 @Composable
 fun UserListPreview() {
     UserListScreen(
         users = listOf(
-            User("José Armando Cardoza Sandoval", "00000@gmail.com"),
-            User("José Armando Cardoza Sandoval", "00000@gmail.com"),
-            User("José Armando Cardoza Sandoval", "00000@gmail.com"),
-            User("José Armando Cardoza Sandoval", "00000@gmail.com")
-        ),
-        onBackClick = {})
+            UserReceptor(
+                id = "ABC123456",
+                name = "Gerardo",
+                lastName = "Ramírez",
+                email = "gerardo@example.com",
+                profilePictureUrl = "https://d2gwgwt9a7yxle.cloudfront.net/what_is_user_id_in_net_banking_mobile_871b681e52.jpg",
+                role = "admin",
+                customSavedRecipes = listOf("CUSTOM_0001", "CUSTOM_0002"),
+                savedRecipes = listOf("101", "202", "303"),
+                madeRecipes = listOf("101", "202"),
+                registerDate = Timestamp.now()
+            ),
+            UserReceptor(
+                id = "DEF789101",
+                name = "Lucía",
+                lastName = "Mendoza",
+                email = "lucia.mendoza@example.com",
+                profilePictureUrl = "https://cdn-icons-png.flaticon.com/512/194/194938.png",
+                role = "client",
+                customSavedRecipes = listOf("CUSTOM_0003"),
+                savedRecipes = listOf("404", "505"),
+                madeRecipes = listOf("404"),
+                registerDate = Timestamp.now()
+            ),
+            UserReceptor(
+                id = "GHI112233",
+                name = "Carlos",
+                lastName = "Vargas",
+                email = "carlos.vargas@example.com",
+                profilePictureUrl = "https://cdn-icons-png.flaticon.com/512/2922/2922522.png",
+                role = "client",
+                customSavedRecipes = emptyList(),
+                savedRecipes = listOf("606", "707", "808"),
+                madeRecipes = listOf("606"),
+                registerDate = Timestamp.now()
+            ),
+            UserReceptor(
+                id = "JKL445566",
+                name = "Ana",
+                lastName = "Lopez",
+                email = "ana.lopez@example.com",
+                profilePictureUrl = "https://cdn-icons-png.flaticon.com/512/2922/2922561.png",
+                role = "admin",
+                customSavedRecipes = listOf("CUSTOM_0004", "CUSTOM_0005"),
+                savedRecipes = listOf("909"),
+                madeRecipes = listOf("909"),
+                registerDate = Timestamp.now()
+            )))
 }
