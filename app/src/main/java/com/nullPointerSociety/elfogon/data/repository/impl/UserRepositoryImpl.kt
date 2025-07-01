@@ -90,6 +90,7 @@ class UserRepositoryImpl(
             "savedRecipes" to listOf<String>(),
             "madeRecipes" to listOf<String>(),
             "customSavedRecipes" to listOf<String>(),
+            "registerDate" to FieldValue.serverTimestamp()
         )
         firestoreService.collection("users").document(uid).set(doc).await()
     }
