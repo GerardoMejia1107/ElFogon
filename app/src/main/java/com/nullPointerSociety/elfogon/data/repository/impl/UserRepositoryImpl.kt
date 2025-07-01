@@ -82,6 +82,7 @@ class UserRepositoryImpl(
         userData: UserData
     ) {
         val doc = mapOf(
+            "id" to uid,
             "role" to userData.role,
             "email" to userData.email,
             "name" to userData.name,
