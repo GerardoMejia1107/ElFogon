@@ -23,8 +23,9 @@ class DashboardViewModel(
                 Log.d("Fetched Users", "Users: ${list.size}")
             }
         }
-
     }
+
+
 
     companion object{
         val Factory: ViewModelProvider.Factory = viewModelFactory {

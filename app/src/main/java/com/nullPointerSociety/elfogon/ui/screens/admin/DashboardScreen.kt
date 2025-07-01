@@ -14,7 +14,7 @@ import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
 import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
 
 @Composable
-fun Dashboard(
+fun DashboardScreen(
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
     navController: NavController, homeViewModel: HomeViewModel = viewModel()
 ) {
