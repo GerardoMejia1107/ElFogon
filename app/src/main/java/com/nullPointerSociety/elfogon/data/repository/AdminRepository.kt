@@ -10,5 +10,5 @@ interface AdminRepository {
 
     suspend fun getUserCount(): Int
     suspend fun getNewUsersToday(): Int
-    suspend fun getTopSavedRecipe(): Pair<String, Int>?
+
 }
