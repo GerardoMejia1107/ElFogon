@@ -186,7 +186,7 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ExpandableSection(
+public fun ExpandableSection(
     title: String,
     expanded: Boolean,
     onToggle: () -> Unit,
