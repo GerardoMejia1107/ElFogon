@@ -48,7 +48,7 @@ class HomeViewModel(
     init {
         fetchTips()
         fetchCustomRecipes()
-        fetchAllRecipesAndGrouped()
+        //fetchAllRecipesAndGrouped()
     }
 
     private fun fetchTips() {
