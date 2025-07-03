@@ -66,6 +66,7 @@ class AuthRepositoryImplementation(
             _authState.value = AuthState.Authenticated
 
             val userData = UserData(
+                role = if (email == "00104923@uca.edu.sv") "admin" else "user",
                 email = authService.currentUser?.email.toString(),
                 name = name,
                 lastName = lastName,

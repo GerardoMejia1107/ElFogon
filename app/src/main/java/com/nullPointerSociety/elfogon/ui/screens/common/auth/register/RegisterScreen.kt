@@ -54,22 +54,6 @@ fun RegisterScreen(
     val auth = registerViewModel.authState.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(auth.value) {
-        when (auth.value) {
-            is AuthState.Authenticated -> {
-                navController.navigate(HomeScreenNav)
-            }
-
-            is AuthState.Error -> Toast.makeText(
-                context,
-                (auth.value as AuthState.Error).message,
-                Toast.LENGTH_LONG
-            ).show()
-
-            else -> Unit
-        }
-    }
-
     Box(
         modifier = Modifier
             .fillMaxSize(),
