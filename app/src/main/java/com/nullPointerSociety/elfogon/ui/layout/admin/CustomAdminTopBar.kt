@@ -15,15 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nullPointerSociety.elfogon.ui.components.Heading
+import com.nullPointerSociety.elfogon.ui.navigation.DashboardScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.MadeRecipesScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.ProfileScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.RegistrationsScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.SavedRecipesScreenNav
+import com.nullPointerSociety.elfogon.ui.navigation.UsersScreenNav
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomAdminTopBar(
-
+    selectedRoute: String?,
 ) {
     CenterAlignedTopAppBar(
 
@@ -31,9 +34,16 @@ fun CustomAdminTopBar(
             containerColor = MaterialTheme.colorScheme.background
         ),
         title = {
+            val titleText = when (selectedRoute) {
+                DashboardScreenNav::class.qualifiedName -> "Your Dashboard"
+                UsersScreenNav::class.qualifiedName -> "Users on Your App"
+                RegistrationsScreenNav::class.qualifiedName -> "New Registrations"
+                ProfileScreenNav::class.qualifiedName -> "Your Profile"
+                else -> "Del Fogon"
+            }
             Heading(
-                customTitle = "Admin Panel",
-                showLogo = true
+                customTitle = titleText,
+                showLogo = false
             )
         },
         navigationIcon = {
@@ -43,10 +53,4 @@ fun CustomAdminTopBar(
 
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CustomAdminTopBarPreview() {
-    CustomAdminTopBar()
 }

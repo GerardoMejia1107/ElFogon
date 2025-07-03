@@ -32,7 +32,7 @@ fun CustomAdminScaffold(
 
 
     Scaffold(
-        topBar = { CustomAdminTopBar() },
+        topBar = { CustomAdminTopBar(currentRoute) },
         bottomBar = {
             CustomAdminButtonBar(selectedRoute = currentRoute, onItemSelected = { routeObject ->
                 onItemSelected(routeObject)
