@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.layout.admin
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,6 +22,8 @@ fun CustomAdminScaffold(
     val currentRoute = navBackStackEntry?.destination?.route
     val previousRoute = navController.previousBackStackEntry?.destination?.route
 
+    val scrollState = rememberLazyListState()
+
     fun onItemSelected(route: Any) {
         navController.navigate(route)
     }
@@ -40,7 +43,8 @@ fun CustomAdminScaffold(
             navController = navController,
             modifier = Modifier.padding(innerPadding),
             titleScreen = titleScreen,
-            )
+            scrollState = scrollState,
+        )
     }
 
 

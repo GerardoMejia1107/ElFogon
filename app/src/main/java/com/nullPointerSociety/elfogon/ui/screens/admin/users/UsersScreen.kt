@@ -8,15 +8,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.nullPointerSociety.elfogon.ui.components.admin.UsersList
 
 @Composable
 fun UsersScreen(
     modifier: Modifier = Modifier,
     scrollState: LazyListState = LazyListState(0, 0),
 ) {
+    val usersAdminViewModel: UsersViewModel = viewModel(factory = UsersViewModel.Factory)
+    val usersOnTheApp = usersAdminViewModel.allUsers.collectAsState().value
+
     LazyColumn(
         state = scrollState,
         modifier = modifier
@@ -27,10 +33,8 @@ fun UsersScreen(
         verticalArrangement = Arrangement.Center
     ) {
         item {
-            Text("Aquí se mostrarán los usuarios registrados en la aplicación.")
+            UsersList(usersOnTheApp)
         }
-
-
     }
 
 }

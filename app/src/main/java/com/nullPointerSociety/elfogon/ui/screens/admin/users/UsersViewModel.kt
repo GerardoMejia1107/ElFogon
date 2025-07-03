@@ -27,7 +27,7 @@ class UsersViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val app = this[APPLICATION_KEY] as DelFogonApplication
-                DashboardViewModel(
+                UsersViewModel(
                     app.appProvider.provideAdminRepository()
                 )
             }
