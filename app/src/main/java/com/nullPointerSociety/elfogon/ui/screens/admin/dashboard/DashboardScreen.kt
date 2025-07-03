@@ -53,7 +53,9 @@ fun DashboardScreen(
                 style = MaterialTheme.typography.titleMedium
             )
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             ) {
                 CountCard(
                     modifier = Modifier.weight(1f),
@@ -75,7 +77,9 @@ fun DashboardScreen(
                 modifier = Modifier.padding(start = 16.dp, top = 10.dp),
                 style = MaterialTheme.typography.titleMedium
             )
-            UsersList(users)
+            UsersList(
+                users = users.sortedByDescending { it.role.lowercase() == "admin" }
+            )
         }
     }
 }

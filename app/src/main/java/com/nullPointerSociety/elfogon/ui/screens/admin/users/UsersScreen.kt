@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.nullPointerSociety.elfogon.ui.components.admin.CountCardHorizontal
 import com.nullPointerSociety.elfogon.ui.components.admin.UsersList
 
 @Composable
@@ -31,7 +32,15 @@ fun UsersScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item {
-            UsersList(usersOnTheApp)
+            CountCardHorizontal(
+                count = usersOnTheApp.size,
+                title = "Users on the app",
+                description = "Total amount of users registered on the app",
+            )
+        }
+        item {
+            UsersList(users = usersOnTheApp.sortedByDescending { it.role.lowercase() == "admin" }
+            )
         }
     }
 

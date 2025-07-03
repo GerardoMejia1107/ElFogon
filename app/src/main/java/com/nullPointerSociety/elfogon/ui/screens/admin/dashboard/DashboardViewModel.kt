@@ -20,6 +20,7 @@ class DashboardViewModel(
     init {
         viewModelScope.launch {
             adminRepository.fetchAllUsers()
+            adminRepository.fetchNewUsersToday()
         }
     }
 
