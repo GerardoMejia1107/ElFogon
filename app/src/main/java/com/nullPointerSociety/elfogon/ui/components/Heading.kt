@@ -23,7 +23,7 @@ fun Heading(customTitle: String?, showLogo: Boolean = true) {
     Row(
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.Center,
-        ) {
+    ) {
         if (showLogo) {
             Image(
                 painter = painterResource(R.drawable.del_fogon),
@@ -43,7 +43,7 @@ fun Heading(customTitle: String?, showLogo: Boolean = true) {
         Text(
             text = customTitle.toString(),
             color = AppColors.titleText,
-            style = MaterialTheme.typography.displayMedium,
+            style = MaterialTheme.typography.titleLarge,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )

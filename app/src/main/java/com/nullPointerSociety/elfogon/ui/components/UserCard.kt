@@ -40,69 +40,80 @@ import com.nullPointerSociety.elfogon.ui.theme.AppColors
 
 @Composable
 fun UserCard(user: UserReceptor) {
-
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp).heightIn(min = 150.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .heightIn(min = 130.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Avatar
-            Image(
-                painter = painterResource(id = R.drawable.user_default_pic),
-                contentDescription = "Profile image",
+        Box(modifier = Modifier.fillMaxWidth()) {
+            // Contenido principal
+            Row(
                 modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
-            )
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Avatar
+                AsyncImage(
+                    model = user.profilePictureUrl ?: "",
+                    contentDescription = "Profile image",
+                    placeholder = painterResource(id = R.drawable.user_default_pic),
+                    error = painterResource(id = R.drawable.user_default_pic),
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                )
 
-            Spacer(modifier = Modifier.width(16.dp))
 
-            // Info principal
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = "${user.name} ${user.lastName}".toSentenceCase(),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = AppColors.titleText
-                )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = user.email,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppColors.bodyText
-                )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = "ID: ${user.id}",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AppColors.bodyText
-                )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = "Joined: ${user.registerDate.toDate().toString().dropLast(15)}",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AppColors.bodyText
-                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                // Info principal
+                Column(modifier = Modifier.weight(1f).padding(10.dp)) {
+                    Text(
+                        text = "${user.name} ${user.lastName}".toSentenceCase(),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = AppColors.titleText
+                    )
+                    Spacer(modifier = Modifier.height(1.dp))
+
+                    Text(
+                        text = user.email,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppColors.bodyText
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Text(
+                        text = "ID: ${user.id}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AppColors.bodyText
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Text(
+                        text = "Joined: ${user.registerDate.toDate().toString().dropLast(15)}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AppColors.bodyText
+                    )
+                }
             }
 
-            // Rol como chip
+            // Rol como chip flotante en la esquina superior derecha
             Box(
                 modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(12.dp)
                     .background(
                         color = if (user.role.lowercase() == "admin") Color(0xFFDCF4F2)
                         else Color(0xFFE8ECF4),
                         shape = RoundedCornerShape(20.dp)
                     )
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
             ) {
                 Text(
                     text = user.role.uppercase(),
@@ -114,6 +125,7 @@ fun UserCard(user: UserReceptor) {
         }
     }
 }
+
 
 
 fun String.toSentenceCase(): String {
