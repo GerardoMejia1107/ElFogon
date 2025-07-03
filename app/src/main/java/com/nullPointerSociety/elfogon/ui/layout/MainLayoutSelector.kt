@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.layout.admin.CustomAdminScaffold
 import com.nullPointerSociety.elfogon.ui.layout.client.CustomClientScaffold
+import com.nullPointerSociety.elfogon.ui.navigation.MainNavHost
 import com.nullPointerSociety.elfogon.ui.screens.common.auth.login.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.common.auth.login.LoginViewModel
 
@@ -37,13 +38,8 @@ fun MainLayoutSelector(
             CustomClientScaffold()
         }
 
-        //Si el usuario no está autenticado, lo redirijo a la pantalla de inicio de sesión
-        authState is AuthState.Unauthenticated -> {
-            LoginScreen(navController)
-        }
-
         else -> {
-            LoginScreen(navController)
+            MainNavHost(navController)
         }
     }
 }
