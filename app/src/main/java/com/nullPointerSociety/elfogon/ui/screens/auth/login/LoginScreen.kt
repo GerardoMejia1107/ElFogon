@@ -45,6 +45,7 @@ import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.components.Heading
+import com.nullPointerSociety.elfogon.ui.navigation.DashboardScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
 import com.nullPointerSociety.elfogon.utils.GoogleSignUtils
@@ -62,6 +63,8 @@ fun LoginScreen(
     var showPassword = remember { mutableStateOf(false) }
 
     val auth = loginViewModel.authState.collectAsState()
+    val userData = loginViewModel.userData.collectAsState()
+
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val launcher = rememberLauncherForActivityResult(
@@ -100,6 +103,17 @@ fun LoginScreen(
             ).show()
 
             else -> Unit
+        }
+    }
+
+    LaunchedEffect(userData.value?.role) {
+        when(userData.value?.role) {
+           "admin" -> {
+                navController.navigate(DashboardScreenNav) {
+                    popUpTo(HomeScreenNav) { inclusive = true }
+                }
+            }
+            else -> {}
         }
     }
 

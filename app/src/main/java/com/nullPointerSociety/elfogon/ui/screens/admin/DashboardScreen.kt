@@ -16,12 +16,14 @@ import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
 @Composable
 fun DashboardScreen(
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
-    navController: NavController, homeViewModel: HomeViewModel = viewModel()
+    navController: NavController, homeViewModel: HomeViewModel
 ) {
-    val authState by homeViewModel.authState.collectAsState()
+    val authState = homeViewModel.authState.collectAsState()
+    val dashboardViewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory)
 
-    LaunchedEffect(authState) {
-        if (authState is AuthState.Unauthenticated) {
+
+    LaunchedEffect(authState.value) {
+        if (authState.value is AuthState.Unauthenticated) {
             navController.navigate(LogInScreenNav)
         }
     }
