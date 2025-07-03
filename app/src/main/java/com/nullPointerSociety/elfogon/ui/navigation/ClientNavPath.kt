@@ -91,7 +91,6 @@ fun ClientNavPath(
         composable<ProfileScreenNav> {
             ProfileScreen(
                 modifier = modifier,
-                navController = navController,
                 scrollState = scrollState
             )
         }
@@ -113,9 +112,6 @@ fun ClientNavPath(
             )
         }
 
-        composable<DashboardScreenNav> {
-            DashboardScreen(navController = navController, homeViewModel = homeViewModel)
-        }
 
         //filerscreen
         /*composable<SearchByFilterScreenNav> {

@@ -1,13 +1,16 @@
 package com.nullPointerSociety.elfogon.ui.layout.admin
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.nullPointerSociety.elfogon.ui.navigation.AdminNavPath
 
 @Composable
 fun CustomAdminScaffold(
@@ -32,7 +35,13 @@ fun CustomAdminScaffold(
                 onItemSelected(routeObject)
             })
         },
-    ) { innerPadding -> }
+    ) { innerPadding ->
+        AdminNavPath(
+            navController = navController,
+            modifier = Modifier.padding(innerPadding),
+            titleScreen = titleScreen,
+            )
+    }
 
 
 }

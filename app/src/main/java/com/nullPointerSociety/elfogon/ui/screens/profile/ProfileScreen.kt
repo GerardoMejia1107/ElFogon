@@ -46,8 +46,7 @@ import com.nullPointerSociety.elfogon.ui.components.profile.ProfileStatCard
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
-    scrollState: LazyListState
+    scrollState: LazyListState = LazyListState(0, 0),
 ) {
     val profileHomeViewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)
 
