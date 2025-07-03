@@ -2,6 +2,7 @@ package com.nullPointerSociety.elfogon.ui.screens.common.auth.register
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,6 +36,7 @@ import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
+import com.nullPointerSociety.elfogon.ui.components.Heading
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 
 
@@ -44,7 +46,7 @@ fun RegisterScreen(
     navController: NavController,
 
 
-) {
+    ) {
     val registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory)
     val name = remember { mutableStateOf("") }
     val lastname = remember { mutableStateOf("") }
@@ -54,80 +56,61 @@ fun RegisterScreen(
     val auth = registerViewModel.authState.collectAsState()
     val context = LocalContext.current
 
-    Box(
+
+    Column(
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(verticalAlignment = Alignment.Bottom, modifier = Modifier.padding(bottom = 30.dp)) {
-                Image(
-                    painter = painterResource(R.drawable.del_fogon),
-                    contentDescription = "Del Fogon Logo",
-                    modifier = Modifier.size(90.dp)
-                )
-                Text(
-                    text = "Del Fogón",
-                    fontSize = 45.sp,
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
+        Heading("Del Fogon")
 
-                    )
-            }
+        TextField(
+            colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
+            value = name.value,
+            onValueChange = { name.value = it },
+            label = { Text("Nombres") }
+        )
 
-            Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-            TextField(
-                colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
-                value = name.value,
-                onValueChange = { name.value = it },
-                label = { Text("Nombres") }
+        TextField(
+            colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
+            value = lastname.value,
+            onValueChange = { lastname.value = it },
+            label = { Text("Apellidos") }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
+            value = email.value,
+            onValueChange = { email.value = it },
+            label = { Text("Correo") }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
+            value = pass.value,
+            onValueChange = { pass.value = it },
+            label = { Text("Contraseña") },
+
+            visualTransformation = PasswordVisualTransformation(),
+
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TextField(
-                colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
-                value = lastname.value,
-                onValueChange = { lastname.value = it },
-                label = { Text("Apellidos") }
+        Spacer(modifier = Modifier.height(24.dp))
+        CustomButton("Sing Up", onClick = {
+            registerViewModel.signUp(
+                email = email.value,
+                password = pass.value,
+                name = name.value,
+                lastName = lastname.value
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TextField(
-                colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
-                value = email.value,
-                onValueChange = { email.value = it },
-                label = { Text("Correo") }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TextField(
-                colors = TextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.background),
-                value = pass.value,
-                onValueChange = { pass.value = it },
-                label = { Text("Contraseña") },
-
-                visualTransformation = PasswordVisualTransformation(),
-
-                )
-
-            Spacer(modifier = Modifier.height(24.dp))
-            CustomButton("Sing Up", onClick = {
-                registerViewModel.signUp(
-                    email = email.value,
-                    password = pass.value,
-                    name = name.value,
-                    lastName = lastname.value
-                )
-            })
-        }
+        })
     }
 }
