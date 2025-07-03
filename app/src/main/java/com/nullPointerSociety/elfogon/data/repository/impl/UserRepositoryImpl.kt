@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.data.repository.impl
 
 import android.util.Log
+import androidx.compose.ui.text.toLowerCase
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -14,11 +15,15 @@ class UserRepositoryImpl(
 ) : UserRepository {
     override suspend fun getUserData(uid: String): UserData? {
         val snapshot = firestoreService.collection("users").document(uid).get().await()
+        val role = snapshot.getString("role")?.lowercase()?.trim()
+        val whichRole = if (role == "admin") "admin" else "user"
+
         if (snapshot.exists()) {
             Log.d("UserRepositoryImpl", "getUserData: ${snapshot.getString("name")}")
         }
         return if (snapshot.exists()) {
             UserData(
+                role = whichRole,
                 email = snapshot.getString("email") ?: "",
                 name = snapshot.getString("name") ?: "",
                 lastName = snapshot.getString("lastName") ?: "",
@@ -82,6 +87,7 @@ class UserRepositoryImpl(
         userData: UserData
     ) {
         val doc = mapOf(
+            "id" to uid,
             "role" to userData.role,
             "email" to userData.email,
             "name" to userData.name,
@@ -90,6 +96,7 @@ class UserRepositoryImpl(
             "savedRecipes" to listOf<String>(),
             "madeRecipes" to listOf<String>(),
             "customSavedRecipes" to listOf<String>(),
+            "registerDate" to FieldValue.serverTimestamp()
         )
         firestoreService.collection("users").document(uid).set(doc).await()
     }

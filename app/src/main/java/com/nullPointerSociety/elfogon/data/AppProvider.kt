@@ -6,10 +6,12 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 import com.nullPointerSociety.elfogon.DelFogonApplication
+import com.nullPointerSociety.elfogon.data.repository.AdminRepository
 import com.nullPointerSociety.elfogon.data.repository.AuthRepository
 import com.nullPointerSociety.elfogon.data.repository.SpooncularRepository
 import com.nullPointerSociety.elfogon.data.repository.SystemRepository
 import com.nullPointerSociety.elfogon.data.repository.UserRepository
+import com.nullPointerSociety.elfogon.data.repository.impl.AdminRepositoryImpl
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthRepositoryImplementation
 import com.nullPointerSociety.elfogon.data.repository.impl.SpooncularRepositoryImpl
 import com.nullPointerSociety.elfogon.data.repository.impl.SystemRepositoryImp
@@ -24,9 +26,9 @@ class AppProvider(context: DelFogonApplication) {
     private val authRepository: AuthRepository =
         AuthRepositoryImplementation(firebaseAuthInstance, userRepository)
 
-
     private val spooncularRepository: SpooncularRepository = SpooncularRepositoryImpl()
     private val systemRepository: SystemRepository = SystemRepositoryImp(firebaseFirestoreInstance)
+    private val adminRepository: AdminRepository = AdminRepositoryImpl(firebaseFirestoreInstance)
 
 
     fun provideAuthRepository(): AuthRepository {
@@ -43,6 +45,10 @@ class AppProvider(context: DelFogonApplication) {
 
     fun provideSystemRepository(): SystemRepository {
         return systemRepository
+    }
+
+    fun provideAdminRepository(): AdminRepository {
+        return adminRepository
     }
 
 
