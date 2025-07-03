@@ -14,7 +14,7 @@ import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.components.admin.UsersList
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
-import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
+import com.nullPointerSociety.elfogon.ui.screens.client.home.HomeViewModel
 
 @Composable
 fun DashboardScreen(

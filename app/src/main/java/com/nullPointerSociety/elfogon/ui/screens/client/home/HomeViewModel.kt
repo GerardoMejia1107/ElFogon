@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens.home
+package com.nullPointerSociety.elfogon.ui.screens.client.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

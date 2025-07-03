@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens.auth.register
+package com.nullPointerSociety.elfogon.ui.screens.common.auth.register
 
 import android.widget.Toast
 import androidx.compose.foundation.Image

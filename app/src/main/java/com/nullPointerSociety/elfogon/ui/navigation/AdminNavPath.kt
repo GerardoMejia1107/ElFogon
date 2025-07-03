@@ -12,9 +12,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.screens.admin.DashboardScreen
-import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginViewModel
-import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
-import com.nullPointerSociety.elfogon.ui.screens.profile.ProfileScreen
+import com.nullPointerSociety.elfogon.ui.screens.common.auth.login.LoginViewModel
+import com.nullPointerSociety.elfogon.ui.screens.client.home.HomeViewModel
+import com.nullPointerSociety.elfogon.ui.screens.common.profile.ProfileScreen
 
 @Composable
 fun AdminNavPath(

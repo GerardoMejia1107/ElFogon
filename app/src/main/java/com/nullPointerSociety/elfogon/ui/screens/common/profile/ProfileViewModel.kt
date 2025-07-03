@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens.profile
+package com.nullPointerSociety.elfogon.ui.screens.common.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

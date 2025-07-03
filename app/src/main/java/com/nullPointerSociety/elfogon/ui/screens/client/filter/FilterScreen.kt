@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens.filter
+package com.nullPointerSociety.elfogon.ui.screens.client.filter
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

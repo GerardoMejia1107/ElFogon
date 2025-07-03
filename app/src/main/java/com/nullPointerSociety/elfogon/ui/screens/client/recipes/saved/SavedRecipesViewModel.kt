@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens.recipes.saved
+package com.nullPointerSociety.elfogon.ui.screens.client.recipes.saved
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

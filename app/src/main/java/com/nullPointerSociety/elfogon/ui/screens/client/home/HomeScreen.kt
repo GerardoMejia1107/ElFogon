@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens.home
+package com.nullPointerSociety.elfogon.ui.screens.client.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

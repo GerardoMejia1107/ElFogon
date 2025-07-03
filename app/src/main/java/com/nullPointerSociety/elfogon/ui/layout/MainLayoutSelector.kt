@@ -10,8 +10,8 @@ import androidx.navigation.compose.rememberNavController
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.layout.admin.CustomAdminScaffold
 import com.nullPointerSociety.elfogon.ui.layout.client.CustomClientScaffold
-import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginScreen
-import com.nullPointerSociety.elfogon.ui.screens.auth.login.LoginViewModel
+import com.nullPointerSociety.elfogon.ui.screens.common.auth.login.LoginScreen
+import com.nullPointerSociety.elfogon.ui.screens.common.auth.login.LoginViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable

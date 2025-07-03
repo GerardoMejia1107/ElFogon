@@ -9,7 +9,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.repository.AdminRepository
-import com.nullPointerSociety.elfogon.ui.screens.home.HomeViewModel
+import com.nullPointerSociety.elfogon.ui.screens.client.home.HomeViewModel
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(

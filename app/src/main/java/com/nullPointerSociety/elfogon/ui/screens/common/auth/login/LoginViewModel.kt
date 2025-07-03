@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens.auth.login
+package com.nullPointerSociety.elfogon.ui.screens.common.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

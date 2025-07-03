@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens.recipes.made
+package com.nullPointerSociety.elfogon.ui.screens.client.recipes.made
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text

@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens.recipes.details
+package com.nullPointerSociety.elfogon.ui.screens.client.recipes.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
