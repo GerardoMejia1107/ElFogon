@@ -76,8 +76,3 @@ fun CountCard(
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun CountCardPreview() {
-    CountCard(count = 42, title = "Users", description = "Total number of users")
-}

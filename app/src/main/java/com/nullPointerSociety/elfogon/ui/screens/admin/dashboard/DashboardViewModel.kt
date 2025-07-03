@@ -15,18 +15,15 @@ class DashboardViewModel(
     private val adminRepository: AdminRepository
 ) : ViewModel() {
     val allUsers = adminRepository.allUsers
+    val usersToday = adminRepository.usersToday
+
     init {
         viewModelScope.launch {
             adminRepository.fetchAllUsers()
-            adminRepository.allUsers.collect { list ->
-                Log.d("Fetched Users", "Users: ${list.size}")
-            }
         }
     }
 
-
-
-    companion object{
+    companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val app = this[APPLICATION_KEY] as DelFogonApplication

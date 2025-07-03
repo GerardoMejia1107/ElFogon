@@ -15,8 +15,12 @@ class AdminRepositoryImpl(
     private val _allUsers = MutableStateFlow<List<UserReceptor>>(emptyList())
     override val allUsers: StateFlow<List<UserReceptor>> = _allUsers
 
+    private val _usersToday = MutableStateFlow<List<UserReceptor>>(emptyList())
+    override val usersToday: StateFlow<List<UserReceptor>> = _usersToday
+
+
     //This functions helps to obtain all the users from the Firestore database collection "users"
-    override suspend fun fetchAllUsers(){
+    override suspend fun fetchAllUsers() {
         // I get all the users from the Firestore collection "users"
         val snapshot = firestoreService.collection("users").get().await()
         // I map the documents to UserReceptor objects, filtering out any that do not exist
@@ -30,7 +34,8 @@ class AdminRepositoryImpl(
                     lastName = doc.getString("lastName") ?: "",
                     profilePictureUrl = doc.getString("profilePictureUrl") ?: "",
                     role = doc.getString("role") ?: "user",
-                    customSavedRecipes = doc.get("customSavedRecipes") as? List<String> ?: emptyList(),
+                    customSavedRecipes = doc.get("customSavedRecipes") as? List<String>
+                        ?: emptyList(),
                     savedRecipes = doc.get("savedRecipes") as? List<String> ?: emptyList(),
                     madeRecipes = doc.get("madeRecipes") as? List<String> ?: emptyList(),
                     registerDate = doc.getTimestamp("registerDate") ?: Timestamp.now()
@@ -43,7 +48,7 @@ class AdminRepositoryImpl(
 
     // Since I already have all the users fetched, I simply can pass and ID and return the user with that ID
     override suspend fun getUserById(uid: String): UserReceptor? {
-       return _allUsers.value.find { it.id == uid }
+        return _allUsers.value.find { it.id == uid }
     }
 
     // This function deletes a user by their ID
@@ -67,7 +72,7 @@ class AdminRepositoryImpl(
     }
 
     // This function returns the number of users who registered today
-    override suspend fun getNewUsersToday(): Int {
+    override suspend fun fetchNewUsersToday() {
         // I create a Calendar instance to get the start and end of the current day
         val calendar = Calendar.getInstance()
 
@@ -92,11 +97,25 @@ class AdminRepositoryImpl(
             .get()
             .await()
 
-        // I return the size of the snapshot, which represents the number of users who registered today
-        return snapshot.size()
+        val usersTodayList = snapshot.documents.mapNotNull { doc ->
+            if (doc.exists()) {
+                UserReceptor(
+                    id = doc.id,
+                    email = doc.getString("email") ?: "",
+                    name = doc.getString("name") ?: "",
+                    lastName = doc.getString("lastName") ?: "",
+                    profilePictureUrl = doc.getString("profilePictureUrl") ?: "",
+                    role = doc.getString("role") ?: "user",
+                    customSavedRecipes = doc.get("customSavedRecipes") as? List<String>
+                        ?: emptyList(),
+                    savedRecipes = doc.get("savedRecipes") as? List<String> ?: emptyList(),
+                    madeRecipes = doc.get("madeRecipes") as? List<String> ?: emptyList(),
+                    registerDate = doc.getTimestamp("registerDate") ?: Timestamp.now()
+                )
+            } else null
+        }
+        _usersToday.value = usersTodayList
     }
-
-
 
 
 }
