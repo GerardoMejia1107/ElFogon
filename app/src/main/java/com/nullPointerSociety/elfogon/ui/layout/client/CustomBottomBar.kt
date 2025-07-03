@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.layout
+package com.nullPointerSociety.elfogon.ui.layout.client
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons

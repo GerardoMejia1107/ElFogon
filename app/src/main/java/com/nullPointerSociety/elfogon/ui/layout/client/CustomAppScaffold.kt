@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.layout
+package com.nullPointerSociety.elfogon.ui.layout.client
 
 import android.os.Build
 import android.widget.Toast
