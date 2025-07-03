@@ -1,9 +1,11 @@
 package com.nullPointerSociety.elfogon.ui.components.recipeDetailsScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -23,32 +25,29 @@ fun Ingredients(ingredients: List<ExtendedIngredient>) {
     Column(modifier = Modifier.padding(horizontal = 20.dp)) {
         Text("Lista de Ingredientes", style = MaterialTheme.typography.titleLarge)
         ingredients.forEach {
-            Column {
-                /*Text(
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .padding(vertical = 4.dp)
+                    .background(Color(0xFFEADDD6), shape = MaterialTheme.shapes.medium),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
                     text = it.nameClean.orEmpty(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(top = 7.dp)
-                )*/
-                Row(
+                    fontSize = 20.sp,
                     modifier = Modifier
-                        .width(350.dp)
-                        .height(50.dp)
-                        .padding(vertical = 4.dp)
-                        .background(Color(0xFFEADDD6), shape = MaterialTheme.shapes.medium),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = it.nameClean.orEmpty(),
-                        fontSize = 20.sp,
-                        modifier = Modifier
-                            .padding(start = 15.dp, top = 7.dp),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Checkbox(checked = false, onCheckedChange = null)
-                }
+                        .padding(start = 15.dp, top = 7.dp)
+                        .weight(1f),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Checkbox(
+                    checked = false,
+                    onCheckedChange = null,
+                    modifier = Modifier.padding(end = 15.dp)
+                )
             }
-
         }
     }
 }
