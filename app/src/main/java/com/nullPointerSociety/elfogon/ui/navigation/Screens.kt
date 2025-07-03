@@ -26,12 +26,17 @@ object LogInScreenNav
 @Serializable
 object SignUpScreenNav
 
+
+
+
 //Admin
 @Serializable
 object DashboardScreenNav
 
 @Serializable
 object UsersScreenNav
+@Serializable
+object RegistrationsScreenNav
 
 
 
