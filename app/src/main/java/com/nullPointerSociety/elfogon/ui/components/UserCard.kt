@@ -1,6 +1,7 @@
 package com.nullPointerSociety.elfogon.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,16 +13,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -30,67 +36,56 @@ import com.nullPointerSociety.elfogon.R
 import com.nullPointerSociety.elfogon.data.model.user.UserReceptor
 import com.nullPointerSociety.elfogon.ui.theme.AppColors
 
-val testUser = UserReceptor(
-    id = "ABC123456",
-    name = "Gerardo",
-    lastName = "Ramírez",
-    email = "gerardo@example.com",
-    profilePictureUrl = "https://d2gwgwt9a7yxle.cloudfront.net/what_is_user_id_in_net_banking_mobile_871b681e52.jpg",
-    role = "admin",
-    customSavedRecipes = listOf("CUSTOM_0001", "CUSTOM_0002"),
-    savedRecipes = listOf("101", "202", "303"),
-    madeRecipes = listOf("101", "202"),
-    registerDate = Timestamp.now()
-)
 
 @Composable
 fun UserCard(user: UserReceptor) {
+
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp),
-        shape = RectangleShape,
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Imagen de perfil usando recurso local
-            Box(
+            // Avatar
+            Image(
+                painter = painterResource(id = R.drawable.user_default_pic),
+                contentDescription = "Profile image",
                 modifier = Modifier
-                    .size(72.dp)
+                    .size(64.dp)
                     .clip(CircleShape)
-                    .border(4.dp, MaterialTheme.colorScheme.primary, CircleShape)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.user_default_pic),
-                    contentDescription = "Profile image of ${user.name}",
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
+                    .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+            )
 
-            // Información del usuario
-            Column(
-                verticalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
+            Spacer(modifier = Modifier.width(16.dp))
+
+            // Info principal
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "${user.name} ${user.lastName}",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = AppColors.bodyText
+                    text = "${user.name} ${user.lastName}".toSentenceCase(),
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = AppColors.titleText
                 )
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = user.email,
                     style = MaterialTheme.typography.bodySmall,
                     color = AppColors.bodyText
                 )
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = "ID: ${user.id}",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppColors.bodyText
                 )
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = "Joined: ${user.registerDate.toDate().toString().dropLast(15)}",
                     style = MaterialTheme.typography.labelSmall,
@@ -98,21 +93,35 @@ fun UserCard(user: UserReceptor) {
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
-
-            // Rol a la derecha
-            Text(
-                text = user.role.uppercase(),
-                style = MaterialTheme.typography.labelSmall,
-                color = AppColors.titleText
-            )
+            // Rol como chip
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = if (user.role.lowercase() == "admin") Color(0xFFDCF4F2)
+                        else Color(0xFFE8ECF4),
+                        shape = RoundedCornerShape(20.dp)
+                    )
+                    .padding(horizontal = 12.dp, vertical = 6.dp)
+            ) {
+                Text(
+                    text = user.role.uppercase(),
+                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
+                    color = if (user.role.lowercase() == "admin") Color(0xFF00796B)
+                    else Color(0xFF304FFE)
+                )
+            }
         }
     }
 }
 
 
-@Preview (showBackground = true)
-@Composable
-fun UserCardPreview() {
-    UserCard(user = testUser)
+fun String.toSentenceCase(): String {
+    return this
+        .lowercase()
+        .split(" ")
+        .joinToString(" ") { word ->
+            word.replaceFirstChar { it.uppercase() }
+        }
 }
+
+

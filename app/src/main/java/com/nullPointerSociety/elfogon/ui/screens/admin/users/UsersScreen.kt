@@ -26,11 +26,9 @@ fun UsersScreen(
     LazyColumn(
         state = scrollState,
         modifier = modifier
-            .fillMaxSize()
-            .padding(top = 20.dp),
+            .fillMaxSize(),
         contentPadding = PaddingValues(bottom = 125.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
         item {
             UsersList(usersOnTheApp)

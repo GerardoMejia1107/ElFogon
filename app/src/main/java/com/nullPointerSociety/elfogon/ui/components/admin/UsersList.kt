@@ -15,19 +15,11 @@ fun UsersList(users: List<UserReceptor>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFBF9F5))
             .padding(vertical = 16.dp)
     ) {
 
         users.forEachIndexed { index, user ->
             UserCard(user = user)
-            if (index < users.lastIndex) {
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    thickness = 1.dp,
-                    color = Color(0xFFAAAAAA)
-                )
-            }
         }
     }
 }
