@@ -46,8 +46,8 @@ class HomeViewModel(
     private val _allRecipes = MutableStateFlow<List<Recipe>>(emptyList())
 
     init {
-        fetchTips()
-        fetchCustomRecipes()
+        //fetchTips()
+        //fetchCustomRecipes()
         //fetchAllRecipesAndGrouped()
     }
 

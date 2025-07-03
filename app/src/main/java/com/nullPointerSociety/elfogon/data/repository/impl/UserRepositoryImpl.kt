@@ -19,6 +19,7 @@ class UserRepositoryImpl(
         }
         return if (snapshot.exists()) {
             UserData(
+                role = if (snapshot.getString("role") == "admin") "admin" else "user",
                 email = snapshot.getString("email") ?: "",
                 name = snapshot.getString("name") ?: "",
                 lastName = snapshot.getString("lastName") ?: "",

@@ -101,6 +101,7 @@ class AuthRepositoryImplementation(
                     _userData.value = existingUser
                 } else {
                     val newUser = UserData(
+                        role = if (user.email == "00104923@uca.edu.sv") "admin" else "user",
                         email = user.email.orEmpty(),
                         name = user.displayName.orEmpty(),
                         profilePictureUrl = user.photoUrl?.toString()?.replace("s96-c", "s400-c")

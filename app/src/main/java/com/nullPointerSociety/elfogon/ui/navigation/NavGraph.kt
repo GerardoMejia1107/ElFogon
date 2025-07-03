@@ -114,7 +114,7 @@ fun AppNavGraph(
         }
 
         composable<DashboardScreenNav> {
-            DashboardScreen(navController = navController, hviewModel = dashboardViewModel)
+            DashboardScreen(navController = navController, homeViewModel = homeViewModel)
         }
 
         //filerscreen

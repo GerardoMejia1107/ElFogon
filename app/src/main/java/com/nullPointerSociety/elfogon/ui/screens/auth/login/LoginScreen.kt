@@ -1,5 +1,6 @@
 package com.nullPointerSociety.elfogon.ui.screens.auth.login
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -89,31 +90,17 @@ fun LoginScreen(
     }
 
 
-    LaunchedEffect(auth.value) {
-        when (auth.value) {
-            is AuthState.Authenticated -> {
-                Toast.makeText(context, "Welcome!", Toast.LENGTH_SHORT).show()
-                navController.navigate(HomeScreenNav)
-            }
-
-            is AuthState.Error -> Toast.makeText(
-                context,
-                (auth.value as AuthState.Error).message,
-                Toast.LENGTH_LONG
-            ).show()
-
-            else -> Unit
-        }
-    }
-
-    LaunchedEffect(userData.value?.role) {
-        when(userData.value?.role) {
-           "admin" -> {
-                navController.navigate(DashboardScreenNav) {
+    LaunchedEffect(auth.value, userData.value) {
+        if (userData.value !== null && auth.value is AuthState.Authenticated) {
+            Log.d("Actual user info", userData.value.toString())
+            val role = userData.value?.role
+            if (role == "admin") {
+                navController.navigate(DashboardScreenNav)
+            } else {
+                navController.navigate(HomeScreenNav) {
                     popUpTo(HomeScreenNav) { inclusive = true }
                 }
             }
-            else -> {}
         }
     }
 
