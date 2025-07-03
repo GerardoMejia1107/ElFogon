@@ -17,7 +17,6 @@ import com.nullPointerSociety.elfogon.ui.navigation.AdminNavPath
 fun CustomAdminScaffold(
 ) {
     val navController = rememberNavController()
-    var titleScreen = rememberSaveable { mutableStateOf("") }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val previousRoute = navController.previousBackStackEntry?.destination?.route
@@ -32,7 +31,7 @@ fun CustomAdminScaffold(
 
 
     Scaffold(
-        topBar = { CustomAdminTopBar() },
+        topBar = { CustomAdminTopBar(currentRoute) },
         bottomBar = {
             CustomAdminButtonBar(selectedRoute = currentRoute, onItemSelected = { routeObject ->
                 onItemSelected(routeObject)
@@ -42,7 +41,6 @@ fun CustomAdminScaffold(
         AdminNavPath(
             navController = navController,
             modifier = Modifier.padding(innerPadding),
-            titleScreen = titleScreen,
             scrollState = scrollState,
         )
     }

@@ -90,19 +90,6 @@ fun LoginScreen(
     }
 
 
-    LaunchedEffect(auth.value, userData.value) {
-        if (userData.value !== null && auth.value is AuthState.Authenticated) {
-            Log.d("Actual user info", userData.value.toString())
-            val role = userData.value?.role
-            if (role == "admin") {
-                navController.navigate(DashboardScreenNav)
-            } else {
-                navController.navigate(HomeScreenNav) {
-                    popUpTo(HomeScreenNav) { inclusive = true }
-                }
-            }
-        }
-    }
 
     Column(
         modifier = Modifier

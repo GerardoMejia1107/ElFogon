@@ -3,9 +3,13 @@ package com.nullPointerSociety.elfogon.ui.screens.admin.dashboard
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +33,7 @@ fun DashboardScreen(
     val dashboardViewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory)
 
     val users = dashboardViewModel.allUsers.collectAsState().value
+    val usersToday = dashboardViewModel.usersToday.collectAsState().value
 
 
     LaunchedEffect(authState.value) {
@@ -42,11 +47,34 @@ fun DashboardScreen(
             .fillMaxSize(),
     ) {
         item {
-            Text(text = "See the users on the app", modifier = Modifier.padding(start = 16.dp, top = 3.dp))
-            CountCard(users.size)
+            Text(
+                text = "See the users on the app",
+                modifier = Modifier.padding(start = 16.dp, top = 3.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                CountCard(
+                    modifier = Modifier.weight(1f),
+                    users.size,
+                    title = "Total Users",
+                    description = "All users on the App"
+                )
+                CountCard(
+                    modifier = Modifier.weight(1f),
+                    usersToday.size,
+                    title = "New Users Today",
+                    description = "New users registered today"
+                )
+            }
         }
         item {
-            Text("List of users", modifier = Modifier.padding(start = 16.dp, top = 10.dp))
+            Text(
+                "List of users",
+                modifier = Modifier.padding(start = 16.dp, top = 10.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
             UsersList(users)
         }
     }

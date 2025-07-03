@@ -71,7 +71,7 @@ fun UserCard(user: UserReceptor) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = "${user.name} ${user.lastName}".toSentenceCase(),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.titleSmall,
                     color = AppColors.titleText
                 )
                 Spacer(modifier = Modifier.height(2.dp))

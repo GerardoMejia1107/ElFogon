@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
 import com.nullPointerSociety.elfogon.ui.screens.admin.dashboard.DashboardScreen
+import com.nullPointerSociety.elfogon.ui.screens.admin.registrations.RegistrationsScreen
 import com.nullPointerSociety.elfogon.ui.screens.admin.users.UsersScreen
 import com.nullPointerSociety.elfogon.ui.screens.common.auth.login.LoginViewModel
 import com.nullPointerSociety.elfogon.ui.screens.client.home.HomeViewModel
@@ -21,7 +22,6 @@ import com.nullPointerSociety.elfogon.ui.screens.common.profile.ProfileScreen
 fun AdminNavPath(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    titleScreen: MutableState<String>,
     scrollState: LazyListState,
 ) {
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory)
@@ -37,7 +37,11 @@ fun AdminNavPath(
 
     NavHost(navController = navController, startDestination = DashboardScreenNav) {
         composable<DashboardScreenNav> {
-            DashboardScreen(modifier = modifier, navController = navController, homeViewModel = homeViewModel)
+            DashboardScreen(
+                modifier = modifier,
+                navController = navController,
+                homeViewModel = homeViewModel
+            )
         }
 
         composable<UsersScreenNav> {
@@ -45,7 +49,7 @@ fun AdminNavPath(
         }
 
         composable<RegistrationsScreenNav> {
-
+            RegistrationsScreen(modifier, scrollState)
         }
 
         composable<ProfileScreenNav> {

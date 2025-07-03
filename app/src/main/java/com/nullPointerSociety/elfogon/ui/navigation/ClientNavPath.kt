@@ -43,14 +43,6 @@ fun ClientNavPath(
     val dashboardViewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory)
 
 
-    //Solamente usado en el LaunchedEffect para redirigir al usuario si no está autenticado
-    val authState = loginViewModel.authState.collectAsState()
-    LaunchedEffect(authState.value) {
-        when (authState.value) {
-            is AuthState.Unauthenticated -> navController.navigate(LogInScreenNav)
-            else -> Unit
-        }
-    }
 
 
     val onClickRecipe = { recipeId: String, requester: String ->
@@ -58,14 +50,9 @@ fun ClientNavPath(
     }
 
 
-    NavHost(navController = navController, startDestination = LogInScreenNav) {
+    NavHost(navController = navController, startDestination = HomeScreenNav) {
 
-        composable<LogInScreenNav> {
-            LoginScreen(navController)
-        }
-        composable<SignUpScreenNav> {
-            RegisterScreen(navController)
-        }
+
         composable<HomeScreenNav> {
             val requester = HomeScreenNav::class.qualifiedName
             HomeScreen(

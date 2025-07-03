@@ -17,6 +17,13 @@ class LoginViewModel(
     val authState = authRepository.authState
     val userData = authRepository.userData
 
+    fun fetchUserDataFromDB() {
+        viewModelScope.launch {
+            authRepository.fetchUserDataFromDB()
+        }
+    }
+
+
     init {
         viewModelScope.launch {
             authRepository.checkAuthStatus()

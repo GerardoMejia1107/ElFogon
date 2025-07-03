@@ -84,5 +84,15 @@ fun ProfileScreen(
             }
         }
 
+        item {
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Botón cerrar sesión
+            CustomButton(
+                text = "Sing Out",
+                onClick = { profileHomeViewModel.logout() },
+            )
+        }
+
     }
 }
