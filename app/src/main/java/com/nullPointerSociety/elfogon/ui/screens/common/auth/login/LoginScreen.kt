@@ -93,7 +93,8 @@ fun LoginScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -168,11 +169,11 @@ fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(top = 8.dp)
         ) {
-            Text(text = "Don't have an account? ")
+            Text(text = "Don't have an account? ", color = MaterialTheme.colorScheme.onBackground)
 
             Text(
                 text = "Sign Up Manually",
-                color = Color(0xFF4A6E4D),
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .padding(start = 4.dp)
