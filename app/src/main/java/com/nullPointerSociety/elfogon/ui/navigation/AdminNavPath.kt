@@ -37,7 +37,7 @@ fun AdminNavPath(
 
     NavHost(navController = navController, startDestination = DashboardScreenNav) {
         composable<DashboardScreenNav> {
-            DashboardScreen(navController = navController, homeViewModel = homeViewModel)
+            DashboardScreen(modifier = modifier, navController = navController, homeViewModel = homeViewModel)
         }
 
         composable<UsersScreenNav> {

@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 fun CountCard(
     count: Int,
     title: String = "Count",
-    description: String = "Total count of items"
+    description: String = "Total amount of users in your application"
 ) {
     Card(
         modifier = Modifier

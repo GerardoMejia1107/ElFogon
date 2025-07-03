@@ -2,13 +2,20 @@ package com.nullPointerSociety.elfogon.ui.screens.admin.dashboard
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
+import com.nullPointerSociety.elfogon.ui.components.admin.CountCard
 import com.nullPointerSociety.elfogon.ui.components.admin.UsersList
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
 import com.nullPointerSociety.elfogon.ui.screens.client.home.HomeViewModel
@@ -30,7 +37,17 @@ fun DashboardScreen(
         }
     }
 
-    Column {
-        UsersList(users)
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize(),
+    ) {
+        item {
+            Text(text = "See the users on the app", modifier = Modifier.padding(start = 16.dp, top = 3.dp))
+            CountCard(users.size)
+        }
+        item {
+            Text("List of users", modifier = Modifier.padding(start = 16.dp, top = 10.dp))
+            UsersList(users)
+        }
     }
 }
