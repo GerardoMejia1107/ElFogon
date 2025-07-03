@@ -9,6 +9,8 @@ interface AuthRepository {
     val authState: StateFlow<AuthState>
     val userData: StateFlow<UserData?>
 
+    suspend fun fetchUserDataFromDB()
+
     suspend fun checkAuthStatus()
     suspend fun login(email: String, password: String)
     suspend fun signUp(

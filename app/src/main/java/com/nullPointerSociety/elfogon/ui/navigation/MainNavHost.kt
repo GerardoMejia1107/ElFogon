@@ -22,12 +22,7 @@ fun MainNavHost(
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory)
     //Solamente usado en el LaunchedEffect para redirigir al usuario si no está autenticado
     val authState = loginViewModel.authState.collectAsState()
-    LaunchedEffect(authState.value) {
-        when (authState.value) {
-            is AuthState.Unauthenticated -> navController.navigate(LogInScreenNav)
-            else -> Unit
-        }
-    }
+
     NavHost(navController = navController, startDestination = LogInScreenNav) {
         composable<LogInScreenNav> {
             LoginScreen(navController)

@@ -22,6 +22,12 @@ class AuthRepositoryImplementation(
     override val userData: StateFlow<UserData?> = _userData
 
 
+    override suspend fun fetchUserDataFromDB() {
+        val uid = authService.currentUser?.uid ?: return
+        _userData.value = userRepository.getUserData(uid)
+    }
+
+
     override suspend fun checkAuthStatus() {
         if (authService.currentUser == null) {
             _authState.value = AuthState.Unauthenticated
@@ -40,10 +46,12 @@ class AuthRepositoryImplementation(
         _authState.value = AuthState.Loading
         try {
             authService.signInWithEmailAndPassword(email, password).await()
-            _authState.value = AuthState.Authenticated
 
             val userData = userRepository.getUserData(authService.currentUser?.uid ?: "")
             _userData.value = userData
+            if (_userData.value != null) {
+                _authState.value = AuthState.Authenticated
+            }
         } catch (e: Exception) {
             _authState.value = AuthState.Error(e.message ?: "Login failed")
         }
@@ -63,8 +71,6 @@ class AuthRepositoryImplementation(
         _authState.value = AuthState.Loading
         try {
             authService.createUserWithEmailAndPassword(email, password).await()
-            _authState.value = AuthState.Authenticated
-
             val userData = UserData(
                 role = if (email == "00104923@uca.edu.sv") "admin" else "user",
                 email = authService.currentUser?.email.toString(),
@@ -74,6 +80,11 @@ class AuthRepositoryImplementation(
             )
             userRepository.saveUserData(authService.currentUser?.uid ?: "", userData)
             _userData.value = userData
+
+            if (_userData.value != null) {
+                _authState.value = AuthState.Authenticated
+            }
+
 
         } catch (e: Exception) {
             _authState.value = AuthState.Error(e.message ?: "Sign up failed")
@@ -93,8 +104,6 @@ class AuthRepositoryImplementation(
         try {
             val user = authService.signInWithCredential(credential).await().user
             if (user != null && !user.isAnonymous) {
-                _authState.value = AuthState.Authenticated
-
                 val uid = user.uid
                 val existingUser = userRepository.getUserData(uid)
 
@@ -110,6 +119,9 @@ class AuthRepositoryImplementation(
                     userRepository.saveUserData(uid, newUser)
                     _userData.value = newUser
                 }
+
+                _authState.value = AuthState.Authenticated
+
             } else {
                 _authState.value = AuthState.Error("No se pudo autenticar con Google.")
             }
