@@ -40,7 +40,8 @@ import com.nullPointerSociety.elfogon.viewmodel.UserViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun CustomScaffold(
+fun CustomClientScaffold(
+
 ) {
     val userViewModel: UserViewModel = viewModel(factory = UserViewModel.Factory)
     val navController = rememberNavController()
