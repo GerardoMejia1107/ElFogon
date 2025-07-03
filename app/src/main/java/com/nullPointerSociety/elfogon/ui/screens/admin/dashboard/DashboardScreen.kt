@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,23 +49,32 @@ fun DashboardScreen(
         item {
             Text(
                 text = "See the users on the app",
-                modifier = Modifier.padding(start = 16.dp, top = 3.dp)
+                modifier = Modifier.padding(start = 16.dp, top = 3.dp),
+                style = MaterialTheme.typography.titleMedium
             )
-            Row {
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 CountCard(
+                    modifier = Modifier.weight(1f),
                     users.size,
                     title = "Total Users",
-                    description = "Total amount of users in your application"
+                    description = "All users on the App"
                 )
                 CountCard(
+                    modifier = Modifier.weight(1f),
                     usersToday.size,
                     title = "New Users Today",
-                    description = "Total amount of users registered today"
+                    description = "New users registered today"
                 )
             }
         }
         item {
-            Text("List of users", modifier = Modifier.padding(start = 16.dp, top = 10.dp))
+            Text(
+                "List of users",
+                modifier = Modifier.padding(start = 16.dp, top = 10.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
             UsersList(users)
         }
     }
