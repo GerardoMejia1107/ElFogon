@@ -35,6 +35,7 @@ object DashboardScreenNav
 
 @Serializable
 object UsersScreenNav
+
 @Serializable
 object RegistrationsScreenNav
 
