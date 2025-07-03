@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import com.nullPointerSociety.elfogon.ui.layout.MainLayoutSelector
 import com.nullPointerSociety.elfogon.ui.layout.client.CustomScaffold
 import com.nullPointerSociety.elfogon.ui.theme.ElFogonTheme
 
@@ -16,7 +17,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ElFogonTheme() {
-                CustomScaffold()
+                MainLayoutSelector()
             }
         }
     }
