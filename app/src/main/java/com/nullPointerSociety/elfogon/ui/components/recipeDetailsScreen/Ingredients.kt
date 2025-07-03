@@ -23,7 +23,10 @@ import com.nullPointerSociety.elfogon.data.model.recipes.ExtendedIngredient
 @Composable
 fun Ingredients(ingredients: List<ExtendedIngredient>) {
     Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-        Text("Lista de Ingredientes", style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = "Lista de Ingredientes:",
+            style = MaterialTheme.typography.titleLarge
+        )
         ingredients.forEach {
             Row(
                 modifier = Modifier
@@ -31,21 +34,14 @@ fun Ingredients(ingredients: List<ExtendedIngredient>) {
                     .height(50.dp)
                     .padding(vertical = 4.dp)
                     .background(Color(0xFFEADDD6), shape = MaterialTheme.shapes.medium),
-                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = it.nameClean.orEmpty(),
+                    text = "• ${it.nameClean.orEmpty()}",
                     fontSize = 20.sp,
                     modifier = Modifier
-                        .padding(start = 15.dp, top = 7.dp)
-                        .weight(1f),
+                        .padding(start = 15.dp, top = 7.dp),
                     style = MaterialTheme.typography.bodyMedium
-                )
-                Checkbox(
-                    checked = false,
-                    onCheckedChange = null,
-                    modifier = Modifier.padding(end = 15.dp)
                 )
             }
         }
