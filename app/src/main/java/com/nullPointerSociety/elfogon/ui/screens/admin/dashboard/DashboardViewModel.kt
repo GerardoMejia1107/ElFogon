@@ -1,4 +1,4 @@
-package com.nullPointerSociety.elfogon.ui.screens.admin
+package com.nullPointerSociety.elfogon.ui.screens.admin.dashboard
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -9,7 +9,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.nullPointerSociety.elfogon.DelFogonApplication
 import com.nullPointerSociety.elfogon.data.repository.AdminRepository
-import com.nullPointerSociety.elfogon.ui.screens.client.home.HomeViewModel
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(

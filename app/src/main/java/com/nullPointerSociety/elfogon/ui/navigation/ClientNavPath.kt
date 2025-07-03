@@ -14,8 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nullPointerSociety.elfogon.data.repository.impl.AuthState
-import com.nullPointerSociety.elfogon.ui.screens.admin.DashboardScreen
-import com.nullPointerSociety.elfogon.ui.screens.admin.DashboardViewModel
+import com.nullPointerSociety.elfogon.ui.screens.admin.dashboard.DashboardViewModel
 import com.nullPointerSociety.elfogon.ui.screens.common.auth.login.LoginScreen
 import com.nullPointerSociety.elfogon.ui.screens.common.auth.login.LoginViewModel
 import com.nullPointerSociety.elfogon.ui.screens.common.auth.register.RegisterScreen
