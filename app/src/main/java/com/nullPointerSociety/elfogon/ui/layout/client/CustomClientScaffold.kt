@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.nullPointerSociety.elfogon.ui.navigation.AppNavGraph
+import com.nullPointerSociety.elfogon.ui.navigation.ClientNavPath
 import com.nullPointerSociety.elfogon.ui.navigation.HomeScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.LogInScreenNav
 import com.nullPointerSociety.elfogon.ui.navigation.SignUpScreenNav
@@ -41,7 +41,6 @@ import com.nullPointerSociety.elfogon.viewmodel.UserViewModel
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun CustomClientScaffold(
-
 ) {
     val userViewModel: UserViewModel = viewModel(factory = UserViewModel.Factory)
     val navController = rememberNavController()
@@ -128,12 +127,11 @@ fun CustomClientScaffold(
             }
         }
     ) { innerPadding ->
-        AppNavGraph(
+        ClientNavPath(
             navController = navController,
             Modifier.padding(innerPadding),
             titleScreen,
             scrollState,
-
             )
     }
 }

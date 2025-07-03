@@ -11,7 +11,6 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun CustomAdminScaffold(
-
 ) {
     val navController = rememberNavController()
     var titleScreen = rememberSaveable { mutableStateOf("") }

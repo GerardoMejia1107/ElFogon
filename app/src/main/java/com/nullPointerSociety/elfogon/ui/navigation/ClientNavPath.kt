@@ -31,7 +31,7 @@ import com.nullPointerSociety.elfogon.viewmodel.UserViewModel
 @SuppressLint("ContextCastToActivity")
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun AppNavGraph(
+fun ClientNavPath(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     titleScreen: MutableState<String>,
