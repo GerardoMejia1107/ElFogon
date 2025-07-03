@@ -39,7 +39,8 @@ fun CountCard(
             .padding(8.dp)
             .width(170.dp), // Tamaño fijo para evitar que los textos salten
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
     ) {
         Column(
             modifier = Modifier

@@ -46,7 +46,9 @@ fun UserCard(user: UserReceptor) {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .heightIn(min = 130.dp),
         shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             // Contenido principal

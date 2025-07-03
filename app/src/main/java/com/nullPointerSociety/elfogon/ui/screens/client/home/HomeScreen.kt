@@ -5,11 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -40,10 +39,10 @@ fun HomeScreen(
 ) {
     val searchResults by homeViewModel.searchResults.collectAsState()
     val categorizedRecipes by homeViewModel.categorizedRecipes.collectAsState()
-    val authState by homeViewModel.authState.collectAsState()
-    val tips by homeViewModel.tips.collectAsState()
     val customRecipes by homeViewModel.customRecipes.collectAsState()
+    val tips by homeViewModel.tips.collectAsState()
     val hasShownTip by homeViewModel.hasShownTip.collectAsState()
+    val authState by homeViewModel.authState.collectAsState()
 
     LaunchedEffect(authState) {
         if (authState is AuthState.Unauthenticated) {
@@ -51,142 +50,120 @@ fun HomeScreen(
         }
     }
 
-    if (searchResults.isNotEmpty()) {
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            contentPadding = PaddingValues(bottom = 140.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+    if (!hasShownTip && tips.isNotEmpty()) {
+        TipModal(
+            tipData = tips.random(),
+            onDismiss = { homeViewModel.markTipAsShown() }
+        )
+    }
 
-            if (!hasShownTip && tips.isNotEmpty()) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    TipModal(
-                        tipData = tips.random(),
-                        onDismiss = { homeViewModel.markTipAsShown() }
-                    )
-                }
-            }
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
 
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                SearchBar(
-                    onFilterClick = onNavigateToFilters,
-                    onBackClick = { /* sin acción */ },
-                    onQueryChange = { query ->
-                        homeViewModel.filterRecipesByQuery(query)
-                    }
-                )
-            }
+        SearchBar(
+            onFilterClick = onNavigateToFilters,
+            onBackClick = { /* no-op */ },
+            onQueryChange = { query -> homeViewModel.filterRecipesByQuery(query) }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
 
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                Surface(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = "Descubre recetas deliciosas y fáciles de preparar",
-                        style = MaterialTheme.typography.displaySmall,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.background)
-                            .padding(vertical = 8.dp)
-                    )
-                }
-            }
 
-            items(searchResults) { recipe ->
-                RecipeCard(recipeSpoon = recipe, onClick = onRecipeClick)
-            }
-        }
+        Box(modifier = Modifier.weight(1f)) {
+            when {
 
-    } else if (categorizedRecipes.isNotEmpty()) {
-        LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            contentPadding = PaddingValues(bottom = 140.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-
-            if (!hasShownTip && tips.isNotEmpty()) {
-                item {
-                    TipModal(
-                        tipData = tips.random(),
-                        onDismiss = { homeViewModel.markTipAsShown() }
-                    )
-                }
-            }
-
-            item {
-                SearchBar(
-                    onFilterClick = onNavigateToFilters,
-                    onBackClick = { /* sin acción */ },
-                    onQueryChange = { query ->
-                        homeViewModel.filterRecipesByQuery(query)
-                    }
-                )
-            }
-
-            item {
-                Surface(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = "Descubre recetas deliciosas y fáciles de preparar",
-                        style = MaterialTheme.typography.displaySmall,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.background)
-                            .padding(vertical = 8.dp)
-                    )
-                }
-            }
-
-            if (customRecipes.isNotEmpty()) {
-                item {
-                    Text(
-                        text = "Tus Recetas Especiales 🍽️",
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                }
-                item {
-                    LazyRow(
+                searchResults.isNotEmpty() -> {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(bottom = 140.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        modifier = Modifier.fillMaxWidth()
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        items(customRecipes) { recipe ->
-                            SystemRecipeCard(recipeSystem = recipe, onClick = onRecipeClick)
+                        items(searchResults) { recipe ->
+                            RecipeCard(recipe, onRecipeClick)
                         }
                     }
                 }
-            }
 
-            items(categorizedRecipes) { group ->
-                Text(
-                    text = group.tag,
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(group.recipes) { recipe ->
-                        RecipeCard(recipeSpoon = recipe, onClick = onRecipeClick)
+
+                categorizedRecipes.isNotEmpty() -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(bottom = 140.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        // Subtitle
+                        item {
+                            Surface(modifier = Modifier.fillMaxWidth()) {
+                                Text(
+                                    text = "Descubre recetas deliciosas y fáciles de preparar",
+                                    style = MaterialTheme.typography.displaySmall,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(MaterialTheme.colorScheme.background)
+                                        .padding(vertical = 8.dp)
+                                )
+                            }
+                        }
+
+
+                        if (customRecipes.isNotEmpty()) {
+                            item {
+                                Text(
+                                    text = "Tus Recetas Especiales 🍽️",
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                            }
+                            item {
+                                LazyRow(
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    items(customRecipes) { recipe ->
+                                        SystemRecipeCard(recipe, onRecipeClick)
+                                    }
+                                }
+                            }
+                        }
+
+
+                        categorizedRecipes.forEach { group ->
+                            item {
+                                Text(
+                                    text = group.tag,
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                            }
+                            item {
+                                LazyRow(
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    items(group.recipes) { recipe ->
+                                        RecipeCard(recipe, onClick = onRecipeClick)
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+
+                else -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
                     }
                 }
             }
-        }
-
-    } else {
-
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
         }
     }
 }

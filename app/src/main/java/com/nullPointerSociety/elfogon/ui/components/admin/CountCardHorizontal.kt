@@ -34,7 +34,9 @@ fun CountCardHorizontal(
             .padding(vertical = 8.dp, horizontal = 16.dp)
             .fillMaxWidth(), // Ocupar todo el ancho disponible
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+
     ) {
         Row(
             modifier = Modifier
