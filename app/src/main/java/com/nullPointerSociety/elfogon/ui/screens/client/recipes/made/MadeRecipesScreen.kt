@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nullPointerSociety.elfogon.ui.components.savedRecipes.SavedCard
 import com.nullPointerSociety.elfogon.ui.screens.client.recipes.saved.SavedRecipesViewModel
 
+
 @Composable
 fun MadeRecipesScreen(
     onRecipeClick: (String) -> Unit = {},
@@ -31,31 +32,32 @@ fun MadeRecipesScreen(
 
     val madeRecipesList = madeRecipesViewModel.getListOfMadeRecipes().collectAsState().value
 
-    val isLoading = madeRecipesList.isEmpty()
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        when {
+            madeRecipesList.isEmpty() -> {
+                // Mostrar mensaje si la lista está vacía
+                Text(text = "There's nothing to show")
+            }
 
-    if (isLoading) {
-        // Muestra una pantalla de carga mientras se cargan las recetas hechas
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-    } else {
-        // Muestra la lista de recetas hechas cuando ya están disponibles
-        Column(modifier = modifier.fillMaxSize()) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(madeRecipesList) { recipe ->
-                    Log.d("MadeRecipesScreen", "Recipe: $recipe")
-                    SavedCard(
-                        recipe,
-                        onViewClick = onRecipeClick
-                    ) {}
+            else -> {
+                // Mostrar la lista si hay elementos
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(madeRecipesList) { recipe ->
+                        Log.d("MadeRecipesScreen", "Recipe: $recipe")
+                        SavedCard(
+                            recipe,
+                            onViewClick = onRecipeClick
+                        ) {}
+                    }
                 }
             }
         }

@@ -23,41 +23,51 @@ fun SavedRecipesScreen(
     onRecipeClick: (String) -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
 ) {
-
     val savedRecipesViewModel: SavedRecipesViewModel =
         viewModel(factory = SavedRecipesViewModel.Factory)
 
     val savedRecipesList = savedRecipesViewModel.getListOfSavedRecipes().collectAsState().value
     val customRecipeList = savedRecipesViewModel.customRecipesSaved.collectAsState().value
 
-    val isLoading = savedRecipesList.isEmpty() && customRecipeList.isEmpty()
+    val isLoading = false // Aquí puedes agregar tu lógica real de carga si tienes un estado específico
+
+    val isEmpty = savedRecipesList.isEmpty() && customRecipeList.isEmpty()
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (isLoading) {
-            CircularProgressIndicator()
-            Text(text = "Loading your saved recipes...")
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(savedRecipesList) { recipe ->
-                    Log.d("SavedRecipesScreen", "Recipe: $recipe")
-                    SavedCard(
-                        recipe,
-                        onViewClick = onRecipeClick
-                    ) {}
-                }
-                items(customRecipeList) { customOne ->
-                    SavedCard(
-                        customOne, onViewClick = onRecipeClick
-                    ) { }
+        when {
+            isLoading -> {
+                CircularProgressIndicator()
+                Text(text = "Loading your saved recipes...")
+            }
+
+            isEmpty -> {
+                Text(text = "There's nothing to show")
+            }
+
+            else -> {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(savedRecipesList) { recipe ->
+                        Log.d("SavedRecipesScreen", "Recipe: $recipe")
+                        SavedCard(
+                            recipe,
+                            onViewClick = onRecipeClick
+                        ) {}
+                    }
+                    items(customRecipeList) { customOne ->
+                        SavedCard(
+                            customOne,
+                            onViewClick = onRecipeClick
+                        ) {}
+                    }
                 }
             }
         }
