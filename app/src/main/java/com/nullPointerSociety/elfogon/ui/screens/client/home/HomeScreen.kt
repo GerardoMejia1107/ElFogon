@@ -44,6 +44,12 @@ fun HomeScreen(
     val hasShownTip by homeViewModel.hasShownTip.collectAsState()
     val authState by homeViewModel.authState.collectAsState()
 
+    val currentMonth = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) + 1
+
+    val seasonRecipes = customRecipes.filter { recipe ->
+        recipe.months.contains(currentMonth)
+    }
+
     LaunchedEffect(authState) {
         if (authState is AuthState.Unauthenticated) {
             navController.navigate(LogInScreenNav)
@@ -100,7 +106,7 @@ fun HomeScreen(
                         item {
                             Surface(modifier = Modifier.fillMaxWidth()) {
                                 Text(
-                                    text = "Descubre recetas deliciosas y fáciles de preparar",
+                                    text = "Find your next meal 🍽️",
                                     style = MaterialTheme.typography.displaySmall,
                                     color = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier
@@ -115,7 +121,7 @@ fun HomeScreen(
                         if (customRecipes.isNotEmpty()) {
                             item {
                                 Text(
-                                    text = "Tus Recetas Especiales 🍽️",
+                                    text = "Checkout our selection for this month! 🍳",
                                     style = MaterialTheme.typography.titleLarge
                                 )
                             }
@@ -124,7 +130,7 @@ fun HomeScreen(
                                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    items(customRecipes) { recipe ->
+                                    items(seasonRecipes) { recipe ->
                                         SystemRecipeCard(recipe, onRecipeClick)
                                     }
                                 }

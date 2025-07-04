@@ -80,7 +80,7 @@ fun RecipeCard(
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "Porciones: ${recipeSpoon.servings ?: "-"}",
+                    text = "Servings : ${recipeSpoon.servings ?: "-"}",
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(4.dp))

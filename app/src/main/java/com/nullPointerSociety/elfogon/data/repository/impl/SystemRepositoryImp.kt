@@ -36,7 +36,9 @@ class SystemRepositoryImp(
             val snapshot = firestoreService.collection("custom-recipes").get().await()
             val customRecipesList =
                 snapshot.documents.mapNotNull { it.toObject(Recipe::class.java) }
+
             _customRecipes.value = customRecipesList
+
             Log.d("Show Custom Recipes", "${_customRecipes.value}")
         } catch (e: Exception) {
             _customRecipes.value = emptyList()

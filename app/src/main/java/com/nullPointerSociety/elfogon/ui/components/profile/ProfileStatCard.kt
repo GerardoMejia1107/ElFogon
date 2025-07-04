@@ -17,7 +17,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ProfileStatCard(
-    stateTitle: String
+    stateTitle: String,
+    count: Int = 0,
 ) {
     Box(
         modifier = Modifier
@@ -27,7 +28,7 @@ fun ProfileStatCard(
 
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "25", fontSize = 30.sp, color = Color.White)
+            Text(text = count.toString(), fontSize = 30.sp, color = Color.White)
             Text(
                 text = stateTitle,
                 fontSize = 16.sp,

@@ -51,6 +51,24 @@ class UserViewModel(
         }
     }
 
+    fun saveMadeRecipe(recipeId: String) {
+        viewModelScope.launch {
+            val uid = authRepository.getUserUid()
+            if (uid != null) {
+                try {
+                    if (recipeId.startsWith("CUSTOM_")) {
+                        userRepository.updateCustomMadeRecipes(uid, recipeId)
+                    } else {
+                        userRepository.updateMadeRecipes(uid, recipeId)
+                    }
+                    _eventChannel.send("Recipe marked as made successfully")
+                } catch (e: Exception) {
+                    _eventChannel.send("Failed to mark recipe as made: ${e.message}")
+                }
+            }
+        }
+    }
+
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {

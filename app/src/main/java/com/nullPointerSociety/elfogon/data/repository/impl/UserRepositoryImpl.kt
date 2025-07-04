@@ -13,6 +13,7 @@ import kotlinx.coroutines.tasks.await
 class UserRepositoryImpl(
     private val firestoreService: FirebaseFirestore
 ) : UserRepository {
+
     override suspend fun getUserData(uid: String): UserData? {
         val snapshot = firestoreService.collection("users").document(uid).get().await()
         val role = snapshot.getString("role")?.lowercase()?.trim()
@@ -49,6 +50,33 @@ class UserRepositoryImpl(
             .await()
 
     }
+
+    //Preparadas-----------------------------------------------
+    override suspend fun updateMadeRecipes(uid: String?, recipeId: String) {
+        val updateMap = mapOf("madeRecipes" to FieldValue.arrayUnion(recipeId))
+        firestoreService.collection("users").document(uid ?: "").set(updateMap, SetOptions.merge())
+            .await()
+
+    }
+
+
+    override suspend fun updateCustomMadeRecipes(uid: String?, recipeId: String) {
+        val updateMap = mapOf("customSavedRecipes" to FieldValue.arrayUnion(recipeId))
+        firestoreService.collection("users").document(uid ?: "").set(updateMap, SetOptions.merge())
+            .await()
+
+    }
+
+
+
+    override suspend fun getMadeRecipes(uid: String): List<String> {
+        val snapshot = firestoreService.collection("users").document(uid).get().await()
+        if (snapshot.exists()) {
+            Log.d("UserRepositoryImpl", "getMadeRecipes: ${snapshot.get("madeRecipes")}")
+        }
+        return snapshot.get("madeRecipes") as? List<String> ?: emptyList()
+    }
+
 
     override suspend fun getSavedRecipes(uid: String): List<String> {
         val snapshot = firestoreService.collection("users").document(uid).get().await()

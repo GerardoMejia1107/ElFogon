@@ -43,8 +43,6 @@ fun ClientNavPath(
     val dashboardViewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory)
 
 
-
-
     val onClickRecipe = { recipeId: String, requester: String ->
         navController.navigate(RecipeDetailsScreenNav(recipeId, requester))
     }
@@ -72,7 +70,10 @@ fun ClientNavPath(
             })
         }
         composable<MadeRecipesScreenNav> {
-            MadeRecipesScreen()
+            val requester = MadeRecipesScreenNav::class.qualifiedName
+            MadeRecipesScreen(modifier = modifier, onRecipeClick = { recipeID: String ->
+                onClickRecipe(recipeID, requester ?: "default")
+            })
         }
         composable<ProfileScreenNav> {
             ProfileScreen(

@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +44,7 @@ import androidx.navigation.NavController
 import com.nullPointerSociety.elfogon.ui.components.CustomButton
 import com.nullPointerSociety.elfogon.ui.components.profile.BasicInfo
 import com.nullPointerSociety.elfogon.ui.components.profile.ProfileStatCard
+import kotlinx.coroutines.delay
 
 @Composable
 fun ProfileScreen(
@@ -50,49 +53,56 @@ fun ProfileScreen(
 ) {
     val profileHomeViewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)
 
-    var expandPassword by remember { mutableStateOf(false) }
-    var expandEmail by remember { mutableStateOf(false) }
-    val newPass = remember { mutableStateOf("") }
-    val confirmPass = remember { mutableStateOf("") }
-    val newEmail = remember { mutableStateOf("") }
+    val savedOnes = profileHomeViewModel.savedRecipes.collectAsState().value
+    val madeOnes = profileHomeViewModel.madeRecipes.collectAsState().value
 
     val userData = profileHomeViewModel.userData.collectAsState()
 
+    // Mostrar pantalla de carga si aún no hay datos cargados (por ejemplo -1 como valor inicial)
+    val isLoading = savedOnes < 0 && madeOnes < 0
 
-    LazyColumn(
-        state = scrollState,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 20.dp),
-        contentPadding = PaddingValues(bottom = 125.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    if (isLoading) {
+        Box(
+            modifier = modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
 
-
-    ) {
-        item {
-            BasicInfo(userData)
+            CircularProgressIndicator()
         }
-        item {
-            Spacer(modifier = Modifier.height(24.dp))
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                ProfileStatCard("Recetas Guardadas")
-                ProfileStatCard("Recetas Hechas")
+    } else {
+        // Mostrar contenido completo si ya se cargaron los datos
+        LazyColumn(
+            state = scrollState,
+            modifier = modifier
+                .fillMaxSize()
+                .padding(top = 20.dp),
+            contentPadding = PaddingValues(bottom = 125.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            item {
+                BasicInfo(userData)
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    ProfileStatCard("Saved recipes", count = savedOnes)
+                    ProfileStatCard("Made recipes", count = madeOnes)
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
+                CustomButton(
+                    text = "Sign Out",
+                    onClick = { profileHomeViewModel.logout() },
+                )
             }
         }
-
-        item {
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Botón cerrar sesión
-            CustomButton(
-                text = "Sing Out",
-                onClick = { profileHomeViewModel.logout() },
-            )
-        }
-
     }
 }

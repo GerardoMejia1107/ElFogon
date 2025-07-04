@@ -48,11 +48,6 @@ fun SearchBar(
             singleLine = true
         )
 
-        IconButton(onClick = onFilterClick) {
-            Icon(
-                imageVector = Icons.Default.Tune,
-                contentDescription = "Filtros"
-            )
-        }
+
     }
 }

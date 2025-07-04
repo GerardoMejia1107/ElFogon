@@ -58,7 +58,6 @@ fun CustomClientScaffold(
     }
 
 
-
     fun onItemSelected(route: Any) {
         navController.navigate(route)
     }
@@ -105,7 +104,7 @@ fun CustomClientScaffold(
             if (isDetailsScreen) {
                 FloatingActionButton(
                     shape = RoundedCornerShape(30.dp),
-                    onClick = {},
+                    onClick = { userViewModel.saveMadeRecipe(userViewModel.recipeIdSelected.value) },
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.secondary
                 ) {
@@ -132,7 +131,7 @@ fun CustomClientScaffold(
             Modifier.padding(innerPadding),
             titleScreen,
             scrollState,
-            )
+        )
     }
 }
 
