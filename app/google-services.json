@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "182977658038",
+    "firebase_url": "https://elfogon-1d14b-default-rtdb.firebaseio.com",
+    "project_id": "elfogon-1d14b",
+    "storage_bucket": "elfogon-1d14b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182977658038:android:9b74dc9f28a7448ffe3a17",
+        "android_client_info": {
+          "package_name": "com.nullPointerSociety.elfogon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182977658038-7lpeh64kt2u1am3ved8aga8g1ui45i44.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nullPointerSociety.elfogon",
+            "certificate_hash": "3a9ef734d4c9c88193e82c6f7f296cba1878682b"
+          }
+        },
+        {
+          "client_id": "182977658038-codpc07g4422jj6hafrq7d5vmc0eub3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_O3aBqy7vYpx126KZGOaKGnCczCw-Muw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182977658038-codpc07g4422jj6hafrq7d5vmc0eub3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
